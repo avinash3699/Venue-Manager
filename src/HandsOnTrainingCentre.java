@@ -13,7 +13,6 @@ public class HandsOnTrainingCentre extends Venue{
 
     // Constructor
     HandsOnTrainingCentre(){
-
     }
 
     // Methods

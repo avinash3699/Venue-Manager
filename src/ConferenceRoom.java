@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConferenceRoom extends Venue{
@@ -10,7 +11,6 @@ public class ConferenceRoom extends Venue{
 
     // Constructor
     ConferenceRoom(){
-
     }
 
     // Methods
@@ -23,7 +23,11 @@ public class ConferenceRoom extends Venue{
 
     @Override
     public Map<String, String> getAdditionalVenueDetails() {
-        return null;
+        return new HashMap(){
+            {
+                put("White Board", getAvailabilityFromBoolean(isWhiteBoardAvailable));
+            }
+        };
     }
 
 }

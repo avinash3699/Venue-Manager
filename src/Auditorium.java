@@ -13,13 +13,12 @@ public class Auditorium extends Venue{
 
     // Constructor
     Auditorium(){
-
     }
 
     // Methods
     @Override
     public Map<String, String> getVenueDetails() {
-        Map<String, String> venueDetails = super.getVenueDetails();
+        super.getVenueDetails()
         Map<String, String> additionalVenueDetails = getAdditionalVenueDetails();
         return null;
     }

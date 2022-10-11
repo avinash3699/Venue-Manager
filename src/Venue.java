@@ -17,11 +17,10 @@ abstract class Venue {
                 put("Wifi", getAvailabilityFromBoolean(isWifiAvailable));
                 put("Individual Charging Ports", getAvailabilityFromBoolean(isChargingPortsAvailable));
             }
-
         };
     }
 
-    private String getAvailabilityFromBoolean(boolean isAirConditioned) {
+    protected String getAvailabilityFromBoolean(boolean isAirConditioned) {
         return (isAirConditioned)? "Available": "Not Available";
     }
 
