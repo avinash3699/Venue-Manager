@@ -4,21 +4,26 @@ import java.util.Map;
 
 public class Database {
 
+    // This field tracks the venueCode and incremented for every new venue addition
+    int venueCode = 0;
+
+    // declaring a singleton object
     private static Database singletonInstance;
 
+    // constructor declared as private to restrict the object creation from outside the class
     private Database(){}
 
+    // method that returns the singleton object when called
     static Database getInstance(){
+
+        // lazy instantiation
         if(singletonInstance == null)
             singletonInstance = new Database();
+
         return singletonInstance;
     }
 
-    static int hallCode;
-
-    /**
-     * This field stores the usernames and passwords of all the users
-     */
+    // This field stores the usernames and passwords of all the users
     Map<String, String> userCredentials = new HashMap(){
         {
             put("cse", "viii");
@@ -31,9 +36,10 @@ public class Database {
         }
     };
 
+    // This field consists of the venue code of the venues mapped with their object
     Map<Integer, Venue> venues = new LinkedHashMap(){
         {
-            put(1, new Auditorium(
+            put(venueCode++, new Auditorium(
                     "Sigma",
                     "1",
                     "SEC College",
@@ -44,8 +50,7 @@ public class Database {
                     true,
                     "2"
             ));
-
-            put(2, new ConferenceRoom(
+            put(venueCode++, new ConferenceRoom(
                     "Conferoom B",
                     "2",
                     "B Block Ground Floor",
@@ -55,7 +60,7 @@ public class Database {
                     true,
                     true
             ));
-            put(3, new Auditorium(
+            put(venueCode++, new Auditorium(
                     "VRR",
                     "2",
                     "Inside LM Stadium",
@@ -66,7 +71,7 @@ public class Database {
                     true,
                     "1"
             ));
-            put(4, new HandsOnTrainingCentre(
+            put(venueCode++, new HandsOnTrainingCentre(
                     "Alpha",
                     "4",
                     "New Library Building, Third Floor",
@@ -76,7 +81,7 @@ public class Database {
                     true,
                     false
             ));
-            put(5, new HandsOnTrainingCentre(
+            put(venueCode++, new HandsOnTrainingCentre(
                     "Beta",
                     "5",
                     "New Library Building, Third Floor",
@@ -86,7 +91,7 @@ public class Database {
                     true,
                     true
             ));
-            put(6, new ConferenceRoom(
+            put(venueCode++, new ConferenceRoom(
                     "Conferoom A",
                     "6",
                     "A Block Third Floor",

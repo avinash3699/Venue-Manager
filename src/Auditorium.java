@@ -13,10 +13,8 @@ public class Auditorium extends Venue{
     public Stage stage;
 
     // Constructor
-
-
     public Auditorium(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable, String noOfDisplayScreen) {
-        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable);
+        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Auditorium");
         this.isMicStandAvailable = isMicStandAvailable;
         this.noOfDisplayScreen = noOfDisplayScreen;
     }

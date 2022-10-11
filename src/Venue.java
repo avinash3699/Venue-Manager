@@ -3,7 +3,12 @@ import java.util.Map;
 
 abstract class Venue {
 
-    public Venue(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable) {
+    // instance variables
+    String hallName, hallCode, location, seatingCapacity, type;
+    boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
+
+    // constructor
+    protected Venue(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, String type) {
         this.hallName = hallName;
         this.hallCode = hallCode;
         this.location = location;
@@ -11,15 +16,15 @@ abstract class Venue {
         this.isAirConditioned = isAirConditioned;
         this.isWifiAvailable = isWifiAvailable;
         this.isChargingPortsAvailable = isChargingPortsAvailable;
+        this.type = type;
     }
 
-    String hallName, hallCode, location, seatingCapacity;
-    boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
-
+    // method to return the details of a venue
     public Map<String, String> getVenueDetails(){
         return new LinkedHashMap(){
             {
                 put("Hall Name", hallName);
+                put("Hall Type", type);
                 put("Hall Code", hallCode);
                 put("Hall Location", location);
                 put("Seating Capacity", seatingCapacity);

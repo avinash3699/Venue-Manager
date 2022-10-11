@@ -11,7 +11,7 @@ public class ConferenceRoom extends Venue{
 
     // Constructor
     public ConferenceRoom(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isWhiteBoardAvailable) {
-        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable);
+        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Conference");
         this.isWhiteBoardAvailable = isWhiteBoardAvailable;
     }
 
