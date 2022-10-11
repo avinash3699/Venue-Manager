@@ -31,7 +31,7 @@ public class Authenticator{
      */
     public static void authenticate(String userName, String enteredPassword) throws AuthenticationException {
 
-        Map<String, String> userCredentials = Database.userCredentials;
+        Map<String, String> userCredentials = Database.getInstance().userCredentials;
 
         if(userCredentials.containsKey(userName)){
 

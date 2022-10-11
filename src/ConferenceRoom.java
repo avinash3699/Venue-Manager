@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ConferenceRoom extends Venue{
@@ -10,7 +10,9 @@ public class ConferenceRoom extends Venue{
     private Ethernet ethernet;
 
     // Constructor
-    ConferenceRoom(){
+    public ConferenceRoom(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isWhiteBoardAvailable) {
+        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable);
+        this.isWhiteBoardAvailable = isWhiteBoardAvailable;
     }
 
     // Methods
@@ -18,12 +20,13 @@ public class ConferenceRoom extends Venue{
     public Map<String, String> getVenueDetails() {
         Map<String, String> venueDetails = super.getVenueDetails();
         Map<String, String> additionalVenueDetails = getAdditionalVenueDetails();
-        return null;
+        venueDetails.putAll(additionalVenueDetails);
+        return venueDetails;
     }
 
     @Override
     public Map<String, String> getAdditionalVenueDetails() {
-        return new HashMap(){
+        return new LinkedHashMap(){
             {
                 put("White Board", getAvailabilityFromBoolean(isWhiteBoardAvailable));
             }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HandsOnTrainingCentre extends Venue{
@@ -12,7 +13,9 @@ public class HandsOnTrainingCentre extends Venue{
     private Speaker speaker;
 
     // Constructor
-    HandsOnTrainingCentre(){
+    public HandsOnTrainingCentre(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable) {
+        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable);
+        this.isMicStandAvailable = isMicStandAvailable;
     }
 
     // Methods
@@ -20,11 +23,16 @@ public class HandsOnTrainingCentre extends Venue{
     public Map<String, String> getVenueDetails() {
         Map<String, String> venueDetails = super.getVenueDetails();
         Map<String, String> additionalVenueDetails = getAdditionalVenueDetails();
-        return null;
+        venueDetails.putAll(additionalVenueDetails);
+        return venueDetails;
     }
 
     @Override
     public Map<String, String> getAdditionalVenueDetails() {
-        return null;
+        return new LinkedHashMap(){
+            {
+                put("Mic Stand", getAvailabilityFromBoolean(isMicStandAvailable));
+            }
+        };
     }
 }

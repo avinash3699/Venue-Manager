@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Scanner;
 
 public class VenueManager {
@@ -7,25 +8,38 @@ public class VenueManager {
     // method to get username and password from the user and authenticate the user
     void authenticate(){
 
+        while(true) {
+
             String username = getStringInput("Enter username: ");
             String password = getStringInput("Enter password: ");
 
-            try{
+            try {
                 System.out.println("\nAuthenticating....");
                 Authenticator.authenticate(
                         username,
                         password
                 );
                 System.out.println("Authentication Successful!!\n");
-            }
-            catch (AuthenticationException e) {
+                break;
+            } catch (AuthenticationException e) {
                 // Displaying a common message would be of better security
                 // https://stackoverflow.com/questions/14922130/which-error-message-is-better-when-users-entered-a-wrong-password
                 System.out.println("You have entered an invalid username or password. Please try again\n");
             }
+        }
+
     }
 
-
+    public void displayVenueDetails() {
+        for(Venue venue: Database.getInstance().venues.values()){
+            Map<String, String> venueDetails = venue.getVenueDetails();
+            for(String key: venueDetails.keySet()){
+                System.out.printf("%s: %s\n", key, venueDetails.get(key));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 
     //functions
 

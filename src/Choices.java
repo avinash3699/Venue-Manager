@@ -8,7 +8,8 @@ public class Choices {
     );
 
     static String userChoices = String.format(
-            "Welcome to Venue Manager\n" +
+            "Welcome to Venue Manager\n\n" +
+            "0. Display different Venue Details\n" +
             "1. Check Venue Availability\n" +
             "2. Reserve Venue\n" +
             "3. Cancel Reserved Venue\n" +

@@ -10,23 +10,23 @@ public class Main {
 
         VenueManager venueManager = new VenueManager();
 
-        loginExitLoop:
+        // logging in the user
+        //venueManager.authenticate();
+
         while(true) {
-            System.out.println(Choices.loginExitChoice);
+            System.out.println(Choices.userChoices);
 
-            switch (sc.nextInt()) {
-                case 1:
-
-
-                    venueManager.authenticate();
-                    break loginExitLoop;
-                case 2:
-                    return;
+            switch(sc.nextInt()){
+                case 0:
+                    venueManager.displayVenueDetails();
+                    break;
+                default:
+                    System.out.println("Oops! Invalid Choice, please choose a valid one\n");
             }
         }
 
-        System.out.println(Choices.userChoices);
-
+//        Venue confRoom = new ConferenceRoom();
+//        System.out.println(confRoom.getVenueDetails());
     }
 
 
