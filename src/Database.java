@@ -1,11 +1,14 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Database {
 
     // This field tracks the venueCode and incremented for every new venue addition
-    int venueCode = 0;
+    int venueCode = 1;
 
     // declaring a singleton object
     private static Database singletonInstance;
@@ -101,6 +104,45 @@ public class Database {
                     false,
                     false
             ));
+        }
+    };
+
+    // This field stores the reservation details of the all the venues
+    // Integer - venue code
+    // LocalDate - dates reserved
+    // String - reserved by whom
+    Map<Integer, TreeMap<LocalDate, String>> reservationDetails = new TreeMap(){
+        {
+            put(1, new TreeMap(){
+                {
+                    put(LocalDate.parse("12-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
+            put(2, new TreeMap(){
+                {
+                    put(LocalDate.parse("13-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
+            put(3, new TreeMap(){
+                {
+                    put(LocalDate.parse("14-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
+            put(4, new TreeMap(){
+                {
+                    put(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
+            put(5, new TreeMap(){
+                {
+                    put(LocalDate.parse("16-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
+            put(6, new TreeMap(){
+                {
+                    put(LocalDate.parse("17-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                }
+            });
         }
     };
 

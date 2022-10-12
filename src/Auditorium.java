@@ -8,9 +8,10 @@ public class Auditorium extends Venue{
     boolean isMicStandAvailable;
     String noOfDisplayScreen;
 
-    Speaker speaker;
-    ArrayList<Microphone> microphone;
-    public Stage stage;
+    private Speaker speaker;
+    private ArrayList<Microphone> microphone;
+
+    private Stage stage;
 
     // Constructor
     public Auditorium(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable, String noOfDisplayScreen) {

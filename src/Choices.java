@@ -7,7 +7,7 @@ public class Choices {
             "2. Exit\n";
 
     static String userChoices =
-            "Welcome to Venue Manager\n\n" +
+            "Venue Manager Console\n\n" +
             "0. Display different Venue Details\n" +
             "1. Check Venue Availability\n" +
             "2. Reserve Venue\n" +
@@ -22,4 +22,18 @@ public class Choices {
             "3. Hands-On Training Centre\n" +
             "4. Auditorium\n";
 
+    static String checkAvailabilityChoices =
+            "Check availability of\n" +
+            "1. All venues\n" +
+            "2. Conference Room\n" +
+            "3. Hands-On Training Centre\n" +
+            "4. Auditorium\n" +
+            "5. Specific Venue(requires Venue Code)";
+
+    static String reserveHallChoices =
+            "Reserve\n" +
+            "1. Any Conference Room\n" +
+            "2. Any Auditorium\n" +
+            "3. Any Hands-on training centre\n" +
+            "4. Using Venue Code\n";
 }
