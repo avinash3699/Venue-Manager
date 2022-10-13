@@ -1,9 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Database {
 
@@ -111,39 +108,99 @@ public class Database {
     // Integer - venue code
     // LocalDate - dates reserved
     // String - reserved by whom
-    Map<Integer, TreeMap<LocalDate, String>> reservationDetails = new TreeMap(){
+//    Map<Integer, TreeMap<LocalDate, String>> reservationDetails = new TreeMap(){
+//        {
+//            put(1, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("12-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//            put(2, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("13-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//            put(3, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("14-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//            put(4, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//            put(5, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("16-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//            put(6, new TreeMap(){
+//                {
+//                    put(LocalDate.parse("17-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+//                }
+//            });
+//        }
+//    };
+
+    Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = new TreeMap(){
         {
             put(1, new TreeMap(){
                 {
-                    put(LocalDate.parse("12-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 1, new ArrayList(){
+                        {
+                            add(LocalDate.parse("12-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
             put(2, new TreeMap(){
                 {
-                    put(LocalDate.parse("13-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 2, new ArrayList(){
+                        {
+                            add(LocalDate.parse("13-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
             put(3, new TreeMap(){
                 {
-                    put(LocalDate.parse("14-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 3, new ArrayList(){
+                        {
+                            add(LocalDate.parse("14-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
             put(4, new TreeMap(){
                 {
-                    put(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 4, new ArrayList(){
+                        {
+                            add(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
             put(5, new TreeMap(){
                 {
-                    put(LocalDate.parse("16-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 5, new ArrayList(){
+                        {
+                            add(LocalDate.parse("16-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
             put(6, new TreeMap(){
                 {
-                    put(LocalDate.parse("17-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "admin");
+                    put(Integer.MAX_VALUE - 6, new ArrayList(){
+                        {
+                            add(LocalDate.parse("17-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        }
+                    });
                 }
             });
         }
     };
+
 
 }

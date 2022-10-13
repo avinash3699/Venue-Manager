@@ -82,6 +82,34 @@ public class Main {
                             venueManager.reserveVenue(venueCode, from, to);
                     }
                     break;
+                case 3:
+                    int venueCode = Integer.parseInt(VenueManager.getStringInput("Enter Venue Code: ")),
+                        accessId = Integer.parseInt(VenueManager.getStringInput("Enter Access Id: "));
+                    System.out.println(Choices.cancelHallChoices);
+                    switch (sc.nextInt()){
+                        case 1:
+                            venueManager.cancelVenue(venueCode, accessId);
+                            break;
+                        case 2:
+                            fromDate = VenueManager.getStringInput("From Date (DD-MM-YYYY): ");
+                            toDate = VenueManager.getStringInput("To Date (DD-MM-YYYY): ");
+                            from = LocalDate.parse(fromDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                            to = LocalDate.parse(toDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                            venueManager.cancelVenue(venueCode, accessId, from, to);
+                            break;
+                        case 3:
+                            String date = VenueManager.getStringInput("Enter the date to be cancelled(DD-MM-YYYY): ");
+                            LocalDate dateToBeCancelled = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                            venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled);
+                            break;
+                    }
+                    break;
+                case 4:
+                    int oldVenueCode = Integer.parseInt(VenueManager.getStringInput("Enter Old Venue Code: "));
+                    accessId = Integer.parseInt(VenueManager.getStringInput("Enter Access Id: "));
+                    int newVenueCode = Integer.parseInt(VenueManager.getStringInput("Enter New Venue Code: "));
+                    venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
+                    break;
                 default:
                     System.out.println("Oops! Invalid Choice, please choose a valid one\n");
             }

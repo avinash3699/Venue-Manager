@@ -36,4 +36,10 @@ public class Choices {
             "2. Any Auditorium\n" +
             "3. Any Hands-on training centre\n" +
             "4. Using Venue Code\n";
+
+    static String cancelHallChoices =
+            "Cancel\n" +
+            "1. Entire reservation\n" +
+            "2. From-to dates\n" +
+            "3. a Day\n";
 }
