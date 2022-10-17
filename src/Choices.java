@@ -28,7 +28,7 @@ public class Choices {
             "2. Conference Room\n" +
             "3. Hands-On Training Centre\n" +
             "4. Auditorium\n" +
-            "5. Specific Venue(requires Venue Code)";
+            "5. Specific Venue(requires Venue Code)\n";
 
     static String reserveHallChoices =
             "Reserve\n" +

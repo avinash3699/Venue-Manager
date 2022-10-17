@@ -191,6 +191,8 @@ public class VenueManager {
     public void changeVenue(int oldVenueCode, int accessId, int newVenueCode) {
         Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
         ArrayList<LocalDate> reservedDates = (reservationDetails.get(oldVenueCode)).get(accessId);
+
+        // below line should be handled for no elements in reservedDates
         LocalDate from = reservedDates.get(0), to = reservedDates.get(reservedDates.size() - 1);
         reserveVenue(newVenueCode, from, to);
         cancelVenue(oldVenueCode, accessId);

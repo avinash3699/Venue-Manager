@@ -1,3 +1,4 @@
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -62,7 +63,7 @@ public class Database {
             ));
             put(venueCode++, new Auditorium(
                     "VRR",
-                    "2",
+                    "3",
                     "Inside LM Stadium",
                     "286",
                     true,
@@ -203,4 +204,16 @@ public class Database {
     };
 
 
+    public int getVenuesCount() {
+        return venues.size();
+    }
+
+    public ArrayList<Integer> getAccessIds() {
+        ArrayList<Integer> accessIds = new ArrayList<>();
+        for (int venueCode : reservationDetails.keySet()) {
+            for (int accessId : (reservationDetails.get(venueCode)).keySet())
+                accessIds.add(accessId);
+        }
+        return accessIds;
+    }
 }
