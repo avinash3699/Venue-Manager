@@ -126,8 +126,12 @@ public class VenueManager {
     public void reserveVenue(String type, LocalDate from, LocalDate to) {
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
         if(availableVenues.size() != 0) {
-            updateAvailability(availableVenues.get(0), from, to, generateRandomNumber());
+            int accessId = generateRandomNumber();
+            updateAvailability(availableVenues.get(0), from, to, accessId);
             System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + availableVenues.get(0));
+            System.out.println("Your access ID is: " + accessId);
+
+            Database.getInstance().accessIdUserIdMap.put(accessId, 369);
         }
         else
             System.out.println("Sorry! No Venues Available based on your request");
@@ -137,8 +141,12 @@ public class VenueManager {
     public void reserveVenue(int venueCode, LocalDate from, LocalDate to) {
         boolean available = checkAvailability(venueCode, from, to);
         if(available) {
-            updateAvailability(venueCode, from, to, generateRandomNumber());
-            System.out.printf("Hurray!! You have reserved your venue successfully. Venue: %s\n\n", venueCode);
+            int accessId = generateRandomNumber();
+            updateAvailability(venueCode, from, to, accessId);
+            System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + venueCode);
+            System.out.println("Your access ID is: " + accessId);
+
+            Database.getInstance().accessIdUserIdMap.put(accessId, 369);
         }
         else
             System.out.println("Sorry! The venue you requested is already reserved");
@@ -194,6 +202,8 @@ public class VenueManager {
 
         // below line should be handled for no elements in reservedDates
         LocalDate from = reservedDates.get(0), to = reservedDates.get(reservedDates.size() - 1);
+
+        // if reservation fails, should not call the
         reserveVenue(newVenueCode, from, to);
         cancelVenue(oldVenueCode, accessId);
     }

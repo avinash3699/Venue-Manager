@@ -1,6 +1,8 @@
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
 public class Main {
@@ -58,8 +60,11 @@ public class Main {
 
                 case 1:
 
-                    from = getDateInput("From Date (DD-MM-YYYY): ");
-                    to = getDateInput("To Date (DD-MM-YYYY): ");
+//                    from = getDateInput("From Date (DD-MM-YYYY): ");
+//                    to = getDateInput("To Date (DD-MM-YYYY): ");
+
+                    LocalDate[] dates = getFromToDates();
+                    from = dates[0]; to = dates[1];
 
                     while(true) {
                         System.out.println("\n---------");
@@ -93,8 +98,17 @@ public class Main {
                     break;
                 case 2:
 
-                    from = getDateInput("From Date (DD-MM-YYYY): ");
-                    to = getDateInput("To Date (DD-MM-YYYY): ");
+//                    while(true) {
+//                        from = getDateInput("From Date (DD-MM-YYYY): ");
+//                        to = getDateInput("To Date (DD-MM-YYYY): ");
+//
+//                        if(to.isBefore(from))
+//                            System.out.println("You have enter a To date less than From to. Please try again");
+//                        else
+//                            break;
+//                    }
+                    dates = getFromToDates();
+                    from = dates[0]; to = dates[1];
 
                     while(true) {
                         System.out.println("\n---------");
@@ -126,8 +140,8 @@ public class Main {
                     break;
                 case 3:
 
-                    int venueCode = getVenueCodeInput("Enter Venue Code: "),
-                        accessId = getAccessIdInput();
+                    int accessId = getAccessIdInput(),
+                        venueCode = getVenueCodeInput("Enter Venue Code: ");
 
                     while(true) {
                         System.out.println("\n---------");
@@ -139,8 +153,10 @@ public class Main {
                                 venueManager.cancelVenue(venueCode, accessId);
                                 break;
                             case 2:
-                                from = getDateInput("From Date (DD-MM-YYYY): ");
-                                to = getDateInput("To Date (DD-MM-YYYY): ");
+//                                from = getDateInput("From Date (DD-MM-YYYY): ");
+//                                to = getDateInput("To Date (DD-MM-YYYY): ");
+                                dates = getFromToDates();
+                                from = dates[0]; to = dates[1];
 
                                 venueManager.cancelVenue(venueCode, accessId, from, to);
                                 break;
@@ -158,9 +174,9 @@ public class Main {
                     }
                     break;
                 case 4:
-                    int oldVenueCode = getVenueCodeInput("Enter Venue Code: ");
-                        accessId = getIntegerInput("Enter Access Id: ");
-                    int newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
+                    accessId = getAccessIdInput();
+                    int oldVenueCode = getVenueCodeInput("Enter Venue Code: "),
+                        newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
                     venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
                     break;
                 default:
@@ -223,14 +239,22 @@ public class Main {
         return choice;
     }
 
-    static private LocalDate getDateInput(String hintText){
+    private static LocalDate getDateInput(String hintText){
         String date;
         LocalDate parsedDate;
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd-MM-uuuu");
         while(true) {
             System.out.println("\n---------");
             date = VenueManager.getStringInput(hintText);
             try{
-                parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                // ResolverStyle.STRICT is used to throw exception for 29th and 30th of February, considering leap year
+                // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
+                parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
+                boolean isPastDate = isDatePast(parsedDate);
+                if(isPastDate) {
+                    System.out.println("OOPs! You have entered a past date. Please enter a valid one");
+                    continue;
+                }
                 break;
             }
             catch (DateTimeParseException e){
@@ -238,6 +262,28 @@ public class Main {
             }
         }
         return parsedDate;
+    }
+
+    private static LocalDate[] getFromToDates(){
+        while(true) {
+            LocalDate from = getDateInput("From Date (DD-MM-YYYY): "),
+                      to = getDateInput("To Date (DD-MM-YYYY): ");
+
+            if(to.isBefore(from))
+                System.out.println("You have enter a 'To date' less than 'From to'. Please try again");
+            else if(to.isAfter(from.plusDays(10)))
+                System.out.println("Your from and to date cannot be not be more than 10 days");
+            else
+                return new LocalDate[]{
+                        from,
+                        to
+                };
+        }
+    }
+
+    private static boolean isDatePast(LocalDate inputDate) {
+        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
+        return inputDate.isBefore(localDate);
     }
 
 //    static private LocalDate[] getInputAndParsedDate(){
