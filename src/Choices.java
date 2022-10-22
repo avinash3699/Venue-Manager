@@ -12,7 +12,8 @@ public class Choices {
             "1. Check Venue Availability\n" +
             "2. Reserve Venue\n" +
             "3. Cancel Reserved Venue\n" +
-            "4. Change Reserved Venue\n";
+            "4. Change Reserved Venue\n" +
+            "5. LOGOUT\n";
 //            "5. Request Reserved Venue\n";
 
     static String displayVenueChoices =
@@ -20,7 +21,8 @@ public class Choices {
             "1. All venues\n" +
             "2. Conference Room\n" +
             "3. Hands-On Training Centre\n" +
-            "4. Auditorium\n";
+            "4. Auditorium\n" +
+            "5. GO TO VENUE MANAGER CONSOLE\n";
 
     static String checkAvailabilityChoices =
             "Check availability of\n" +
@@ -28,18 +30,24 @@ public class Choices {
             "2. Conference Room\n" +
             "3. Hands-On Training Centre\n" +
             "4. Auditorium\n" +
-            "5. Specific Venue(requires Venue Code)\n";
+            "5. Specific Venue(requires Venue Code)\n" +
+            "6. CHECK ANOTHER DATES\n" +
+            "7. GO TO VENUE MANAGER CONSOLE\n";
 
     static String reserveHallChoices =
             "Reserve\n" +
             "1. Any Conference Room\n" +
             "2. Any Auditorium\n" +
             "3. Any Hands-on training centre\n" +
-            "4. Using Venue Code\n";
+            "4. Using Venue Code\n" +
+            "5. RESERVE ANOTHER DATES\n" +
+            "6. GO TO VENUE MANAGER CONSOLE\n";
 
     static String cancelHallChoices =
             "Cancel\n" +
             "1. Entire reservation\n" +
             "2. From-to dates\n" +
-            "3. a Day\n";
+            "3. a Day\n" +
+            "4. CANCEL ANOTHER DATES\n" +
+            "5. GO TO VENUE MANAGER CONSOLE\n";
 }

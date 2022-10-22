@@ -216,6 +216,7 @@ public class VenueManager {
         return new Scanner(System.in).nextLine();
     }
 
+    // do not generate id that is already generated
     private int generateRandomNumber() {
         return new Random().nextInt(Integer.MAX_VALUE - 10);
     }
