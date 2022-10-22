@@ -19,187 +19,214 @@ public class Main {
 
         VenueManager venueManager = new VenueManager();
 
-        // logging in the user
-        //venueManager.authenticate();
-//        System.out.println(Database.getInstance().venues);
-
-        mainLoop:
+//         logging in the user
         while(true) {
-            System.out.println("\n---------");
 
-            System.out.println(Choices.userChoices);
+            boolean loginSuccessful = false;
+            System.out.println(Choices.loginExitChoice);
 
-            choice = getIntegerInput("Enter choice: ");
-            switch (choice) {
-
-                case 0:
-                    outerLoop:
-                    while (true) {
-                        System.out.println("\n---------");
-                        System.out.println(Choices.displayVenueChoices);
-
-                        choice = getIntegerInput("Enter choice: ");
-
-                        System.out.println("\n---------");
-                        switch (choice) {
-                            case 1:
-                                venueManager.displayVenueDetails();
-                                break;
-                            case 2:
-                                venueManager.displayVenueDetails("Conference");
-                                break;
-                            case 3:
-                                venueManager.displayVenueDetails("Hands-On training");
-                                break;
-                            case 4:
-                                venueManager.displayVenueDetails("Auditorium");
-                                break;
-                            case 5:
-                                break outerLoop;
-                            default:
-                                System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
-                        }
-                    }
-                    break;
+            switch (getIntegerInput("Enter choice: ")) {
                 case 1:
+                    String username = getStringInput("Enter username: "),
+                            password = getStringInput("Enter password: ");
+                    if (venueManager.authenticate(username, password)) {
+                        System.out.println("Authentication Successful!!\n");
+                        loginSuccessful = true;
+                    } else {
+                        System.out.println("You have entered an invalid username or password. Please try again\n");
+                        continue;
+                    }
 
-                    outerLoop:
-                    while(true) {
-                        dates = getFromToDates();
-                        from = dates[0];
-                        to = dates[1];
-
-                        innerLoop:
-                        while (true) {
+                    if(loginSuccessful){
+                        mainLoop:
+                        while(true) {
                             System.out.println("\n---------");
-                            System.out.printf("From: %s\nTo: %s\n\n", from, to);
-                            System.out.println(Choices.checkAvailabilityChoices);
+
+                            System.out.println(Choices.userChoices);
 
                             choice = getIntegerInput("Enter choice: ");
                             switch (choice) {
+
+                                case 0:
+                                    outerLoop:
+                                    while (true) {
+                                        System.out.println("\n---------");
+                                        System.out.println(Choices.displayVenueChoices);
+
+                                        choice = getIntegerInput("Enter choice: ");
+
+                                        System.out.println("\n---------");
+                                        switch (choice) {
+                                            case 1:
+                                                venueManager.displayVenueDetails();
+                                                break;
+                                            case 2:
+                                                venueManager.displayVenueDetails("Conference");
+                                                break;
+                                            case 3:
+                                                venueManager.displayVenueDetails("Hands-On training");
+                                                break;
+                                            case 4:
+                                                venueManager.displayVenueDetails("Auditorium");
+                                                break;
+                                            case 5:
+                                                break outerLoop;
+                                            default:
+                                                System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                        }
+                                    }
+                                    break;
                                 case 1:
-                                    System.out.println(venueManager.checkAvailability(from, to));
+
+                                    outerLoop:
+                                    while(true) {
+                                        dates = getFromToDates();
+                                        from = dates[0];
+                                        to = dates[1];
+
+                                        innerLoop:
+                                        while (true) {
+                                            System.out.println("\n---------");
+                                            System.out.printf("From: %s\nTo: %s\n\n", from, to);
+                                            System.out.println(Choices.checkAvailabilityChoices);
+
+                                            choice = getIntegerInput("Enter choice: ");
+                                            switch (choice) {
+                                                case 1:
+                                                    System.out.println(venueManager.checkAvailability(from, to));
+                                                    break;
+                                                case 2:
+                                                    System.out.println(venueManager.checkAvailability("Conference", from, to));
+                                                    break;
+                                                case 3:
+                                                    System.out.println(venueManager.checkAvailability("Hands-On training", from, to));
+                                                    break;
+                                                case 4:
+                                                    System.out.println(venueManager.checkAvailability("Auditorium", from, to));
+                                                    break;
+                                                case 5:
+                                                    venueCode = getVenueCodeInput("Enter Venue Code: ");
+                                                    System.out.println(venueManager.checkAvailability(venueCode, from, to));
+                                                    break;
+                                                case 6:
+                                                    break innerLoop;
+                                                case 7:
+                                                    break outerLoop;
+                                                default:
+                                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                            }
+                                        }
+                                    }
                                     break;
                                 case 2:
-                                    System.out.println(venueManager.checkAvailability("Conference", from, to));
+
+                                    outerLoop:
+                                    while(true) {
+                                        dates = getFromToDates();
+                                        from = dates[0];
+                                        to = dates[1];
+
+                                        innerLoop:
+                                        while (true) {
+                                            System.out.println("\n---------");
+                                            System.out.printf("From: %s\nTo: %s\n\n", from, to);
+
+                                            System.out.println(Choices.reserveHallChoices);
+
+                                            choice = getIntegerInput("Enter choice: ");
+                                            switch (choice) {
+                                                case 1:
+                                                    venueManager.reserveVenue("Conference", from, to);
+                                                    break;
+                                                case 2:
+                                                    venueManager.reserveVenue("Hands-On training", from, to);
+                                                    break;
+                                                case 3:
+                                                    venueManager.reserveVenue("Auditorium", from, to);
+                                                    break;
+                                                case 4:
+                                                    venueCode = getVenueCodeInput("Enter Venue Code: ");
+                                                    venueManager.reserveVenue(venueCode, from, to);
+                                                    break;
+                                                case 5:
+                                                    break innerLoop;
+                                                case 6:
+                                                    break outerLoop;
+                                                default:
+                                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                            }
+                                        }
+                                    }
                                     break;
                                 case 3:
-                                    System.out.println(venueManager.checkAvailability("Hands-On training", from, to));
+
+                                    outerLoop:
+                                    while(true) {
+                                        accessId = getAccessIdInput();
+                                        venueCode = getVenueCodeInput("Enter Venue Code: ");
+
+                                        innerLoop:
+                                        while (true) {
+                                            System.out.println("\n---------");
+                                            System.out.println(Choices.cancelHallChoices);
+
+                                            choice = getIntegerInput("Enter choice: ");
+                                            switch (choice) {
+                                                case 1:
+                                                    venueManager.cancelVenue(venueCode, accessId);
+                                                    break;
+                                                case 2:
+                                                    //                                from = getDateInput("From Date (DD-MM-YYYY): ");
+                                                    //                                to = getDateInput("To Date (DD-MM-YYYY): ");
+                                                    dates = getFromToDates();
+                                                    from = dates[0];
+                                                    to = dates[1];
+
+                                                    venueManager.cancelVenue(venueCode, accessId, from, to);
+                                                    break;
+                                                case 3:
+                                                    //                                String date = VenueManager.getStringInput("Enter the date to be cancelled(DD-MM-YYYY): ");
+                                                    //                                LocalDate dateToBeCancelled = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                                                    LocalDate dateToBeCancelled = getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
+                                                    venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled);
+                                                    break;
+                                                case 4:
+                                                    break innerLoop;
+                                                case 5:
+                                                    break outerLoop;
+                                                default:
+                                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                            }
+                                        }
+                                    }
                                     break;
                                 case 4:
-                                    System.out.println(venueManager.checkAvailability("Auditorium", from, to));
+                                    accessId = getAccessIdInput();
+                                    int oldVenueCode = getVenueCodeInput("Enter Venue Code: "),
+                                            newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
+                                    venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
                                     break;
                                 case 5:
-                                    venueCode = getVenueCodeInput("Enter Venue Code: ");
-                                    System.out.println(venueManager.checkAvailability(venueCode, from, to));
-                                    break;
-                                case 6:
-                                    break innerLoop;
-                                case 7:
-                                    break outerLoop;
+                                    System.out.println("Logging out!");
+                                    break mainLoop;
                                 default:
                                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                             }
                         }
                     }
-                    break;
+                    continue;
                 case 2:
-
-                    outerLoop:
-                    while(true) {
-                        dates = getFromToDates();
-                        from = dates[0];
-                        to = dates[1];
-
-                        innerLoop:
-                        while (true) {
-                            System.out.println("\n---------");
-                            System.out.printf("From: %s\nTo: %s\n\n", from, to);
-
-                            System.out.println(Choices.reserveHallChoices);
-
-                            choice = getIntegerInput("Enter choice: ");
-                            switch (choice) {
-                                case 1:
-                                    venueManager.reserveVenue("Conference", from, to);
-                                    break;
-                                case 2:
-                                    venueManager.reserveVenue("Hands-On training", from, to);
-                                    break;
-                                case 3:
-                                    venueManager.reserveVenue("Auditorium", from, to);
-                                    break;
-                                case 4:
-                                    venueCode = getVenueCodeInput("Enter Venue Code: ");
-                                    venueManager.reserveVenue(venueCode, from, to);
-                                    break;
-                                case 5:
-                                    break innerLoop;
-                                case 6:
-                                    break outerLoop;
-                                default:
-                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-
-                    outerLoop:
-                    while(true) {
-                        accessId = getAccessIdInput();
-                        venueCode = getVenueCodeInput("Enter Venue Code: ");
-
-                        innerLoop:
-                        while (true) {
-                            System.out.println("\n---------");
-                            System.out.println(Choices.cancelHallChoices);
-
-                            choice = getIntegerInput("Enter choice: ");
-                            switch (choice) {
-                                case 1:
-                                    venueManager.cancelVenue(venueCode, accessId);
-                                    break;
-                                case 2:
-                                    //                                from = getDateInput("From Date (DD-MM-YYYY): ");
-                                    //                                to = getDateInput("To Date (DD-MM-YYYY): ");
-                                    dates = getFromToDates();
-                                    from = dates[0];
-                                    to = dates[1];
-
-                                    venueManager.cancelVenue(venueCode, accessId, from, to);
-                                    break;
-                                case 3:
-                                    //                                String date = VenueManager.getStringInput("Enter the date to be cancelled(DD-MM-YYYY): ");
-                                    //                                LocalDate dateToBeCancelled = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                                    LocalDate dateToBeCancelled = getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
-                                    venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled);
-                                    break;
-                                case 4:
-                                    break innerLoop;
-                                case 5:
-                                    break outerLoop;
-                                default:
-                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
-                            }
-                        }
-                    }
-                    break;
-                case 4:
-                    accessId = getAccessIdInput();
-                    int oldVenueCode = getVenueCodeInput("Enter Venue Code: "),
-                        newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
-                    venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
-                    break;
-                case 5:
-//                    System.out.println("Building.... Please visit here after sometime");
-                    System.out.println("Logging out!");
-                    break mainLoop;
-                default:
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    System.exit(1);
             }
+            break;
         }
 
+    }
+
+    // function to get string input with a hint text
+    static String getStringInput(String text){
+        System.out.print(text);
+        return new Scanner(System.in).nextLine();
     }
 
     private static int getAccessIdInput() {
@@ -241,7 +268,7 @@ public class Main {
 
         while (true) {
             try {
-                choice = Integer.parseInt(VenueManager.getStringInput(hintText));
+                choice = Integer.parseInt(getStringInput(hintText));
                 break;
             } catch (NumberFormatException e) {
 //                e.printStackTrace();
@@ -259,7 +286,7 @@ public class Main {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd-MM-uuuu");
         while(true) {
             System.out.println("\n---------");
-            date = VenueManager.getStringInput(hintText);
+            date = getStringInput(hintText);
             try{
                 // ResolverStyle.STRICT is used to throw exception for 29th and 30th of February, considering leap year
                 // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
