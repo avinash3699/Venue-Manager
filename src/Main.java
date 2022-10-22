@@ -218,7 +218,7 @@ public class Main {
                 case 2:
                     System.exit(1);
             }
-    y        break;
+            break;
         }
 
     }
