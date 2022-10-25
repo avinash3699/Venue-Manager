@@ -23,6 +23,14 @@ public class Database {
         return singletonInstance;
     }
 
+    HashMap<String, User> users = new HashMap(){
+        {
+            put("admin1", new Admin("admin1", "9790877950", "admin1@org"));
+            put("cse", new Representative("cse", "9790963512", "cse@org"));
+            put("nss", new Representative("nss", "8056117046", "nss@org"));
+        }
+    };
+
     // This field stores the usernames and passwords of all the users
     Map<String, String> userCredentials = new HashMap(){
         {
@@ -167,7 +175,7 @@ public class Database {
         }
     };
 
-    Map<Integer, Integer> accessIdUserIdMap = new HashMap<>();
+    Map<Integer, String> accessIdUserMap = new HashMap<>();
 
     public int getVenuesCount() {
         return venues.size();

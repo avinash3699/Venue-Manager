@@ -16,6 +16,7 @@ public class Main {
         LocalDate from, to;
         LocalDate[] dates;
 
+        User currentUser;
 
         VenueManager venueManager = new VenueManager();
 
@@ -29,8 +30,9 @@ public class Main {
                 case 1:
                     String username = getStringInput("Enter username: "),
                             password = getStringInput("Enter password: ");
-                    if (venueManager.authenticate(username, password)) {
+                    if ((currentUser = venueManager.authenticate(username, password)) != null) {
                         System.out.println("Authentication Successful!!\n");
+                        System.out.println("Welcome " + currentUser.getUsername() + "\n");
                         loginSuccessful = true;
                     } else {
                         System.out.println("You have entered an invalid username or password. Please try again\n");
@@ -43,6 +45,10 @@ public class Main {
                             System.out.println("\n---------");
 
                             System.out.println(Choices.userChoices);
+
+                            if(currentUser instanceof Admin){
+                                System.out.println(Choices.adminChoices);
+                            }
 
                             choice = getIntegerInput("Enter choice: ");
                             switch (choice) {
@@ -207,8 +213,18 @@ public class Main {
                                     venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
                                     break;
                                 case 5:
-                                    System.out.println("Logging out!");
+                                    System.out.println(((Representative)currentUser).getReservationDetails());
+                                    break;
+                                case 6:
+                                    System.out.println("Logging out!\n");
                                     break mainLoop;
+                                case 7:
+                                    if(currentUser instanceof Admin){
+
+                                    }
+                                    else
+                                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                    break;
                                 default:
                                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                             }

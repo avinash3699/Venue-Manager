@@ -13,8 +13,12 @@ public class Choices {
             "2. Reserve Venue\n" +
             "3. Cancel Reserved Venue\n" +
             "4. Change Reserved Venue\n" +
-            "5. LOGOUT\n";
-//            "5. Request Reserved Venue\n";
+            "5. Show Reserved Venues\n" +
+            "6. LOGOUT\n";
+
+    static String adminChoices =
+            "Admin Operations\n" +
+            "7. Update Venues\n";
 
     static String displayVenueChoices =
             "Display details of\n" +

@@ -1,16 +1,15 @@
-import org.jetbrains.annotations.NotNull;
-
-import javax.xml.crypto.Data;
-import java.sql.Array;
+import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.util.*;
 
 public class VenueManager {
 
+    private User currentUser;
+
     //methods
 
     // method to get username and password from the user and authenticate it
-    boolean authenticate(String username, String password){
+    User authenticate(String username, String password){
 
         try {
             System.out.println("\nAuthenticating....");
@@ -18,13 +17,16 @@ public class VenueManager {
                     username,
                     password
             );
-            return true;
+
+            HashMap<String, User> users = Database.getInstance().users;
+            currentUser = users.get(username);
+            return currentUser;
 //            System.out.println("Authentication Successful!!\n");
         } catch (AuthenticationException e) {
             // Displaying a common message would be of better security
             // https://stackoverflow.com/questions/14922130/which-error-message-is-better-when-users-entered-a-wrong-password
 //            System.out.println("You have entered an invalid username or password. Please try again\n");
-            return false;
+            return null;
         }
 
     }
@@ -125,8 +127,6 @@ public class VenueManager {
             updateAvailability(availableVenues.get(0), from, to, accessId);
             System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + availableVenues.get(0));
             System.out.println("Your access ID is: " + accessId);
-
-            Database.getInstance().accessIdUserIdMap.put(accessId, 369);
         }
         else
             System.out.println("Sorry! No Venues Available based on your request");
@@ -140,8 +140,6 @@ public class VenueManager {
             updateAvailability(venueCode, from, to, accessId);
             System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + venueCode);
             System.out.println("Your access ID is: " + accessId);
-
-            Database.getInstance().accessIdUserIdMap.put(accessId, 369);
         }
         else
             System.out.println("Sorry! The venue you requested is already reserved");
@@ -158,6 +156,10 @@ public class VenueManager {
         accessIdWithDates.putAll(Database.getInstance().reservationDetails.get(venueCode));
         Database.getInstance().reservationDetails.put(venueCode, accessIdWithDates);
         System.out.println(Database.getInstance().reservationDetails.get(venueCode));
+
+        Database.getInstance().accessIdUserMap.put(accessId, currentUser.getUsername());
+
+        ((Representative)currentUser).addReservationDetails(accessId, venueCode, reservedDates);
     }
 
     // to cancel the reserved venue using the venue code and the unique access id
@@ -167,6 +169,8 @@ public class VenueManager {
         Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
         System.out.println(Database.getInstance().reservationDetails.get(venueCode));
         System.out.println("Success! You have successfully cancelled the venue");
+
+        ((Representative) currentUser).removeReservationDetails(accessId);
     }
 
     public void cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to) {
@@ -179,6 +183,8 @@ public class VenueManager {
         Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
         System.out.println(Database.getInstance().reservationDetails.get(venueCode));
         System.out.println("Success! You have successfully cancelled the mentioned dates");
+
+        ((Representative) currentUser).removeReservationDetails(accessId, from, to);
     }
 
     public void cancelVenue(int venueCode, int accessId, LocalDate dateToBeCancelled) {
@@ -189,6 +195,8 @@ public class VenueManager {
         Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
         System.out.println(Database.getInstance().reservationDetails.get(venueCode));
         System.out.println("Success! You have successfully cancelled the requested date");
+
+        ((Representative) currentUser).removeReservationDetails(accessId, dateToBeCancelled, dateToBeCancelled);
     }
 
     public void changeVenue(int oldVenueCode, int accessId, int newVenueCode) {
