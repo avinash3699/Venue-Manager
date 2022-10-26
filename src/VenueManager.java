@@ -9,7 +9,8 @@ public class VenueManager {
 
     // method to authenticate the logging user
     User authenticate(String userName, String enteredPassword){
-        return Database.getInstance().authenticate(userName, enteredPassword);
+        currentUser = Database.getInstance().authenticate(userName, enteredPassword);
+        return currentUser;
     }
 
     // method to display the details of all the venues
