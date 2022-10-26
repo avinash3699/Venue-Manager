@@ -1,4 +1,6 @@
-import java.util.LinkedHashMap;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class User {
 
@@ -13,10 +15,6 @@ public class User {
 
     public String getUsername() {
         return username;
-    }
-
-    public User getDetails(){
-        return this;
     }
 
     protected void setPhoneNumber(String phoneNumber) {
@@ -34,4 +32,9 @@ public class User {
     protected String getEmailId() {
         return emailId;
     }
+
+    public User getDetails(){
+        return this;
+    }
+
 }

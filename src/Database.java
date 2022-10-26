@@ -190,4 +190,8 @@ public class Database {
         return accessIds;
     }
 
+    public String getNameFromCode(int venueCode){
+        return venues.get(venueCode).venueName;
+    }
+
 }

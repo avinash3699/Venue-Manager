@@ -225,6 +225,13 @@ public class Main {
                                     else
                                         System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                                     break;
+                                case 8:
+                                    if(currentUser instanceof Admin){
+
+                                    }
+                                    else
+                                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                    break;
                                 default:
                                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                             }

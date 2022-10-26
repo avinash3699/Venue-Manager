@@ -3,7 +3,6 @@
  * The credentials are stored in a static map object, a member of Authenticator class.
  */
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Authenticator{
