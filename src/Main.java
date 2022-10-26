@@ -31,10 +31,12 @@ public class Main {
                     String username = getStringInput("Enter username: "),
                             password = getStringInput("Enter password: ");
                     if ((currentUser = venueManager.authenticate(username, password)) != null) {
+                        System.out.println("\n---------");
                         System.out.println("Authentication Successful!!\n");
-                        System.out.println("Welcome " + currentUser.getUsername() + "\n");
+                        System.out.println("Welcome " + currentUser.getUsername());
                         loginSuccessful = true;
                     } else {
+                        System.out.println("\n---------");
                         System.out.println("You have entered an invalid username or password. Please try again\n");
                         continue;
                     }
@@ -216,6 +218,7 @@ public class Main {
                                     System.out.println(((Representative)currentUser).getReservationDetails());
                                     break;
                                 case 6:
+                                    System.out.println("\n---------");
                                     System.out.println("Logging out!\n");
                                     break mainLoop;
                                 case 7:

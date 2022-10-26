@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+// have to generate setters and getters for properties instead of reading and writing it directly
 public class Database {
 
     // This field tracks the venueCode and incremented for every new venue addition
@@ -192,6 +193,27 @@ public class Database {
 
     public String getNameFromCode(int venueCode){
         return venues.get(venueCode).venueName;
+    }
+
+    // delegated by VenueManager.authenticate() to authenticate
+    // Reason: to not expose the User Credentials outside the Database class
+    User authenticate(String userName, String enteredPassword){
+
+        if(userCredentials.containsKey(userName)){
+
+            String dbPassword = userCredentials.get(userName);
+
+            // if successful, return logged in User object
+            if(enteredPassword.equals(dbPassword)){
+                return users.get(userName);
+            }
+            // if password mismatch, return null
+            else return null;
+        }
+
+        // if username doesn't exist, return null
+        else
+            return null;
     }
 
 }

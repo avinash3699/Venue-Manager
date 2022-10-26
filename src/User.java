@@ -1,7 +1,3 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Map;
-
 public class User {
 
     private final String username;

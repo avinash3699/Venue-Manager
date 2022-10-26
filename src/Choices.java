@@ -18,8 +18,8 @@ public class Choices {
 
     static String adminChoices =
             "Admin Operations\n" +
-            "7. Add Users" +
-            "8. View All Users" +
+            "7. Add Users\n" +
+            "8. View All Users\n" +
             "9. Update Venues\n";
 
     static String displayVenueChoices =

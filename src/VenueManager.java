@@ -1,4 +1,3 @@
-import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -8,27 +7,9 @@ public class VenueManager {
 
     //methods
 
-    // method to get username and password from the user and authenticate it
-    User authenticate(String username, String password){
-
-        try {
-            System.out.println("\nAuthenticating....");
-            Authenticator.authenticate(
-                    username,
-                    password
-            );
-
-            HashMap<String, User> users = Database.getInstance().users;
-            currentUser = users.get(username);
-            return currentUser;
-//            System.out.println("Authentication Successful!!\n");
-        } catch (AuthenticationException e) {
-            // Displaying a common message would be of better security
-            // https://stackoverflow.com/questions/14922130/which-error-message-is-better-when-users-entered-a-wrong-password
-//            System.out.println("You have entered an invalid username or password. Please try again\n");
-            return null;
-        }
-
+    // method to authenticate the logging user
+    User authenticate(String userName, String enteredPassword){
+        return Database.getInstance().authenticate(userName, enteredPassword);
     }
 
     // method to display the details of all the venues
