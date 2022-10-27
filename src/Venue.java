@@ -23,10 +23,10 @@ abstract class Venue {
     public Map<String, String> getVenueDetails(){
         return new LinkedHashMap(){
             {
-                put("Hall Name", venueName);
-                put("Hall Type", type);
-                put("Hall Code", venueCode);
-                put("Hall Location", location);
+                put("Venue Name", venueName);
+                put("Venue Type", type);
+                put("Venue Code", venueCode);
+                put("Venue Location", location);
                 put("Seating Capacity", seatingCapacity);
                 put("Air Conditioner", getAvailabilityFromBoolean(isAirConditioned));
                 put("Wifi", getAvailabilityFromBoolean(isWifiAvailable));

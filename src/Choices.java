@@ -1,4 +1,6 @@
 // Utility class to store all the choices list to be displayed to the user
+
+// separated from the Main class to increase the code readability
 public class Choices {
 
     static String loginExitChoice =
@@ -40,7 +42,7 @@ public class Choices {
             "6. CHECK ANOTHER DATES\n" +
             "7. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String reserveHallChoices =
+    static String reserveVenueChoices =
             "Reserve\n" +
             "1. Any Conference Room\n" +
             "2. Any Auditorium\n" +
@@ -49,7 +51,7 @@ public class Choices {
             "5. RESERVE ANOTHER DATES\n" +
             "6. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String cancelHallChoices =
+    static String cancelVenueChoices =
             "Cancel\n" +
             "1. Entire reservation\n" +
             "2. From-to dates\n" +

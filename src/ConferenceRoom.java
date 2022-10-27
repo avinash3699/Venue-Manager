@@ -10,8 +10,8 @@ public class ConferenceRoom extends Venue{
     private Ethernet ethernet;
 
     // Constructor
-    public ConferenceRoom(String hallName, String hallCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isWhiteBoardAvailable) {
-        super(hallName, hallCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Conference");
+    public ConferenceRoom(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isWhiteBoardAvailable) {
+        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Conference");
         this.isWhiteBoardAvailable = isWhiteBoardAvailable;
     }
 

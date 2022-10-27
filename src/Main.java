@@ -153,7 +153,7 @@ public class Main {
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
-                System.out.println(Choices.cancelHallChoices);
+                System.out.println(Choices.cancelVenueChoices);
 
                 choice = getIntegerInput("Enter choice: ");
                 switch (choice) {
@@ -194,7 +194,7 @@ public class Main {
                 System.out.println("\n---------");
                 System.out.printf("From: %s\nTo: %s\n\n", from, to);
 
-                System.out.println(Choices.reserveHallChoices);
+                System.out.println(Choices.reserveVenueChoices);
 
                 choice = getIntegerInput("Enter choice: ");
                 switch (choice) {
