@@ -1,6 +1,6 @@
 // Utility class to store all the choices list to be displayed to the user
 
-// separated from the Main class to increase the code readability
+// separated from the Main class to improve the code readability
 public class Choices {
 
     static String loginExitChoice =

@@ -1,6 +1,10 @@
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
 
+// The system that acts as a interface between the user and the database
 public class VenueManager {
 
     private User currentUser;
@@ -8,12 +12,15 @@ public class VenueManager {
     //methods
 
     // method to authenticate the logging user
+    // delegates the authentication function to Database object
+    // interacts with the Database class
     User authenticate(String userName, String enteredPassword){
         currentUser = Database.getInstance().authenticate(userName, enteredPassword);
         return currentUser;
     }
 
     // method to display the details of all the venues
+    // interacts with the Database class
     public void displayVenueDetails() {
         for(Venue venue: Database.getInstance().venues.values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
@@ -25,11 +32,12 @@ public class VenueManager {
         System.out.println();
     }
 
-    // method to display the details of venue based on the type (E.g. Conference, Auditorium)
+    // method to display the details of venues that is of the given type (E.g. Conference Room, Auditorium)
+    // interacts with the Database class
     public void displayVenueDetails(String type) {
         for(Venue venue: Database.getInstance().venues.values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
-            if(!venueDetails.get("Hall Type").equals(type))
+            if(!venueDetails.get("Venue Type").equals(type))
                 continue;
             for(String key: venueDetails.keySet()){
                 System.out.printf("%s: %s\n", key, venueDetails.get(key));
@@ -39,8 +47,9 @@ public class VenueManager {
         System.out.println();
     }
 
-    // to check the availability of all the venues for the given from data te end date
+    // to check the availability of all the venues for the given 'from date' to 'end date'
     // returns the name of all the available venues
+    // interacts with the Database class
     public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
         Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
         ArrayList<Integer> availableVenues = new ArrayList<>();
@@ -57,13 +66,13 @@ public class VenueManager {
             }
             if(available)
                 availableVenues.add(venueCode);
-//                availableVenues.add(Database.getInstance().venues.get(venueCode).hallName);
         }
         return availableVenues;
     }
 
-    // to check the availability of specific type of venues for the given from data te end date
+    // to check the availability of venues that is of the given type for the given 'from date' to 'end date'
     // returns the name of the available venue from the given type
+    // interacts with the Database class
     public ArrayList<Integer> checkAvailability(String type, LocalDate from, LocalDate to) {
         Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
         ArrayList<Integer> availableVenues = new ArrayList<>();
@@ -81,14 +90,14 @@ public class VenueManager {
                 }
                 if (available)
                     availableVenues.add(venueCode);
-//                    availableVenues.add(Database.getInstance().venues.get(venueCode).hallName);
             }
         }
         return availableVenues;
     }
 
-    // to check the availability of a specific venue for the given from data te end date
-    // returns true if available else false
+    // to check the availability of a specific venue for the given 'from date' to 'end date'
+    // returns 'true' if available, else 'false'
+    // interacts with the Database class
     public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to) {
         TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().reservationDetails.get(venueCode);
         for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
@@ -101,7 +110,7 @@ public class VenueManager {
         return true;
     }
 
-    // to reserve the venue of given type for the specified from date to end date
+    // to reserve the venue of given type for the given 'from date' to 'end date'
     public void reserveVenue(String type, LocalDate from, LocalDate to) {
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
         if(availableVenues.size() != 0) {
@@ -128,6 +137,7 @@ public class VenueManager {
     }
 
     // to update the database with the details of the new venue reservation
+    // interacts with the Database class
     private void updateAvailability(int venueCode, LocalDate from, LocalDate to, int accessId) {
         TreeMap<Integer, ArrayList<LocalDate>> accessIdWithDates = new TreeMap<>();
         ArrayList<LocalDate> reservedDates = new ArrayList<>();
