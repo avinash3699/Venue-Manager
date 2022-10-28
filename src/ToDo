@@ -1,4 +1,4 @@
 1. Check whether the generated access id is unique.
 2. Call getNameFromCode() function(Database.java) in required places
 3. Implement 'Display venue details for the given venue code' in 'Display different Venue Details'
-4. Show Availability based on the returned boolean value in 'Check Venue Availability' (5. Specific Venue(requires Venue Code))
+4. Validation of date with the database dates
