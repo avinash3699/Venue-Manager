@@ -250,7 +250,11 @@ public class Main {
                         break;
                     case 5:
                         venueCode = getVenueCodeInput("Enter Venue Code: ");
-                        System.out.println(venueManager.checkAvailability(venueCode, from, to));
+                        System.out.println(
+                                venueManager.checkAvailability(venueCode, from, to)?
+                                "\nAvailable":
+                                "\nNot Available"
+                        );
                         break;
                     case 6:
                         break innerLoop;
@@ -364,9 +368,16 @@ public class Main {
                 // ResolverStyle.STRICT is used to throw exception for 29th and 30th of February, considering leap year
                 // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
                 parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
-                boolean isPastDate = isDatePast(parsedDate);
+
+                boolean isPastDate = isPastDate(parsedDate);
                 if(isPastDate) {
                     System.out.println("OOPs! You have entered a past date. Please enter a valid one");
+                    continue;
+                }
+
+                boolean isCurrentDate = isCurrentDate(parsedDate);
+                if(isCurrentDate){
+                    System.out.println("OOPs! You cannot enter current date. Please enter again");
                     continue;
                 }
                 break;
@@ -395,9 +406,18 @@ public class Main {
         }
     }
 
-    private static boolean isDatePast(LocalDate inputDate) {
+    // function to check whether the entered date is past date or not
+    // returns 'true', if past date. else, 'false'
+    private static boolean isPastDate(LocalDate inputDate) {
         LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
         return inputDate.isBefore(localDate);
+    }
+
+    // function to check whether the entered date is current date or not
+    // returns 'true', if current date. else, 'false'
+    private static boolean isCurrentDate(LocalDate inputDate) {
+        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
+        return inputDate.isEqual(localDate);
     }
 
 }
