@@ -3,6 +3,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -223,6 +224,9 @@ public class Main {
     }
 
     private static void manageVenueAvailabilityChecking() {
+
+        ArrayList<Integer> availableVenueCodes;
+
         while(true) {
             dates = getFromToDates();
             from = dates[0];
@@ -237,16 +241,20 @@ public class Main {
                 choice = getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        System.out.println(venueManager.checkAvailability(from, to));
+                        availableVenueCodes = venueManager.checkAvailability(from, to);
+                        printVenuesAvailability(availableVenueCodes);
                         break;
                     case 2:
-                        System.out.println(venueManager.checkAvailability("Conference", from, to));
+                        availableVenueCodes = venueManager.checkAvailability("Conference", from, to);
+                        printVenuesAvailability(availableVenueCodes, "Conference");
                         break;
                     case 3:
-                        System.out.println(venueManager.checkAvailability("Hands-On training", from, to));
+                        availableVenueCodes = venueManager.checkAvailability("Hands-On training", from, to);
+                        printVenuesAvailability(availableVenueCodes, "Hands-On training");
                         break;
                     case 4:
-                        System.out.println(venueManager.checkAvailability("Auditorium", from, to));
+                        availableVenueCodes = venueManager.checkAvailability("Auditorium", from, to);
+                        printVenuesAvailability(availableVenueCodes, "Auditorium");
                         break;
                     case 5:
                         venueCode = getVenueCodeInput("Enter Venue Code: ");
@@ -265,6 +273,18 @@ public class Main {
                 }
             }
         }
+    }
+
+    // function to print the availability of 'all the venues' when the available venue codes are given
+    // delegates the function to VenueManager
+    private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
+        venueManager.printVenuesAvailability(availableVenueCodes);
+    }
+
+    // function to print the availability of all the venues of the 'given type' when the available venue codes are given
+    // delegates the function to VenueManager
+    private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, String type) {
+        venueManager.printVenuesAvailability(availableVenueCodes, type);
     }
 
     private static void manageVenueDetailsDisplay(){

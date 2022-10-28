@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -218,4 +219,37 @@ public class VenueManager {
         return new Random().nextInt(Integer.MAX_VALUE - 10);
     }
 
+    // delegated by Main class
+    // interacts with the Database class
+    // This method gets all the venues from the Database and checks whether each venue is present in the input 'availableVenueCodes'
+    // if present, it prints "Available" else, prints "Not Available"
+    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
+        Database database = Database.getInstance();
+        for(int venueCode: database.venues.keySet()){
+            String availability = "Not Available";
+            if(availableVenueCodes.contains(venueCode)){
+                availability = "Available";
+            }
+            System.out.println(database.getVenueNameFromCode(venueCode) + ": " + availability);
+        }
+    }
+
+    // delegated by Main class
+    // interacts with the Database class
+    // This method gets all the venues from the Database and it first checks whether the venue is of the given input 'inputType'
+    // if yes, it then checks whether that venue is present in the input 'availableVenueCodes'
+    // if present, it prints "Available" else, prints "Not Available"
+    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, String inputType) {
+        Database database = Database.getInstance();
+        for(int venueCode: database.venues.keySet()){
+            String venueType = database.venues.get(venueCode).getType();
+            if(venueType.equals(inputType)){
+                String availability = "Not Available";
+                if(availableVenueCodes.contains(venueCode)){
+                    availability = "Available";
+                }
+                System.out.println(database.getVenueNameFromCode(venueCode) + ": " + availability);
+            }
+        }
+    }
 }

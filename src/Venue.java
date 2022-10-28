@@ -40,4 +40,8 @@ abstract class Venue {
     }
 
     public abstract Map<String, String> getAdditionalVenueDetails();
+
+    public String getType() {
+        return this.type;
+    }
 }

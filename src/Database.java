@@ -191,7 +191,7 @@ public class Database {
         return accessIds;
     }
 
-    public String getNameFromCode(int venueCode){
+    public String getVenueNameFromCode(int venueCode){
         return venues.get(venueCode).venueName;
     }
 
