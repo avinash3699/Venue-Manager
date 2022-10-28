@@ -184,10 +184,8 @@ public class Database {
 
     public ArrayList<Integer> getAccessIds() {
         ArrayList<Integer> accessIds = new ArrayList<>();
-        for (int venueCode : reservationDetails.keySet()) {
-            for (int accessId : (reservationDetails.get(venueCode)).keySet())
-                accessIds.add(accessId);
-        }
+        for(int accessId: accessIdUserMap.keySet())
+            accessIds.add(accessId);
         return accessIds;
     }
 

@@ -122,7 +122,7 @@ public class VenueManager {
     public void reserveVenue(VenueType type, LocalDate from, LocalDate to) {
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
         if(availableVenues.size() != 0) {
-            int accessId = generateRandomNumber();
+            int accessId = generateUniqueAccessId();
             updateAvailability(availableVenues.get(0), from, to, accessId);
             System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + availableVenues.get(0));
             System.out.println("Your access ID is: " + accessId);
@@ -135,7 +135,7 @@ public class VenueManager {
     public void reserveVenue(int venueCode, LocalDate from, LocalDate to) {
         boolean available = checkAvailability(venueCode, from, to);
         if(available) {
-            int accessId = generateRandomNumber();
+            int accessId = generateUniqueAccessId();
             updateAvailability(venueCode, from, to, accessId);
             System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + venueCode);
             System.out.println("Your access ID is: " + accessId);
@@ -213,9 +213,13 @@ public class VenueManager {
 
     //functions
 
-    // do not generate id that is already generated
-    private int generateRandomNumber() {
-        return new Random().nextInt(Integer.MAX_VALUE - 10);
+    // to generate an access id which is returned to the user
+    // an access id like a key to the venue for the reserved dates
+    private int generateUniqueAccessId() {
+        int generatedAccessId;
+        ArrayList<Integer> accessIds = Database.getInstance().getAccessIds();
+        while(accessIds.contains(generatedAccessId = new Random().nextInt(Integer.MAX_VALUE - 10)));
+        return generatedAccessId;
     }
 
     // delegated by Main class

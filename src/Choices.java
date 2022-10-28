@@ -57,6 +57,6 @@ public class Choices {
             "1. Entire reservation\n" +
             "2. From-to dates\n" +
             "3. a Day\n" +
-            "4. CANCEL ANOTHER DATES\n" +
+            "4. CANCEL WITH ANOTHER ACCESS ID\n" +
             "5. GO TO VENUE MANAGER CONSOLE\n";
 }
