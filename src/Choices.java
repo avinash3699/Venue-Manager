@@ -30,7 +30,8 @@ public class Choices {
             "2. Conference Room\n" +
             "3. Hands-On Training Centre\n" +
             "4. Auditorium\n" +
-            "5. GO TO VENUE MANAGER CONSOLE\n";
+            "5. Specific Venue (requires Venue Code)\n" +
+            "6. GO TO VENUE MANAGER CONSOLE\n";
 
     static String checkAvailabilityChoices =
             "Check availability of\n" +
@@ -38,7 +39,7 @@ public class Choices {
             "2. Conference Room\n" +
             "3. Hands-On Training Centre\n" +
             "4. Auditorium\n" +
-            "5. Specific Venue(requires Venue Code)\n" +
+            "5. Specific Venue (requires Venue Code)\n" +
             "6. CHECK ANOTHER DATES\n" +
             "7. GO TO VENUE MANAGER CONSOLE\n";
 

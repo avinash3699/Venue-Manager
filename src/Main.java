@@ -292,6 +292,10 @@ public class Main {
                     venueManager.displayVenueDetails("Auditorium");
                     break;
                 case 5:
+                    venueCode = getVenueCodeInput("Enter Venue Code: ");
+                    venueManager.displayVenueDetails(venueCode);
+                    break;
+                case 6:
                     return;
                 default:
                     System.out.println("\n---------");

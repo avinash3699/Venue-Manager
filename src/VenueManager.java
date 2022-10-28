@@ -32,6 +32,14 @@ public class VenueManager {
         System.out.println();
     }
 
+    public void displayVenueDetails(int venueCode){
+        Map<String, String> venueDetails = Database.getInstance().venues.get(venueCode).getVenueDetails();
+        for(String key: venueDetails.keySet()){
+            System.out.printf("%s: %s\n", key, venueDetails.get(key));
+        }
+        System.out.println();
+    }
+
     // method to display the details of venues that is of the given type (E.g. Conference Room, Auditorium)
     // interacts with the Database class
     public void displayVenueDetails(String type) {

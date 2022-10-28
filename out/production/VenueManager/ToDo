@@ -1,5 +1,4 @@
 1. Check whether the generated access id is unique.
 2. Call getNameFromCode() function(Database.java) in required places
 3. Implement 'Display venue details for the given venue code' in 'Display different Venue Details'
-4. Restrict users from reserving venue on the same day of booking
-5. Validation of date with the database dates
+4. Validation of date with the database dates
