@@ -1,3 +1,4 @@
 1. Check whether the generated access id is unique.
 2. Call getNameFromCode() function(Database.java) in required places
 3. Validation of date with the database date
+4. Refactor Database.getInstance() usage in VenueManager

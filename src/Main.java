@@ -75,6 +75,7 @@ public class Main {
                                     break;
                                 case 9:
                                     manageVenueUpdate();
+                                    break;
                                 default:
                                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                             }
@@ -131,6 +132,7 @@ public class Main {
     }
 
     private static void logout() {
+        currentUser = null;
         System.out.println("\n---------");
         System.out.println("Logging out!\n");
     }
@@ -200,13 +202,13 @@ public class Main {
                 choice = getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        venueManager.reserveVenue("Conference", from, to);
+                        venueManager.reserveVenue(VenueType.CONFERENCE, from, to);
                         break;
                     case 2:
-                        venueManager.reserveVenue("Hands-On training", from, to);
+                        venueManager.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
                         break;
                     case 3:
-                        venueManager.reserveVenue("Auditorium", from, to);
+                        venueManager.reserveVenue(VenueType.AUDITORIUM, from, to);
                         break;
                     case 4:
                         venueCode = getVenueCodeInput("Enter Venue Code: ");
@@ -226,6 +228,7 @@ public class Main {
     private static void manageVenueAvailabilityChecking() {
 
         ArrayList<Integer> availableVenueCodes;
+        VenueType venueType;
 
         while(true) {
             dates = getFromToDates();
@@ -245,16 +248,19 @@ public class Main {
                         printVenuesAvailability(availableVenueCodes);
                         break;
                     case 2:
-                        availableVenueCodes = venueManager.checkAvailability("Conference", from, to);
-                        printVenuesAvailability(availableVenueCodes, "Conference");
+                        venueType = VenueType.CONFERENCE;
+                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 3:
-                        availableVenueCodes = venueManager.checkAvailability("Hands-On training", from, to);
-                        printVenuesAvailability(availableVenueCodes, "Hands-On training");
+                        venueType = VenueType.HANDS_ON_TRAINING;
+                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 4:
-                        availableVenueCodes = venueManager.checkAvailability("Auditorium", from, to);
-                        printVenuesAvailability(availableVenueCodes, "Auditorium");
+                        venueType = VenueType.AUDITORIUM;
+                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
                         venueCode = getVenueCodeInput("Enter Venue Code: ");
@@ -283,7 +289,7 @@ public class Main {
 
     // function to print the availability of all the venues of the 'given type' when the available venue codes are given
     // delegates the function to VenueManager
-    private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, String type) {
+    private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType type) {
         venueManager.printVenuesAvailability(availableVenueCodes, type);
     }
 
@@ -301,15 +307,15 @@ public class Main {
                     break;
                 case 2:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails("Conference");
+                    venueManager.displayVenueDetails(VenueType.CONFERENCE);
                     break;
                 case 3:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails("Hands-On training");
+                    venueManager.displayVenueDetails(VenueType.HANDS_ON_TRAINING);
                     break;
                 case 4:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails("Auditorium");
+                    venueManager.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
                     venueCode = getVenueCodeInput("Enter Venue Code: ");

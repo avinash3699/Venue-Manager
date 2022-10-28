@@ -4,11 +4,12 @@ import java.util.Map;
 abstract class Venue {
 
     // instance variables
-    String venueName, venueCode, location, seatingCapacity, type;
+    String venueName, venueCode, location, seatingCapacity;
     boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
+    VenueType venueType;
 
     // constructor
-    protected Venue(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, String type) {
+    protected Venue(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, VenueType venueType) {
         this.venueName = venueName;
         this.venueCode = venueCode;
         this.location = location;
@@ -16,7 +17,7 @@ abstract class Venue {
         this.isAirConditioned = isAirConditioned;
         this.isWifiAvailable = isWifiAvailable;
         this.isChargingPortsAvailable = isChargingPortsAvailable;
-        this.type = type;
+        this.venueType = venueType;
     }
 
     // method to return the details of a venue
@@ -24,7 +25,7 @@ abstract class Venue {
         return new LinkedHashMap(){
             {
                 put("Venue Name", venueName);
-                put("Venue Type", type);
+                put("Venue Type", venueType.toString());
                 put("Venue Code", venueCode);
                 put("Venue Location", location);
                 put("Seating Capacity", seatingCapacity);
@@ -41,7 +42,7 @@ abstract class Venue {
 
     public abstract Map<String, String> getAdditionalVenueDetails();
 
-    public String getType() {
-        return this.type;
+    public VenueType getType() {
+        return this.venueType;
     }
 }

@@ -1,11 +1,10 @@
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
-// The system that acts as a interface between the user and the database
+// The system that acts as an interface between the user and the database
 public class VenueManager {
 
     private User currentUser;
@@ -43,10 +42,10 @@ public class VenueManager {
 
     // method to display the details of venues that is of the given type (E.g. Conference Room, Auditorium)
     // interacts with the Database class
-    public void displayVenueDetails(String type) {
+    public void displayVenueDetails(VenueType type) {
         for(Venue venue: Database.getInstance().venues.values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
-            if(!venueDetails.get("Venue Type").equals(type))
+            if(!(venue.getType() == type))
                 continue;
             for(String key: venueDetails.keySet()){
                 System.out.printf("%s: %s\n", key, venueDetails.get(key));
@@ -82,12 +81,12 @@ public class VenueManager {
     // to check the availability of venues that is of the given type for the given 'from date' to 'end date'
     // returns the name of the available venue from the given type
     // interacts with the Database class
-    public ArrayList<Integer> checkAvailability(String type, LocalDate from, LocalDate to) {
+    public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to) {
         Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
-            if(Database.getInstance().venues.get(venueCode).type.equals(type)) {
+            if(Database.getInstance().venues.get(venueCode).venueType == type) {
                 outerLoop:
                 for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
                     for(int accessId: (reservationDetails.get(venueCode)).keySet()){
@@ -120,7 +119,7 @@ public class VenueManager {
     }
 
     // to reserve the venue of given type for the given 'from date' to 'end date'
-    public void reserveVenue(String type, LocalDate from, LocalDate to) {
+    public void reserveVenue(VenueType type, LocalDate from, LocalDate to) {
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
         if(availableVenues.size() != 0) {
             int accessId = generateRandomNumber();
@@ -236,14 +235,14 @@ public class VenueManager {
 
     // delegated by Main class
     // interacts with the Database class
-    // This method gets all the venues from the Database and it first checks whether the venue is of the given input 'inputType'
+    // This method gets all the venues from the Database, and it first checks whether the venue is of the given input 'inputType'
     // if yes, it then checks whether that venue is present in the input 'availableVenueCodes'
     // if present, it prints "Available" else, prints "Not Available"
-    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, String inputType) {
+    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
         Database database = Database.getInstance();
         for(int venueCode: database.venues.keySet()){
-            String venueType = database.venues.get(venueCode).getType();
-            if(venueType.equals(inputType)){
+            VenueType venueType = database.venues.get(venueCode).getType();
+            if(venueType == inputType){
                 String availability = "Not Available";
                 if(availableVenueCodes.contains(venueCode)){
                     availability = "Available";

@@ -14,7 +14,7 @@ public class HandsOnTrainingCentre extends Venue{
 
     // Constructor
     public HandsOnTrainingCentre(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable) {
-        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Hands-On training");
+        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, VenueType.HANDS_ON_TRAINING);
         this.isMicStandAvailable = isMicStandAvailable;
     }
 
