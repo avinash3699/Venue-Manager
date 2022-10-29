@@ -21,7 +21,6 @@ public class Main {
 
         venueManager = new VenueManager();
 
-//         logging in the user
         while(true) {
 
             boolean isLoginSuccessful = false;
@@ -68,12 +67,15 @@ public class Main {
                                     logout();
                                     break mainLoop;
                                 case 7:
-                                    manageUserAddition();
+                                    viewAllUsers();
                                     break;
                                 case 8:
-                                    viewUsers();
+                                    manageUserAddition();
                                     break;
                                 case 9:
+                                    manageUserDeletion();
+                                    break;
+                                case 10:
                                     manageVenueUpdate();
                                     break;
                                 default:
@@ -115,7 +117,7 @@ public class Main {
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
-    private static void viewUsers() {
+    private static void viewAllUsers() {
         if(currentUser instanceof Admin){
 
         }
@@ -125,7 +127,41 @@ public class Main {
 
     private static void manageUserAddition() {
         if(currentUser instanceof Admin){
+            String username = getStringInput("Enter Username: "),
+                   password = getStringInput("Enter password: "),
+                   emailId = getStringInput("Enter Email ID: "),
+                   phoneNumber = getStringInput("Enter phone number: ");
+            System.out.println(
+                    ((Admin) currentUser).addUser(username, password, emailId, phoneNumber)?
+                    "The user is added successfully!":
+                    "Add User failed. Please try again"
+            );
+        }
+        else
+            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+    }
 
+    private static void manageUserDeletion() {
+        if(currentUser instanceof Admin){
+            String username;
+            while(true) {
+                username = getStringInput("Enter the username of the user to be deleted: ");
+                if(username.equals(currentUser.getUsername()))
+                    System.out.println("You cannot remove current user. Please try again");
+                else
+                    break;
+            }
+            char confirmation1 = getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
+            if(confirmation1 == 'Y' || confirmation1 == 'y'){
+                confirmation2 = getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
+                if(confirmation2 == 'Y' || confirmation2 == 'y'){
+                    System.out.println(
+                            ((Admin) currentUser).removeUser(username)?
+                            "User '" + username + "' successfully removed!":
+                            "Remove User failed. Please try again"
+                    );
+                }
+            }
         }
         else
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -265,9 +301,13 @@ public class Main {
                     case 5:
                         venueCode = getVenueCodeInput("Enter Venue Code: ");
                         System.out.println(
+                            "\n" +
+                            Database.getInstance().getVenueNameFromCode(venueCode) +
+                            (
                                 venueManager.checkAvailability(venueCode, from, to)?
-                                "\nAvailable":
-                                "\nNot Available"
+                                ": Available":
+                                ": Not Available"
+                            )
                         );
                         break;
                     case 6:

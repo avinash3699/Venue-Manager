@@ -15,7 +15,7 @@ public class Auditorium extends Venue{
 
     // Constructor
     public Auditorium(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable, String noOfDisplayScreen) {
-        super(venueName,venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, "Auditorium");
+        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, VenueType.AUDITORIUM);
         this.isMicStandAvailable = isMicStandAvailable;
         this.noOfDisplayScreen = noOfDisplayScreen;
     }

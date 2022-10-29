@@ -1,8 +1,7 @@
+import com.sun.corba.se.impl.orb.DataCollectorBase;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 // The system that acts as an interface between the user and the database
 public class VenueManager {
@@ -254,5 +253,26 @@ public class VenueManager {
                 System.out.println(database.getVenueNameFromCode(venueCode) + ": " + availability);
             }
         }
+    }
+
+    public boolean addUser(String username, String password, String emailId, String phoneNumber){
+        Database database = Database.getInstance();
+        database.userCredentials.put(username, password);
+        database.users.put(
+                username,
+                new Representative(
+                       username,
+                       phoneNumber,
+                       emailId
+                )
+        );
+        return true;
+    }
+
+    public boolean removeUser(String username) {
+        Database database = Database.getInstance();
+        database.userCredentials.remove(username);
+        database.users.remove(username);
+        return true;
     }
 }

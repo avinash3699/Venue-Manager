@@ -1,3 +1,4 @@
 1. Call getNameFromCode() function(Database.java) in required places
 2. Validation of date with the database date
 3. Refactor Database.getInstance() usage in VenueManager
+4. Add functions to User class
