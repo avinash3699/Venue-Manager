@@ -6,7 +6,7 @@ import java.util.*;
 public class Database {
 
     // This field tracks the venueCode and incremented for every new venue addition
-    int venueCode = 1;
+    private int venueCode = 1;
 
     // declaring a singleton object
     private static Database singletonInstance;
@@ -24,7 +24,7 @@ public class Database {
         return singletonInstance;
     }
 
-    HashMap<String, User> users = new HashMap(){
+    private HashMap<String, User> users = new HashMap(){
         {
             put("admin1", new Admin("admin1", "9790877950", "admin1@org"));
             put("cse", new Representative("cse", "9790963512", "cse@org"));
@@ -33,7 +33,7 @@ public class Database {
     };
 
     // This field stores the usernames and passwords of all the users
-    Map<String, String> userCredentials = new HashMap(){
+    private Map<String, String> userCredentials = new HashMap(){
         {
             put("cse", "viii");
             put("it", "viii");
@@ -46,7 +46,7 @@ public class Database {
     };
 
     // This field consists of the venue code of the venues mapped with their object
-    Map<Integer, Venue> venues = new LinkedHashMap(){
+    private Map<Integer, Venue> venues = new LinkedHashMap(){
         {
             put(venueCode++, new Auditorium(
                     "Sigma",
@@ -117,7 +117,7 @@ public class Database {
     // Integer - venue code
     // LocalDate - dates reserved
     // String - reserved by whom
-    Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = new TreeMap(){
+    private Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = new TreeMap(){
         {
             put(1, new TreeMap(){
                 {
@@ -176,7 +176,7 @@ public class Database {
         }
     };
 
-    Map<Integer, String> accessIdUserMap = new HashMap<>();
+    private Map<Integer, String> accessIdUserMap = new HashMap<>();
 
     public int getVenuesCount() {
         return venues.size();
@@ -214,4 +214,55 @@ public class Database {
             return null;
     }
 
+    public HashMap<String, User> getUsers() {
+        return users;
+    }
+
+    public Map<Integer, Venue> getVenues() {
+        return venues;
+    }
+
+    public Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
+        return reservationDetails;
+    }
+
+    public void removeFromUserCredentials(String username) {
+        userCredentials.remove(username);
+    }
+
+    public void removeFromUsers(String username) {
+        users.remove(username);
+    }
+
+    public void addToUsers(String username, User user) {
+        users.put(user.getUsername(), user);
+    }
+
+    public void addToUserCredentials(String username, String password) {
+        userCredentials.put(username, password);
+    }
+
+    public void addToReservationDetails(int venueCode, TreeMap<Integer, ArrayList<LocalDate>> newReservationDetails) {
+        TreeMap<Integer, ArrayList<LocalDate>> givenVenueReservationDetails = reservationDetails.get(venueCode);
+        givenVenueReservationDetails.putAll(newReservationDetails);
+        reservationDetails.put(venueCode, givenVenueReservationDetails);
+    }
+
+    public void addToAccessIdUserMap(int accessId, String username) {
+        accessIdUserMap.put(accessId, username);
+    }
+
+    public void removeFromReservationDetails(int venueCode, int accessId) {
+        reservationDetails.get(venueCode).remove(accessId);
+    }
+
+    public void removeFromReservationDetails(int venueCode, int accessId, LocalDate from, LocalDate to) {
+        TreeMap<Integer, ArrayList<LocalDate>> tempReservationDetails = reservationDetails.get(venueCode);
+        ArrayList<LocalDate> bookedDates = tempReservationDetails.get(accessId);
+        for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
+            bookedDates.remove(date);
+        }
+        tempReservationDetails.put(accessId, bookedDates);
+        reservationDetails.put(venueCode, tempReservationDetails);
+    }
 }

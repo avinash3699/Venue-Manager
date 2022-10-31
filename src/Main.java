@@ -287,7 +287,7 @@ public class Main {
                         break;
                     case 3:
                         LocalDate dateToBeCancelled = getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
-                        venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled);
+                        venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
                         break;
                     case 4:
                         break innerLoop;

@@ -43,11 +43,11 @@ public class Representative extends User{
         );
     }
 
-    public void removeReservationDetails(int accessId){
+    public void removeFromReservationDetails(int accessId){
         reservationDetails.remove(accessId);
     }
 
-    public void removeReservationDetails(int accessId, LocalDate from, LocalDate to){
+    public void removeFromReservationDetails(int accessId, LocalDate from, LocalDate to){
         int firstKey = reservationDetails.get(accessId).keySet().stream().findFirst().get();
         System.out.println("First Key " + firstKey);
         ArrayList<LocalDate> reservedDates = reservationDetails.get(accessId).get(firstKey);

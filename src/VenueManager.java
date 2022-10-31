@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -20,7 +19,7 @@ public class VenueManager {
     // method to display the details of all the venues
     // interacts with the Database class
     public void displayVenueDetails() {
-        for(Venue venue: Database.getInstance().venues.values()){
+        for(Venue venue: Database.getInstance().getVenues().values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
             for(String key: venueDetails.keySet()){
                 System.out.printf("%s: %s\n", key, venueDetails.get(key));
@@ -31,7 +30,7 @@ public class VenueManager {
     }
 
     public void displayVenueDetails(int venueCode){
-        Map<String, String> venueDetails = Database.getInstance().venues.get(venueCode).getVenueDetails();
+        Map<String, String> venueDetails = Database.getInstance().getVenues().get(venueCode).getVenueDetails();
         for(String key: venueDetails.keySet()){
             System.out.printf("%s: %s\n", key, venueDetails.get(key));
         }
@@ -41,7 +40,7 @@ public class VenueManager {
     // method to display the details of venues that is of the given type (E.g. Conference Room, Auditorium)
     // interacts with the Database class
     public void displayVenueDetails(VenueType type) {
-        for(Venue venue: Database.getInstance().venues.values()){
+        for(Venue venue: Database.getInstance().getVenues().values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
             if(!(venue.getType() == type))
                 continue;
@@ -57,7 +56,7 @@ public class VenueManager {
     // returns the name of all the available venues
     // interacts with the Database class
     public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
+        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
@@ -80,11 +79,11 @@ public class VenueManager {
     // returns the name of the available venue from the given type
     // interacts with the Database class
     public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
+        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
-            if(Database.getInstance().venues.get(venueCode).venueType == type) {
+            if(Database.getInstance().getVenues().get(venueCode).venueType == type) {
                 outerLoop:
                 for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
                     for(int accessId: (reservationDetails.get(venueCode)).keySet()){
@@ -105,7 +104,7 @@ public class VenueManager {
     // returns 'true' if available, else 'false'
     // interacts with the Database class
     public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to) {
-        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().reservationDetails.get(venueCode);
+        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().getReservationDetails().get(venueCode);
         for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
             for(int accessId: reservationDetails.keySet()){
                 if(reservationDetails.get(accessId).contains(date)){
@@ -151,60 +150,58 @@ public class VenueManager {
             reservedDates.add(date);
         }
         accessIdWithDates.put(accessId, reservedDates);
-        accessIdWithDates.putAll(Database.getInstance().reservationDetails.get(venueCode));
-        Database.getInstance().reservationDetails.put(venueCode, accessIdWithDates);
-        System.out.println(Database.getInstance().reservationDetails.get(venueCode));
+//        accessIdWithDates.putAll(Database.getInstance().getReservationDetails().get(venueCode));
+        Database.getInstance().addToReservationDetails(venueCode, accessIdWithDates);
+        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
 
-        Database.getInstance().accessIdUserMap.put(accessId, currentUser.getUsername());
+//        Database.getInstance().getAccessIdUserMap().put(accessId, currentUser.getUsername());
+        Database.getInstance().addToAccessIdUserMap(accessId, currentUser.getUsername());
 
         ((Representative)currentUser).addReservationDetails(accessId, venueCode, reservedDates);
     }
 
     // to cancel the reserved venue using the venue code and the unique access id
     public void cancelVenue(int venueCode, int accessId) {
-        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().reservationDetails.get(venueCode);
-        reservationDetails.remove(accessId);
-        Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
-        System.out.println(Database.getInstance().reservationDetails.get(venueCode));
+        Database database = Database.getInstance();
+//        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = database.getReservationDetails().get(venueCode);
+//        reservationDetails.remove(accessId);
+//        database.addToReservationDetails(venueCode, reservationDetails);
+        database.removeFromReservationDetails(venueCode, accessId);
+
+        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
         System.out.println("Success! You have successfully cancelled the venue");
 
-        ((Representative) currentUser).removeReservationDetails(accessId);
+        ((Representative) currentUser).removeFromReservationDetails(accessId);
     }
 
     public void cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to) {
-        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().reservationDetails.get(venueCode);
-        ArrayList<LocalDate> bookedDates = reservationDetails.get(accessId);
-        for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-            bookedDates.remove(date);
-        }
-        reservationDetails.put(accessId, bookedDates);
-        Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
-        System.out.println(Database.getInstance().reservationDetails.get(venueCode));
+        Database.getInstance().removeFromReservationDetails(venueCode, accessId, from, to);
+        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
         System.out.println("Success! You have successfully cancelled the mentioned dates");
 
-        ((Representative) currentUser).removeReservationDetails(accessId, from, to);
+        ((Representative) currentUser).removeFromReservationDetails(accessId, from, to);
     }
 
-    public void cancelVenue(int venueCode, int accessId, LocalDate dateToBeCancelled) {
-        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().reservationDetails.get(venueCode);
-        ArrayList<LocalDate> bookedDates = reservationDetails.get(accessId);
-        bookedDates.remove(dateToBeCancelled);
-        reservationDetails.put(accessId, bookedDates);
-        Database.getInstance().reservationDetails.put(venueCode, reservationDetails);
-        System.out.println(Database.getInstance().reservationDetails.get(venueCode));
-        System.out.println("Success! You have successfully cancelled the requested date");
-
-        ((Representative) currentUser).removeReservationDetails(accessId, dateToBeCancelled, dateToBeCancelled);
-    }
+//    public void cancelVenue(int venueCode, int accessId, LocalDate dateToBeCancelled) {
+//        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().getReservationDetails().get(venueCode);
+//        ArrayList<LocalDate> bookedDates = reservationDetails.get(accessId);
+//        bookedDates.remove(dateToBeCancelled);
+//        reservationDetails.put(accessId, bookedDates);
+//        Database.getInstance().addToReservationDetails(venueCode, reservationDetails);
+//        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
+//        System.out.println("Success! You have successfully cancelled the requested date");
+//
+//        ((Representative) currentUser).removeFromReservationDetails(accessId, dateToBeCancelled, dateToBeCancelled);
+//    }
 
     public void changeVenue(int oldVenueCode, int accessId, int newVenueCode) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().reservationDetails;
+        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
         ArrayList<LocalDate> reservedDates = (reservationDetails.get(oldVenueCode)).get(accessId);
 
         // below line should be handled for no elements in reservedDates
         LocalDate from = reservedDates.get(0), to = reservedDates.get(reservedDates.size() - 1);
 
-        // if reservation fails, should not call the
+        // if reservation fails, should not call the cancel venue
         reserveVenue(newVenueCode, from, to);
         cancelVenue(oldVenueCode, accessId);
     }
@@ -226,7 +223,7 @@ public class VenueManager {
     // if present, it prints "Available" else, prints "Not Available"
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
         Database database = Database.getInstance();
-        for(int venueCode: database.venues.keySet()){
+        for(int venueCode: database.getVenues().keySet()){
             String availability = "Not Available";
             if(availableVenueCodes.contains(venueCode)){
                 availability = "Available";
@@ -242,8 +239,8 @@ public class VenueManager {
     // if present, it prints "Available" else, prints "Not Available"
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
         Database database = Database.getInstance();
-        for(int venueCode: database.venues.keySet()){
-            VenueType venueType = database.venues.get(venueCode).getType();
+        for(int venueCode: database.getVenues().keySet()){
+            VenueType venueType = database.getVenues().get(venueCode).getType();
             if(venueType == inputType){
                 String availability = "Not Available";
                 if(availableVenueCodes.contains(venueCode)){
@@ -256,8 +253,8 @@ public class VenueManager {
 
     public boolean addUser(String username, String password, String emailId, String phoneNumber){
         Database database = Database.getInstance();
-        database.userCredentials.put(username, password);
-        database.users.put(
+        database.addToUserCredentials(username, password);
+        database.addToUsers(
                 username,
                 new Representative(
                        username,
@@ -270,30 +267,29 @@ public class VenueManager {
 
     public boolean removeUser(String username) {
         Database database = Database.getInstance();
-        database.userCredentials.remove(username);
-        database.users.remove(username);
+        database.removeFromUserCredentials(username);
+        database.removeFromUsers(username);
         return true;
     }
 
     public Map getOtherUserPersonalDetails(String username) {
         Database database = Database.getInstance();
-        Map<String, String> personalDetails = database.users.get(username).getPersonalDetails();
+        Map<String, String> personalDetails = database.getUsers().get(username).getPersonalDetails();
         return personalDetails;
     }
 
     public Map getOtherUserRegistrationDetails(String username) {
         Database database = Database.getInstance();
-        LinkedHashMap<Integer, HashMap<Integer, ArrayList<LocalDate>>> reservationDetails = ((Representative) database.users.get(username)).getReservationDetails();
+        LinkedHashMap<Integer, HashMap<Integer, ArrayList<LocalDate>>> reservationDetails = ((Representative) database.getUsers().get(username)).getReservationDetails();
         return reservationDetails;
     }
 
     public boolean updateUserDatabase(User user) {
-        Database.getInstance().users.put(user.getUsername(), user);
+        Database.getInstance().addToUsers(user.getUsername(), user);
         return true;
     }
 
-
     public boolean checkUserNameExistence(String username) {
-        return Database.getInstance().users.containsKey(username);
+        return Database.getInstance().getUsers().containsKey(username);
     }
 }

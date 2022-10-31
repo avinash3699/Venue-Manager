@@ -15,7 +15,7 @@ public class Admin extends Representative{
     }
 
     public TreeMap<Integer, ArrayList<LocalDate>> getReservationDetails(Integer venueCode){
-        return Database.getInstance().reservationDetails.get(venueCode);
+        return Database.getInstance().getReservationDetails().get(venueCode);
     }
 
     public boolean addUser(String username, String password, String emailId, String phoneNumber){
