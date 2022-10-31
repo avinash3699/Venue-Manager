@@ -1,5 +1,4 @@
-import com.sun.corba.se.impl.orb.DataCollectorBase;
-
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -274,5 +273,27 @@ public class VenueManager {
         database.userCredentials.remove(username);
         database.users.remove(username);
         return true;
+    }
+
+    public Map getOtherUserPersonalDetails(String username) {
+        Database database = Database.getInstance();
+        Map<String, String> personalDetails = database.users.get(username).getPersonalDetails();
+        return personalDetails;
+    }
+
+    public Map getOtherUserRegistrationDetails(String username) {
+        Database database = Database.getInstance();
+        LinkedHashMap<Integer, HashMap<Integer, ArrayList<LocalDate>>> reservationDetails = ((Representative) database.users.get(username)).getReservationDetails();
+        return reservationDetails;
+    }
+
+    public boolean updateUserDatabase(User user) {
+        Database.getInstance().users.put(user.getUsername(), user);
+        return true;
+    }
+
+
+    public boolean checkUserNameExistence(String username) {
+        return Database.getInstance().users.containsKey(username);
     }
 }

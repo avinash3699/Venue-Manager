@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -64,18 +65,26 @@ public class Main {
                                     getReservationDetails();
                                     break;
                                 case 6:
-                                    logout();
-                                    break mainLoop;
+                                    showProfile();
+                                    break;
                                 case 7:
-                                    viewAllUsers();
+                                    managePersonalDetailsModification();
                                     break;
                                 case 8:
-                                    manageUserAddition();
-                                    break;
+                                    logout();
+                                    break mainLoop;
                                 case 9:
-                                    manageUserDeletion();
+                                    managerViewUserDetails();
                                     break;
                                 case 10:
+                                    manageUserAddition();
+                                    break;
+                                case 11:
+                                    manageUserDeletion();
+                                    break;
+                                case 12:
+                                    manageVenueAddition();
+                                case 13:
                                     manageVenueUpdate();
                                     break;
                                 default:
@@ -90,6 +99,41 @@ public class Main {
             break;
         }
 
+    }
+
+    private static void managePersonalDetailsModification() {
+        System.out.println("\n---------");
+        System.out.println(Choices.modifyPersonalDetailsChoices);
+        switch (getIntegerInput("Enter choice: ")){
+            case 1:
+                String newEmailId = getStringInput("Enter new Email Id: ");
+                System.out.println(
+                    (currentUser.setEmailId(newEmailId))?
+                    "Email Id modified successfully!":
+                    "Cannot modify Email id. Please try again"
+                );
+                break;
+            case 2:
+                String newPhoneNumber = getStringInput("Enter new Phone Number: ");
+                System.out.println(
+                    (currentUser.setPhoneNumber(newPhoneNumber))?
+                    "Phone Number modified successfully!":
+                    "Cannot modify Phone Number. Please try again"
+                );
+                break;
+            default:
+                System.out.println("You have entered an invalid username or password. Please try again\n");
+        }
+    }
+
+    private static void showProfile() {
+        System.out.println("\n---------");
+        System.out.println("User Profile");
+        Map<String, String> personalDetails = currentUser.getPersonalDetails();
+        for (String key : personalDetails.keySet()) {
+            System.out.printf("%s: %s\n", key, personalDetails.get(key));
+        }
+        System.out.println();
     }
 
     private static boolean login() {
@@ -109,6 +153,14 @@ public class Main {
         return isLoginSuccessful;
     }
 
+    private static void manageVenueAddition() {
+        if(currentUser instanceof Admin){
+
+        }
+        else
+            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+    }
+
     private static void manageVenueUpdate() {
         if(currentUser instanceof Admin){
 
@@ -117,9 +169,32 @@ public class Main {
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
-    private static void viewAllUsers() {
+    private static void managerViewUserDetails() {
         if(currentUser instanceof Admin){
-
+            String username;
+            while(true) {
+                username = getStringInput("Enter Username: ");
+                if(venueManager.checkUserNameExistence(username))
+                    break;
+                else
+                    System.out.println("Username doesn't exists. Please try again\n");
+            }
+            System.out.println(Choices.viewUserDetailsChoices);
+            switch(getIntegerInput("Enter choice: ")){
+                case 1:
+                    Map<String, String> personalDetails = ((Admin) currentUser).getOtherUserPersonalDetails(username);
+                    for (String key : personalDetails.keySet()) {
+                        System.out.printf("%s: %s\n", key, personalDetails.get(key));
+                    }
+                    System.out.println();
+                    break;
+                case 2:
+                    Map registrationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
+                    System.out.println(registrationDetails);
+                    break;
+                default:
+                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            }
         }
         else
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -146,10 +221,14 @@ public class Main {
             String username;
             while(true) {
                 username = getStringInput("Enter the username of the user to be deleted: ");
-                if(username.equals(currentUser.getUsername()))
-                    System.out.println("You cannot remove current user. Please try again");
+                if(venueManager.checkUserNameExistence(username)) {
+                    if (username.equals(currentUser.getUsername()))
+                        System.out.println("You cannot remove current user. Please try again\n");
+                    else
+                        break;
+                }
                 else
-                    break;
+                    System.out.println("Username doesn't exists. Please try again\n");
             }
             char confirmation1 = getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
@@ -180,7 +259,7 @@ public class Main {
     private static void manageVenueChange() {
         accessId = getAccessIdInput();
         int oldVenueCode = getVenueCodeInput("Enter Venue Code: "),
-                newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
+            newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
         venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
     }
 

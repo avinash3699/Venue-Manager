@@ -1,14 +1,13 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class Admin extends Representative{
 
-    VenueManager venueManager;
-
     public Admin(String username, String phoneNumber, String emailId) {
         super(username, phoneNumber, emailId);
-        venueManager = new VenueManager();
     }
 
     public boolean updateVenueDetails(){
@@ -27,4 +26,11 @@ public class Admin extends Representative{
         return venueManager.removeUser(username);
     }
 
+    public Map getOtherUserPersonalDetails(String username){
+        return venueManager.getOtherUserPersonalDetails(username);
+    }
+
+    public Map getOtherUserRegistrationDetails(String username){
+        return venueManager.getOtherUserRegistrationDetails(username);
+    }
 }

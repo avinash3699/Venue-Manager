@@ -2,3 +2,6 @@
 2. Validation of date with the database date
 3. Refactor Database.getInstance() usage in VenueManager
 4. Add functions to User class
+5. Handle Add and Remove user exception cases
+6. Put all members of database private and generate set/get
+7. Cannot book venue 3 months from current date

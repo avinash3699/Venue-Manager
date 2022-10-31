@@ -201,7 +201,7 @@ public class Database {
 
             String dbPassword = userCredentials.get(userName);
 
-            // if successful, return logged in User object
+            // if successful, return logged-in User object
             if(enteredPassword.equals(dbPassword)){
                 return users.get(userName);
             }

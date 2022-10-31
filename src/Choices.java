@@ -16,14 +16,17 @@ public class Choices {
             "3. Cancel Reserved Venue\n" +
             "4. Change Reserved Venue\n" +
             "5. Show Reserved Venues\n" +
-            "6. LOGOUT\n";
+            "6. View Profile\n" +
+            "7. Modify Personal Details\n" +
+            "8. LOGOUT\n";
 
     static String adminChoices =
             "Admin Operations\n" +
-            "7. View All Users\n" +
-            "8. Add User\n" +
-            "9. Remove User\n" +
-            "10. Update Venues\n";
+            "9.  View User Details\n" +
+            "10. Add User\n" +
+            "11. Remove User\n" +
+            "12. Add Venue\n" +
+            "13. Update Venues\n";
 
     static String displayVenueChoices =
             "Display details of\n" +
@@ -60,4 +63,14 @@ public class Choices {
             "3. a Day\n" +
             "4. CANCEL WITH ANOTHER ACCESS ID\n" +
             "5. GO TO VENUE MANAGER CONSOLE\n";
+
+    static String viewUserDetailsChoices =
+            "View User\n" +
+            "1. Personal Details\n" +
+            "2. Registration Details\n";
+
+    static String modifyPersonalDetailsChoices =
+            "Modify\n" +
+            "1. Email Id\n" +
+            "2. Phone Number\n";
 }
