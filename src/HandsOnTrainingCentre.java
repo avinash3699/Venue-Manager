@@ -5,7 +5,7 @@ import java.util.Map;
 public class HandsOnTrainingCentre extends Venue{
 
     // Instance variables
-    public boolean isMicStandAvailable;
+    private boolean isMicStandAvailable;
 
     private Projector projector;
     private Ethernet ethernet;
@@ -28,7 +28,7 @@ public class HandsOnTrainingCentre extends Venue{
     }
 
     @Override
-    public Map<String, String> getAdditionalVenueDetails() {
+    protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
                 put("Mic Stand", getAvailabilityFromBoolean(isMicStandAvailable));

@@ -5,8 +5,8 @@ import java.util.Map;
 public class Auditorium extends Venue{
 
     // Instance Variables
-    boolean isMicStandAvailable;
-    String noOfDisplayScreen;
+    private boolean isMicStandAvailable;
+    private String noOfDisplayScreen;
 
     private Speaker speaker;
     private ArrayList<Microphone> microphone;
@@ -30,7 +30,7 @@ public class Auditorium extends Venue{
     }
 
     @Override
-    public Map<String, String> getAdditionalVenueDetails() {
+    protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
                 put("Mic Stand", getAvailabilityFromBoolean(isMicStandAvailable));

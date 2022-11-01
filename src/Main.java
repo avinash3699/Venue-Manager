@@ -7,18 +7,15 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Main {
+public final class Main {
 
-    static Scanner sc;
-    static VenueManager venueManager;
-    static int choice, accessId, venueCode;
-    static LocalDate from, to;
-    static LocalDate[] dates;
-    static User currentUser;
+    static private VenueManager venueManager;
+    static private int choice, accessId, venueCode;
+    static private LocalDate from, to;
+    static private LocalDate[] dates;
+    static private User currentUser;
 
     public static void main(String[] args) {
-
-        sc = new Scanner(System.in);
 
         venueManager = new VenueManager();
 

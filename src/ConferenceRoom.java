@@ -4,7 +4,7 @@ import java.util.Map;
 public class ConferenceRoom extends Venue{
 
     // Instance variables
-    public boolean isWhiteBoardAvailable;
+    private boolean isWhiteBoardAvailable;
 
     private Projector projector;
     private Ethernet ethernet;
@@ -25,7 +25,7 @@ public class ConferenceRoom extends Venue{
     }
 
     @Override
-    public Map<String, String> getAdditionalVenueDetails() {
+    protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
                 put("White Board", getAvailabilityFromBoolean(isWhiteBoardAvailable));

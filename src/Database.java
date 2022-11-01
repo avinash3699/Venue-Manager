@@ -3,7 +3,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 // have to generate setters and getters for properties instead of reading and writing it directly
-public class Database {
+public final class Database {
 
     // This field tracks the venueCode and incremented for every new venue addition
     private int venueCode = 1;
@@ -190,7 +190,7 @@ public class Database {
     }
 
     public String getVenueNameFromCode(int venueCode){
-        return venues.get(venueCode).venueName;
+        return venues.get(venueCode).getVenueName();
     }
 
     // delegated by VenueManager.authenticate() to authenticate
@@ -214,7 +214,7 @@ public class Database {
             return null;
     }
 
-    public HashMap<String, User> getUsers() {
+    public Map<String, User> getUsers() {
         return users;
     }
 

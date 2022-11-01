@@ -5,7 +5,7 @@ public class User {
 
     private final String username;
     private String phoneNumber, emailId;
-    VenueManager venueManager;
+    protected VenueManager venueManager;
 
     public User(String username, String phoneNumber, String emailId) {
         this.username = username;
@@ -36,7 +36,7 @@ public class User {
         return emailId;
     }
 
-    public Map<String, String> getPersonalDetails(){
+    Map<String, String> getPersonalDetails(){
         return new LinkedHashMap(){
             {
                 put("Username", username);

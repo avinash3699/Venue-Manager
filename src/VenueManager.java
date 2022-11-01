@@ -83,7 +83,7 @@ public class VenueManager {
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
-            if(Database.getInstance().getVenues().get(venueCode).venueType == type) {
+            if(Database.getInstance().getVenues().get(venueCode).getType() == type) {
                 outerLoop:
                 for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
                     for(int accessId: (reservationDetails.get(venueCode)).keySet()){

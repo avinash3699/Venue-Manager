@@ -4,9 +4,9 @@ import java.util.Map;
 abstract class Venue {
 
     // instance variables
-    String venueName, venueCode, location, seatingCapacity;
-    boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
-    VenueType venueType;
+    private String venueName, venueCode, location, seatingCapacity;
+    private boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
+    private VenueType venueType;
 
     // constructor
     protected Venue(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, VenueType venueType) {
@@ -36,13 +36,17 @@ abstract class Venue {
         };
     }
 
-    protected String getAvailabilityFromBoolean(boolean isAirConditioned) {
-        return (isAirConditioned)? "Available": "Not Available";
+    protected String getAvailabilityFromBoolean(boolean isTrue) {
+        return (isTrue)? "Available": "Not Available";
     }
 
-    public abstract Map<String, String> getAdditionalVenueDetails();
+    protected abstract Map<String, String> getAdditionalVenueDetails();
 
     public VenueType getType() {
         return this.venueType;
+    }
+
+    public String getVenueName(){
+        return venueName;
     }
 }

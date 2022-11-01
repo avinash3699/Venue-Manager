@@ -1,14 +1,14 @@
 // Utility class to store all the choices list to be displayed to the user
 
 // separated from the Main class to improve the code readability
-public class Choices {
+public final class Choices {
 
-    static String loginExitChoice =
+    static final String loginExitChoice =
             "Welcome to Venue Manager\n" +
             "1. Login\n" +
             "2. Exit\n";
 
-    static String userChoices =
+    static final String userChoices =
             "Venue Manager Console\n\n" +
             "0. Display different Venue Details\n" +
             "1. Check Venue Availability\n" +
@@ -20,7 +20,7 @@ public class Choices {
             "7. Modify Personal Details\n" +
             "8. LOGOUT\n";
 
-    static String adminChoices =
+    static final String adminChoices =
             "Admin Operations\n" +
             "9.  View User Details\n" +
             "10. Add User\n" +
@@ -28,7 +28,7 @@ public class Choices {
             "12. Add Venue\n" +
             "13. Update Venues\n";
 
-    static String displayVenueChoices =
+    static final String displayVenueChoices =
             "Display details of\n" +
             "1. All venues\n" +
             "2. Conference Room\n" +
@@ -37,7 +37,7 @@ public class Choices {
             "5. Specific Venue (requires Venue Code)\n" +
             "6. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String checkAvailabilityChoices =
+    static final String checkAvailabilityChoices =
             "Check availability of\n" +
             "1. All venues\n" +
             "2. Conference Room\n" +
@@ -47,7 +47,7 @@ public class Choices {
             "6. CHECK ANOTHER DATES\n" +
             "7. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String reserveVenueChoices =
+    static final String reserveVenueChoices =
             "Reserve\n" +
             "1. Any Conference Room\n" +
             "2. Any Auditorium\n" +
@@ -56,7 +56,7 @@ public class Choices {
             "5. RESERVE ANOTHER DATES\n" +
             "6. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String cancelVenueChoices =
+    static final String cancelVenueChoices =
             "Cancel\n" +
             "1. Entire reservation\n" +
             "2. From-to dates\n" +
@@ -64,12 +64,12 @@ public class Choices {
             "4. CANCEL WITH ANOTHER ACCESS ID\n" +
             "5. GO TO VENUE MANAGER CONSOLE\n";
 
-    static String viewUserDetailsChoices =
+    static final String viewUserDetailsChoices =
             "View User\n" +
             "1. Personal Details\n" +
             "2. Registration Details\n";
 
-    static String modifyPersonalDetailsChoices =
+    static final String modifyPersonalDetailsChoices =
             "Modify\n" +
             "1. Email Id\n" +
             "2. Phone Number\n";
