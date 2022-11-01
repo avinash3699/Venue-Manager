@@ -1,3 +1,5 @@
+package core.user;
+
 import java.util.Map;
 
 public class Admin extends Representative{

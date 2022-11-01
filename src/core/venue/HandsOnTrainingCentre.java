@@ -1,3 +1,10 @@
+package core.venue;
+
+import core.venue.properties.Ethernet;
+import core.venue.properties.Microphone;
+import core.venue.properties.Projector;
+import core.venue.properties.Speaker;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +38,7 @@ public class HandsOnTrainingCentre extends Venue{
     protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
-                put("Mic Stand", getAvailabilityFromBoolean(isMicStandAvailable));
+                put("Mic Stand", isMicStandAvailable? "Available": "Not Available");
             }
         };
     }

@@ -1,3 +1,9 @@
+package core.venue;
+
+import core.venue.properties.Microphone;
+import core.venue.properties.Speaker;
+import core.venue.properties.Stage;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,7 +39,7 @@ public class Auditorium extends Venue{
     protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
-                put("Mic Stand", getAvailabilityFromBoolean(isMicStandAvailable));
+                put("Mic Stand", isMicStandAvailable? "Available": "Not Available");
                 put("No. of Display Screens", noOfDisplayScreen);
             }
         };

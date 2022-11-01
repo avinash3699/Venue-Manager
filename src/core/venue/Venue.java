@@ -1,7 +1,9 @@
+package core.venue;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-abstract class Venue {
+public abstract class Venue {
 
     // instance variables
     private String venueName, venueCode, location, seatingCapacity;
@@ -29,15 +31,11 @@ abstract class Venue {
                 put("Venue Code", venueCode);
                 put("Venue Location", location);
                 put("Seating Capacity", seatingCapacity);
-                put("Air Conditioner", getAvailabilityFromBoolean(isAirConditioned));
-                put("Wifi", getAvailabilityFromBoolean(isWifiAvailable));
-                put("Individual Charging Ports", getAvailabilityFromBoolean(isChargingPortsAvailable));
+                put("Air Conditioner", isAirConditioned? "Available": "Not Available");
+                put("Wifi", isWifiAvailable? "Available": "Not Available");
+                put("Individual Charging Ports", isChargingPortsAvailable? "Available": "Not Available");
             }
         };
-    }
-
-    protected String getAvailabilityFromBoolean(boolean isTrue) {
-        return (isTrue)? "Available": "Not Available";
     }
 
     protected abstract Map<String, String> getAdditionalVenueDetails();

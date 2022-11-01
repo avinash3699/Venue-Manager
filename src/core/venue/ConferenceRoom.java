@@ -1,3 +1,8 @@
+package core.venue;
+
+import core.venue.properties.Ethernet;
+import core.venue.properties.Projector;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,7 +33,7 @@ public class ConferenceRoom extends Venue{
     protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
-                put("White Board", getAvailabilityFromBoolean(isWhiteBoardAvailable));
+                put("White Board", isWhiteBoardAvailable? "Available": "Not Available");
             }
         };
     }

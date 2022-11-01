@@ -1,4 +1,13 @@
-import Helper.DefensiveCopyHelper;
+package database;
+
+import core.user.Admin;
+import core.user.Representative;
+import core.user.User;
+import core.venue.Auditorium;
+import core.venue.ConferenceRoom;
+import core.venue.HandsOnTrainingCentre;
+import core.venue.Venue;
+import helper.DefensiveCopyHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +26,7 @@ public final class Database {
     private Database(){}
 
     // method that returns the singleton object when called
-    static Database getInstance(){
+    public static Database getInstance(){
 
         // lazy instantiation
         if(singletonInstance == null)
@@ -196,8 +205,8 @@ public final class Database {
     }
 
     // delegated by VenueManager.authenticate() to authenticate
-    // Reason: to not expose the User Credentials outside the Database class
-    User authenticate(String userName, String enteredPassword){
+    // Reason: to not expose the User Credentials outside the Database.Database class
+    public User authenticate(String userName, String enteredPassword){
 
         if(userCredentials.containsKey(userName)){
 
@@ -237,7 +246,7 @@ public final class Database {
     }
 
     public void addToUsers(String username, User user) {
-        users.put(user.getUsername(), user);
+        users.put(username, user);
     }
 
     public void addToUserCredentials(String username, String password) {

@@ -1,3 +1,7 @@
+package core.user;
+
+import core.manager.VenueManager;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,12 +22,12 @@ public class User {
         return username;
     }
 
-    protected boolean setPhoneNumber(String phoneNumber) {
+    public boolean setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return venueManager.updateUserDatabase(this);
     }
 
-    protected boolean setEmailId(String emailId) {
+    public boolean setEmailId(String emailId) {
         this.emailId = emailId;
         return venueManager.updateUserDatabase(this);
     }
@@ -36,7 +40,7 @@ public class User {
         return emailId;
     }
 
-    Map<String, String> getPersonalDetails(){
+    public Map<String, String> getPersonalDetails(){
         return new LinkedHashMap(){
             {
                 put("Username", username);

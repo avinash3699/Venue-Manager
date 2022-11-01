@@ -1,4 +1,6 @@
-import Helper.DefensiveCopyHelper;
+package core.user;
+
+import helper.DefensiveCopyHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

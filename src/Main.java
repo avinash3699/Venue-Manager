@@ -1,11 +1,15 @@
+import core.manager.VenueManager;
+import core.venue.VenueType;
+import core.user.Admin;
+import core.user.Representative;
+import core.user.User;
+import database.Database;
+import helper.Choices;
+import helper.InputHelper;
+
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Scanner;
 
 public final class Main {
 
@@ -21,10 +25,10 @@ public final class Main {
 
         while(true) {
 
-            boolean isLoginSuccessful = false;
+            boolean isLoginSuccessful;
 
             System.out.println(Choices.loginExitChoice);
-            switch (getIntegerInput("Enter choice: ")) {
+            switch (InputHelper.getIntegerInput("Enter choice: ")) {
                 case 1:
 
                     isLoginSuccessful = login();
@@ -40,7 +44,7 @@ public final class Main {
                                 System.out.println(Choices.adminChoices);
                             }
 
-                            choice = getIntegerInput("Enter choice: ");
+                            choice = InputHelper.getIntegerInput("Enter choice: ");
                             switch (choice) {
 
                                 case 0:
@@ -101,9 +105,9 @@ public final class Main {
     private static void managePersonalDetailsModification() {
         System.out.println("\n---------");
         System.out.println(Choices.modifyPersonalDetailsChoices);
-        switch (getIntegerInput("Enter choice: ")){
+        switch (InputHelper.getIntegerInput("Enter choice: ")){
             case 1:
-                String newEmailId = getStringInput("Enter new Email Id: ");
+                String newEmailId = InputHelper.getStringInput("Enter new Email Id: ");
                 System.out.println(
                     (currentUser.setEmailId(newEmailId))?
                     "Email Id modified successfully!":
@@ -111,7 +115,7 @@ public final class Main {
                 );
                 break;
             case 2:
-                String newPhoneNumber = getStringInput("Enter new Phone Number: ");
+                String newPhoneNumber = InputHelper.getStringInput("Enter new Phone Number: ");
                 System.out.println(
                     (currentUser.setPhoneNumber(newPhoneNumber))?
                     "Phone Number modified successfully!":
@@ -135,8 +139,8 @@ public final class Main {
 
     private static boolean login() {
         boolean isLoginSuccessful;
-        String username = getStringInput("Enter username: "),
-                password = getStringInput("Enter password: ");
+        String username = InputHelper.getStringInput("Enter username: "),
+                password = InputHelper.getStringInput("Enter password: ");
         if ((currentUser = venueManager.authenticate(username, password)) != null) {
             System.out.println("\n---------");
             System.out.println("Authentication Successful!!\n");
@@ -170,14 +174,14 @@ public final class Main {
         if(currentUser instanceof Admin){
             String username;
             while(true) {
-                username = getStringInput("Enter Username: ");
+                username = InputHelper.getStringInput("Enter Username: ");
                 if(venueManager.checkUserNameExistence(username))
                     break;
                 else
                     System.out.println("Username doesn't exists. Please try again\n");
             }
             System.out.println(Choices.viewUserDetailsChoices);
-            switch(getIntegerInput("Enter choice: ")){
+            switch(InputHelper.getIntegerInput("Enter choice: ")){
                 case 1:
                     Map<String, String> personalDetails = ((Admin) currentUser).getOtherUserPersonalDetails(username);
                     for (String key : personalDetails.keySet()) {
@@ -199,10 +203,10 @@ public final class Main {
 
     private static void manageUserAddition() {
         if(currentUser instanceof Admin){
-            String username = getStringInput("Enter Username: "),
-                   password = getStringInput("Enter password: "),
-                   emailId = getStringInput("Enter Email ID: "),
-                   phoneNumber = getStringInput("Enter phone number: ");
+            String username = InputHelper.getStringInput("Enter Username: "),
+                   password = InputHelper.getStringInput("Enter password: "),
+                   emailId = InputHelper.getStringInput("Enter Email ID: "),
+                   phoneNumber = InputHelper.getStringInput("Enter phone number: ");
             System.out.println(
                     ((Admin) currentUser).addUser(username, password, emailId, phoneNumber)?
                     "The user is added successfully!":
@@ -217,7 +221,7 @@ public final class Main {
         if(currentUser instanceof Admin){
             String username;
             while(true) {
-                username = getStringInput("Enter the username of the user to be deleted: ");
+                username = InputHelper.getStringInput("Enter the username of the user to be deleted: ");
                 if(venueManager.checkUserNameExistence(username)) {
                     if (username.equals(currentUser.getUsername()))
                         System.out.println("You cannot remove current user. Please try again\n");
@@ -227,9 +231,9 @@ public final class Main {
                 else
                     System.out.println("Username doesn't exists. Please try again\n");
             }
-            char confirmation1 = getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
+            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
-                confirmation2 = getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
+                confirmation2 = InputHelper.getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
                 if(confirmation2 == 'Y' || confirmation2 == 'y'){
                     System.out.println(
                             ((Admin) currentUser).removeUser(username)?
@@ -254,36 +258,36 @@ public final class Main {
     }
 
     private static void manageVenueChange() {
-        accessId = getAccessIdInput();
-        int oldVenueCode = getVenueCodeInput("Enter Venue Code: "),
-            newVenueCode = getVenueCodeInput("Enter New Venue Code: ");
+        accessId = InputHelper.getAccessIdInput();
+        int oldVenueCode = InputHelper.getVenueCodeInput("Enter Venue Code: "),
+            newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
         venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
     }
 
     private static void manageVenueCancellation() {
         while(true) {
-            accessId = getAccessIdInput();
-            venueCode = getVenueCodeInput("Enter Venue Code: ");
+            accessId = InputHelper.getAccessIdInput();
+            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
 
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
                 System.out.println(Choices.cancelVenueChoices);
 
-                choice = getIntegerInput("Enter choice: ");
+                choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
                         venueManager.cancelVenue(venueCode, accessId);
                         break;
                     case 2:
-                        dates = getFromToDates();
+                        dates = InputHelper.getFromToDates();
                         from = dates[0];
                         to = dates[1];
 
                         venueManager.cancelVenue(venueCode, accessId, from, to);
                         break;
                     case 3:
-                        LocalDate dateToBeCancelled = getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
+                        LocalDate dateToBeCancelled = InputHelper.getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
                         venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
                         break;
                     case 4:
@@ -300,7 +304,7 @@ public final class Main {
     private static void manageVenueReservation() {
 
         while(true) {
-            dates = getFromToDates();
+            dates = InputHelper.getFromToDates();
             from = dates[0];
             to = dates[1];
 
@@ -311,7 +315,7 @@ public final class Main {
 
                 System.out.println(Choices.reserveVenueChoices);
 
-                choice = getIntegerInput("Enter choice: ");
+                choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
                         venueManager.reserveVenue(VenueType.CONFERENCE, from, to);
@@ -323,7 +327,7 @@ public final class Main {
                         venueManager.reserveVenue(VenueType.AUDITORIUM, from, to);
                         break;
                     case 4:
-                        venueCode = getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         venueManager.reserveVenue(venueCode, from, to);
                         break;
                     case 5:
@@ -343,7 +347,7 @@ public final class Main {
         VenueType venueType;
 
         while(true) {
-            dates = getFromToDates();
+            dates = InputHelper.getFromToDates();
             from = dates[0];
             to = dates[1];
 
@@ -353,7 +357,7 @@ public final class Main {
                 System.out.printf("From: %s\nTo: %s\n\n", from, to);
                 System.out.println(Choices.checkAvailabilityChoices);
 
-                choice = getIntegerInput("Enter choice: ");
+                choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
                         availableVenueCodes = venueManager.checkAvailability(from, to);
@@ -375,7 +379,7 @@ public final class Main {
                         printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
-                        venueCode = getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         System.out.println(
                             "\n" +
                             Database.getInstance().getVenueNameFromCode(venueCode) +
@@ -414,7 +418,7 @@ public final class Main {
             System.out.println("\n---------");
             System.out.println(Choices.displayVenueChoices);
 
-            int choice = getIntegerInput("Enter choice: ");
+            int choice = InputHelper.getIntegerInput("Enter choice: ");
 
             switch (choice) {
                 case 1:
@@ -434,7 +438,7 @@ public final class Main {
                     venueManager.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
-                    venueCode = getVenueCodeInput("Enter Venue Code: ");
+                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                     venueManager.displayVenueDetails(venueCode);
                     break;
                 case 6:
@@ -444,126 +448,6 @@ public final class Main {
                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
             }
         }
-    }
-
-    // function to get string input with a hint text
-    static String getStringInput(String text){
-        System.out.print(text);
-        return new Scanner(System.in).nextLine();
-    }
-
-    private static int getAccessIdInput() {
-        int accessId;
-        System.out.println("\n---------");
-
-        while(true) {
-            accessId = getIntegerInput("Enter Access Id: ");
-            if((Database.getInstance().getAccessIds()).contains(accessId))
-                break;
-            else
-            {
-                System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Access Id. Please try again!\n");
-            }
-        }
-        return accessId;
-    }
-
-    private static int getVenueCodeInput(String hintText) {
-        int venueCode;
-        System.out.println("\n---------");
-
-        while(true) {
-            venueCode = getIntegerInput(hintText);
-            if(venueCode <= Database.getInstance().getVenuesCount())
-                break;
-            else{
-                System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Venue Code. Please try again!\n");
-            }
-        }
-        return venueCode;
-    }
-
-    private static int getIntegerInput(String hintText) {
-
-        int choice;
-
-        while (true) {
-            try {
-                choice = Integer.parseInt(getStringInput(hintText));
-                break;
-            } catch (NumberFormatException e) {
-//                e.printStackTrace();
-                System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Input, please enter a valid number\n");
-            }
-        }
-
-        return choice;
-    }
-
-    private static LocalDate getDateInput(String hintText){
-        String date;
-        LocalDate parsedDate;
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd-MM-uuuu");
-        while(true) {
-            System.out.println("\n---------");
-            date = getStringInput(hintText);
-            try{
-                // ResolverStyle.STRICT is used to throw exception for 29th and 30th of February, considering leap year
-                // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
-                parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
-
-                boolean isPastDate = isPastDate(parsedDate);
-                if(isPastDate) {
-                    System.out.println("OOPs! You have entered a past date. Please enter a valid one");
-                    continue;
-                }
-
-                boolean isCurrentDate = isCurrentDate(parsedDate);
-                if(isCurrentDate){
-                    System.out.println("OOPs! You cannot enter current date. Please enter again");
-                    continue;
-                }
-                break;
-            }
-            catch (DateTimeParseException e){
-                System.out.println("OOPs! Invalid Date, please enter a valid date");
-            }
-        }
-        return parsedDate;
-    }
-
-    private static LocalDate[] getFromToDates(){
-        while(true) {
-            LocalDate from = getDateInput("From Date (DD-MM-YYYY): "),
-                      to = getDateInput("To Date (DD-MM-YYYY): ");
-
-            if(to.isBefore(from))
-                System.out.println("You have enter a 'To date' less than 'From to'. Please try again");
-            else if(to.isAfter(from.plusDays(10)))
-                System.out.println("Your from and to date cannot be not be more than 10 days");
-            else
-                return new LocalDate[]{
-                        from,
-                        to
-                };
-        }
-    }
-
-    // function to check whether the entered date is past date or not
-    // returns 'true', if past date. else, 'false'
-    private static boolean isPastDate(LocalDate inputDate) {
-        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
-        return inputDate.isBefore(localDate);
-    }
-
-    // function to check whether the entered date is current date or not
-    // returns 'true', if current date. else, 'false'
-    private static boolean isCurrentDate(LocalDate inputDate) {
-        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
-        return inputDate.isEqual(localDate);
     }
 
 }
