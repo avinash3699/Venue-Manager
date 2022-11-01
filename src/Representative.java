@@ -1,7 +1,10 @@
+import Helper.DefensiveCopyHelper;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Representative extends User{
 
@@ -28,8 +31,8 @@ public class Representative extends User{
         return false;
     }
 
-    public LinkedHashMap<Integer, HashMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
-        return reservationDetails;
+    public Map<Integer, HashMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
+        return DefensiveCopyHelper.getDefensiveCopyMap(reservationDetails);
     }
 
     public void addReservationDetails(int accessId, int venueCode, ArrayList<LocalDate> dates){

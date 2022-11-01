@@ -1,3 +1,5 @@
+import Helper.DefensiveCopyHelper;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -215,15 +217,15 @@ public final class Database {
     }
 
     public Map<String, User> getUsers() {
-        return users;
+        return DefensiveCopyHelper.getDefensiveCopyMap(users);
     }
 
     public Map<Integer, Venue> getVenues() {
-        return venues;
+        return DefensiveCopyHelper.getDefensiveCopyMap(venues);
     }
 
     public Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
-        return reservationDetails;
+        return DefensiveCopyHelper.getDefensiveCopyMap(reservationDetails);
     }
 
     public void removeFromUserCredentials(String username) {
