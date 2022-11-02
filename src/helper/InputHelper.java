@@ -58,7 +58,6 @@ public class InputHelper {
                 choice = Integer.parseInt(getStringInput(hintText));
                 break;
             } catch (NumberFormatException e) {
-//                e.printStackTrace();
                 System.out.println("\n---------");
                 System.out.println("OOPs! Invalid Input, please enter a valid number\n");
             }
@@ -73,7 +72,7 @@ public class InputHelper {
                     to = getDateInput("To Date (DD-MM-YYYY): ");
 
             if(to.isBefore(from))
-                System.out.println("You have enter a 'To date' less than 'From to'. Please try again");
+                System.out.println("You have entered a 'To date' less than 'From to'. Please try again");
             else if(to.isAfter(from.plusDays(10)))
                 System.out.println("Your from and to date cannot be not be more than 10 days");
             else
@@ -104,7 +103,7 @@ public class InputHelper {
 
                 boolean isCurrentDate = DateHelper.isCurrentDate(parsedDate);
                 if(isCurrentDate){
-                    System.out.println("OOPs! You cannot enter current date. Please enter again");
+                    System.out.println("OOPs! You cannot enter today's date. Please enter again");
                     continue;
                 }
                 break;

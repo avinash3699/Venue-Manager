@@ -55,7 +55,7 @@ public final class Choices {
             "2. Any Auditorium\n" +
             "3. Any Hands-on training centre\n" +
             "4. Using Venue Code\n" +
-            "5. RESERVE ANOTHER DATES\n" +
+            "5. RESERVE ANOTHER/CHANGE DATES\n" +
             "6. GO TO VENUE MANAGER CONSOLE\n";
 
     public static final String cancelVenueChoices =
@@ -69,7 +69,8 @@ public final class Choices {
     public static final String viewUserDetailsChoices =
             "View User\n" +
             "1. Personal Details\n" +
-            "2. Registration Details\n";
+            "2. Registration Details\n" +
+            "3. GO TO VENUE MANAGER CONSOLE";
 
     public static final String modifyPersonalDetailsChoices =
             "Modify\n" +

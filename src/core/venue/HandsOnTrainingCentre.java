@@ -36,7 +36,7 @@ public class HandsOnTrainingCentre extends Venue{
 
     @Override
     protected Map<String, String> getAdditionalVenueDetails() {
-        return new LinkedHashMap(){
+        return new LinkedHashMap<String, String>(){
             {
                 put("Mic Stand", isMicStandAvailable? "Available": "Not Available");
             }

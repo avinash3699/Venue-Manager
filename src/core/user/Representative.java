@@ -1,71 +1,110 @@
 package core.user;
 
-import helper.DefensiveCopyHelper;
+import core.manager.RepresentativeManager;
+import core.venue.Reservation;
+import core.venue.VenueType;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Representative extends User{
 
-    private LinkedHashMap<Integer, HashMap<Integer, ArrayList<LocalDate>>> reservationDetails;
-
-    public Representative(String username, String phoneNumber, String emailId) {
-        super(username, phoneNumber, emailId);
-        reservationDetails = new LinkedHashMap<>();
+    public void displayVenueDetails() {
+        venueManager.displayVenueDetails();
     }
+
+    public void displayVenueDetails(int venueCode) {
+        venueManager.displayVenueDetails(venueCode);
+    }
+
+    public void displayVenueDetails(VenueType type) {
+        venueManager.displayVenueDetails(type);
+    }
+
+    public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
+        return venueManager.checkAvailability(from, to);
+    }
+
+    public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to) {
+        return venueManager.checkAvailability(type, from, to);
+    }
+
+    public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to) {
+        return venueManager.checkAvailability(venueCode, from, to);
+    }
+
+    public Reservation reserveVenue(VenueType type, LocalDate from, LocalDate to) {
+        return venueManager.reserveVenue(type, from, to, this.getUsername());
+    }
+
+    public Reservation reserveVenue(int venueCode, LocalDate from, LocalDate to) {
+        return venueManager.reserveVenue(venueCode, from, to, this.getUsername());
+    }
+
+    public boolean cancelVenue(int venueCode, int accessId) {
+        return venueManager.cancelVenue(venueCode, accessId, this.getUsername());
+    }
+
+    public boolean cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to) {
+        return venueManager.cancelVenue(venueCode, accessId, from, to, this.getUsername());
+    }
+
+    public Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode) {
+        return venueManager.changeVenue(oldVenueCode, accessId, newVenueCode, this.getUsername());
+    }
+
+    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
+        venueManager.printVenuesAvailability(availableVenueCodes);
+    }
+
+    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
+        venueManager.printVenuesAvailability(availableVenueCodes, inputType);
+    }
+
+    public boolean updateUserDatabase(User user) {
+        return venueManager.updateUserDatabase(user);
+    }
+
+    RepresentativeManager venueManager;
+
+//    private final String username;
+//    private String phoneNumber, emailId;
+
+    public Representative(String username, String phoneNumber, String emailId, RepresentativeManager venueManager) {
+        super(username, phoneNumber, emailId);
+//        this.username = username;
+//        this.phoneNumber = phoneNumber;
+//        this.emailId = emailId;
+        this.venueManager = venueManager;
+    }
+
+//    @Override
+//    public User setPhoneNumber(String phoneNumber) {
+//        User user = super.setPhoneNumber(phoneNumber);
+//        venueManager.updateUserDatabase(user);
+//        return user;
+//    }
+
+//    @Override
+//    public boolean setEmailId(String emailId) {
+//        return false;
+//    }
 
     public boolean updatePhoneNumber(String phoneNumber){
         super.setPhoneNumber(phoneNumber);
 
-        if(super.getPhoneNumber() == phoneNumber)
-            return true;
-        return false;
+        return super.getPhoneNumber().equals(phoneNumber);
     }
 
     public boolean updateEmailId(String emailId){
         super.setEmailId(emailId);
 
-        if(super.getEmailId() == emailId)
-            return true;
-        return false;
+        return super.getEmailId().equals(emailId);
     }
 
-    public Map<Integer, HashMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
-        return DefensiveCopyHelper.getDefensiveCopyMap(reservationDetails);
+    @Override
+    public List<Reservation> getReservationDetails() {
+        return venueManager.getReservationDetails(this.getUsername());
     }
 
-    public void addReservationDetails(int accessId, int venueCode, ArrayList<LocalDate> dates){
-        reservationDetails.put(
-            accessId,
-            new HashMap(){
-                {
-                    put(venueCode, dates);
-                }
-            }
-        );
-    }
-
-    public void removeFromReservationDetails(int accessId){
-        reservationDetails.remove(accessId);
-    }
-
-    public void removeFromReservationDetails(int accessId, LocalDate from, LocalDate to){
-        int firstKey = reservationDetails.get(accessId).keySet().stream().findFirst().get();
-        System.out.println("First Key " + firstKey);
-        ArrayList<LocalDate> reservedDates = reservationDetails.get(accessId).get(firstKey);
-        for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-            reservedDates.remove(date);
-        }
-        reservationDetails.put(
-            accessId,
-            new HashMap(){
-                {
-                    put(firstKey, reservedDates);
-                }
-            }
-        );
-    }
 }

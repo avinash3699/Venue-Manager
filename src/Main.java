@@ -1,7 +1,7 @@
 import core.manager.VenueManager;
+import core.venue.Reservation;
 import core.venue.VenueType;
 import core.user.Admin;
-import core.user.Representative;
 import core.user.User;
 import database.Database;
 import helper.Choices;
@@ -9,6 +9,7 @@ import helper.InputHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public final class Main {
@@ -96,6 +97,10 @@ public final class Main {
                     continue;
                 case 2:
                     System.exit(1);
+                    break;
+                default:
+                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    continue;
             }
             break;
         }
@@ -190,8 +195,13 @@ public final class Main {
                     System.out.println();
                     break;
                 case 2:
-                    Map registrationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
-                    System.out.println(registrationDetails);
+                    List<Reservation> registrationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
+                    for(Reservation reservation: registrationDetails){
+                        for(String key: reservation.getMap().keySet()){
+                            System.out.println(key + ": " + reservation.getMap().get(key));
+                        }
+                        System.out.println();
+                    }
                     break;
                 default:
                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -254,17 +264,37 @@ public final class Main {
     }
 
     private static void getReservationDetails() {
-        System.out.println(((Representative)currentUser).getReservationDetails());
+        List<Reservation> reservationDetails = currentUser.getReservationDetails();
+        if(reservationDetails.size() == 0){
+            System.out.println("You don't have any current reservations.");
+            return;
+        }
+        for(Reservation reservation: reservationDetails){
+            for(String key: reservation.getMap().keySet()){
+                System.out.println(key + ": " + reservation.getMap().get(key));
+            }
+            System.out.println();
+        }
     }
 
     private static void manageVenueChange() {
         accessId = InputHelper.getAccessIdInput();
         int oldVenueCode = InputHelper.getVenueCodeInput("Enter Venue Code: "),
             newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
-        venueManager.changeVenue(oldVenueCode, accessId, newVenueCode);
+        Reservation reservationDetails = currentUser.changeVenue(oldVenueCode, accessId, newVenueCode);
+        if(reservationDetails == null){
+            System.out.println("Sorry! The venue you requested is already reserved");
+        }
+        else{
+            System.out.println("Hurray!! You have changed your venue successfully.\nNew Venue: " + reservationDetails.getVenueCode());
+            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+        }
     }
 
     private static void manageVenueCancellation() {
+
+        boolean isCancelled;
+
         while(true) {
             accessId = InputHelper.getAccessIdInput();
             venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
@@ -277,19 +307,31 @@ public final class Main {
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        venueManager.cancelVenue(venueCode, accessId);
-                        break;
+                        isCancelled = currentUser.cancelVenue(venueCode, accessId);
+                        if(isCancelled)
+                            System.out.println("Success! You have successfully cancelled the venue");
+                        else
+                            System.out.println("Sorry! Cancellation failed. Please try again");
+                        return;
                     case 2:
                         dates = InputHelper.getFromToDates();
                         from = dates[0];
                         to = dates[1];
 
-                        venueManager.cancelVenue(venueCode, accessId, from, to);
-                        break;
+                        isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
+                        if(isCancelled)
+                            System.out.println("Success! You have successfully cancelled the mentioned dates");
+                        else
+                            System.out.println("Sorry! Cancellation failed. Please try again");
+                        return;
                     case 3:
                         LocalDate dateToBeCancelled = InputHelper.getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
-                        venueManager.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
-                        break;
+                        isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
+                        if(isCancelled)
+                            System.out.println("Success! You have successfully cancelled the requested date");
+                        else
+                            System.out.println("Sorry! Cancellation failed. Please try again");
+                        return;
                     case 4:
                         break innerLoop;
                     case 5:
@@ -304,6 +346,7 @@ public final class Main {
     private static void manageVenueReservation() {
 
         while(true) {
+            Reservation reservationDetails;
             dates = InputHelper.getFromToDates();
             from = dates[0];
             to = dates[1];
@@ -318,17 +361,45 @@ public final class Main {
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        venueManager.reserveVenue(VenueType.CONFERENCE, from, to);
+                        reservationDetails = currentUser.reserveVenue(VenueType.CONFERENCE, from, to);
+                        if(reservationDetails == null){
+                            System.out.println("Sorry! No Venues Available based on your request");
+                        }
+                        else{
+                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
+                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                        }
                         break;
                     case 2:
-                        venueManager.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
+                        reservationDetails = currentUser.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
+                        if(reservationDetails == null){
+                            System.out.println("Sorry! The venue you requested is already reserved");
+                        }
+                        else{
+                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
+                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                        }
                         break;
                     case 3:
-                        venueManager.reserveVenue(VenueType.AUDITORIUM, from, to);
+                        reservationDetails = currentUser.reserveVenue(VenueType.AUDITORIUM, from, to);
+                        if(reservationDetails == null){
+                            System.out.println("Sorry! The venue you requested is already reserved");
+                        }
+                        else{
+                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
+                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                        }
                         break;
                     case 4:
                         venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
-                        venueManager.reserveVenue(venueCode, from, to);
+                        reservationDetails = currentUser.reserveVenue(venueCode, from, to);
+                        if(reservationDetails == null){
+                            System.out.println("Sorry! The venue you requested is already reserved");
+                        }
+                        else{
+                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
+                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                        }
                         break;
                     case 5:
                         break innerLoop;
@@ -360,22 +431,22 @@ public final class Main {
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        availableVenueCodes = venueManager.checkAvailability(from, to);
+                        availableVenueCodes = currentUser.checkAvailability(from, to);
                         printVenuesAvailability(availableVenueCodes);
                         break;
                     case 2:
                         venueType = VenueType.CONFERENCE;
-                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
                         printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 3:
                         venueType = VenueType.HANDS_ON_TRAINING;
-                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
                         printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 4:
                         venueType = VenueType.AUDITORIUM;
-                        availableVenueCodes = venueManager.checkAvailability(venueType, from, to);
+                        availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
                         printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
@@ -384,7 +455,7 @@ public final class Main {
                             "\n" +
                             Database.getInstance().getVenueNameFromCode(venueCode) +
                             (
-                                venueManager.checkAvailability(venueCode, from, to)?
+                                currentUser.checkAvailability(venueCode, from, to)?
                                 ": Available":
                                 ": Not Available"
                             )
@@ -404,13 +475,13 @@ public final class Main {
     // function to print the availability of 'all the venues' when the available venue codes are given
     // delegates the function to VenueManager
     private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
-        venueManager.printVenuesAvailability(availableVenueCodes);
+        currentUser.printVenuesAvailability(availableVenueCodes);
     }
 
     // function to print the availability of all the venues of the 'given type' when the available venue codes are given
     // delegates the function to VenueManager
     private static void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType type) {
-        venueManager.printVenuesAvailability(availableVenueCodes, type);
+        currentUser.printVenuesAvailability(availableVenueCodes, type);
     }
 
     private static void manageVenueDetailsDisplay(){
@@ -423,23 +494,23 @@ public final class Main {
             switch (choice) {
                 case 1:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails();
+                    currentUser.displayVenueDetails();
                     break;
                 case 2:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails(VenueType.CONFERENCE);
+                    currentUser.displayVenueDetails(VenueType.CONFERENCE);
                     break;
                 case 3:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails(VenueType.HANDS_ON_TRAINING);
+                    currentUser.displayVenueDetails(VenueType.HANDS_ON_TRAINING);
                     break;
                 case 4:
                     System.out.println("\n---------");
-                    venueManager.displayVenueDetails(VenueType.AUDITORIUM);
+                    currentUser.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
                     venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
-                    venueManager.displayVenueDetails(venueCode);
+                    currentUser.displayVenueDetails(venueCode);
                     break;
                 case 6:
                     return;

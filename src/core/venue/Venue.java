@@ -24,7 +24,7 @@ public abstract class Venue {
 
     // method to return the details of a venue
     public Map<String, String> getVenueDetails(){
-        return new LinkedHashMap(){
+        return new LinkedHashMap<String, String>(){
             {
                 put("Venue Name", venueName);
                 put("Venue Type", venueType.toString());
