@@ -3,6 +3,7 @@ package core.venue;
 import helper.DefensiveCopyHelper;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +15,17 @@ public class Reservation {
     private final String username;
     private int venueCode;
     private List<LocalDate> reservedDates;
+
+    public Reservation(){
+        accessId = 1;
+        username = null;
+        reservedDates = new ArrayList(){
+            {
+                add(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            }
+        };
+        venueCode = 0;
+    }
 
     public Reservation(int accessId, String username, int venueCode, LocalDate fromDate, LocalDate toDate) {
         this.accessId = accessId;
@@ -47,9 +59,18 @@ public class Reservation {
         return DefensiveCopyHelper.getDefensiveCopyList(reservedDates);
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setVenueCode(int venueCode) {
+        this.venueCode = venueCode;
+    }
+
     public void removeDates(LocalDate fromDate, LocalDate toDate) {
         for (LocalDate date = fromDate; date.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
             reservedDates.remove(date);
         }
     }
+
 }

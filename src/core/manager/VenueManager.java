@@ -8,7 +8,6 @@ import core.venue.Venue;
 import database.Database;
 import helper.DefensiveCopyHelper;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -63,15 +62,17 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // to check the availability of all the venues for the given 'from date' to 'end date'
     // returns the name of all the available venues
     // interacts with the Database.Database class
+    @Override
     public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
+        Map<Integer, List<Reservation>> reservationDetails = Database.getInstance().getVenueReservationDetails();
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
+            List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
             outerLoop:
-            for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-                for(int accessId: (reservationDetails.get(venueCode)).keySet()){
-                    if (((reservationDetails.get(venueCode)).get(accessId)).contains(date)) {
+            for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)){
+                for(Reservation currentReservation: venueReservationDetails){
+                    if(currentReservation.getReservedDates().contains(date)) {
                         available = false;
                         break outerLoop;
                     }
@@ -86,16 +87,18 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // to check the availability of venues that is of the given type for the given 'from date' to 'end date'
     // returns the name of the available venue from the given type
     // interacts with the Database.Database class
-    public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
+    @Override
+    public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to){
+        Map<Integer, List<Reservation>> reservationDetails = Database.getInstance().getVenueReservationDetails();
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
             if(Database.getInstance().getVenues().get(venueCode).getType() == type) {
+                List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
                 outerLoop:
                 for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-                    for(int accessId: (reservationDetails.get(venueCode)).keySet()){
-                        if (reservationDetails.get(venueCode).get(accessId).contains(date)) {
+                    for (Reservation currentReservation : venueReservationDetails) {
+                        if (currentReservation.getReservedDates().contains(date)) {
                             available = false;
                             break outerLoop;
                         }
@@ -111,11 +114,14 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // to check the availability of a specific venue for the given 'from date' to 'end date'
     // returns 'true' if available, else 'false'
     // interacts with the Database.Database class
-    public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to) {
-        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.getInstance().getReservationDetails().get(venueCode);
+    public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to){
+        List<Reservation> reservationDetails = Database.getInstance().getVenueReservationDetails().get(venueCode);
+
+        if(reservationDetails == null) return true;
+
         for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-            for(int accessId: reservationDetails.keySet()){
-                if(reservationDetails.get(accessId).contains(date)){
+            for (Reservation currentReservation : reservationDetails) {
+                if (currentReservation.getReservedDates().contains(date)) {
                     return false;
                 }
             }
@@ -124,17 +130,11 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // to reserve the venue of given type for the given 'from date' to 'end date'
-    public Reservation reserveVenue(VenueType type, LocalDate from, LocalDate to, String username) {
+    public Reservation reserveVenue(VenueType type, LocalDate from, LocalDate to, String username){
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
         Reservation currentReservation = null;
-        boolean isUserReservationDBUpdated = false;
         if(availableVenues.size() != 0) {
             int accessId = generateUniqueAccessId();
-
-            boolean isDatabaseUpdated = updateAvailability(availableVenues.get(0), from, to, accessId, username);
-
-            if(! isDatabaseUpdated)
-                return null;
 
             currentReservation = new Reservation(
                     accessId,
@@ -143,31 +143,20 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                     from,
                     to
             );
-            isUserReservationDBUpdated = Database.getInstance().addToUserReservationDetails(username, currentReservation);
 
-//            System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + availableVenues.get(0));
-//            System.out.println("Your access ID is: " + accessId);
+            updateAvailability(currentReservation);
         }
 
-        if(isUserReservationDBUpdated)
-            return currentReservation;
-        return null;
-        
-//        else
-//            System.out.println("Sorry! No Venues Available based on your request");
+        return currentReservation;
+
     }
 
     // to reserve a specific venue using the venue code
-    public Reservation reserveVenue(int venueCode, LocalDate from, LocalDate to, String username) {
+    public Reservation reserveVenue(int venueCode, LocalDate from, LocalDate to, String username){
         Reservation currentReservation = null;
         boolean available = checkAvailability(venueCode, from, to);
         if(available) {
             int accessId = generateUniqueAccessId();
-
-            boolean isDatabaseUpdated = updateAvailability(venueCode, from, to, accessId, username);
-
-            if(! isDatabaseUpdated)
-                return null;
 
             currentReservation = new Reservation(
                     accessId,
@@ -176,90 +165,65 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                     from,
                     to
             );
-            Database.getInstance().addToUserReservationDetails(username, currentReservation);
-//            System.out.println("Hurray!! You have reserved your venue successfully. Venue: " + venueCode);
-//            System.out.println("Your access ID is: " + accessId);
+            updateAvailability(currentReservation);
         }
-
         return currentReservation;
-//        else
-//            System.out.println("Sorry! The venue you requested is already reserved");
+
     }
 
     // to update the database with the details of the new venue reservation
     // interacts with the Database.Database class
-    private boolean updateAvailability(int venueCode, LocalDate from, LocalDate to, int accessId, String username) {
-        TreeMap<Integer, ArrayList<LocalDate>> accessIdWithDates = new TreeMap<>();
-        ArrayList<LocalDate> reservedDates = new ArrayList<>();
-        for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-            reservedDates.add(date);
-        }
-        accessIdWithDates.put(accessId, reservedDates);
-        Database.getInstance().addToReservationDetails(venueCode, accessIdWithDates);
-        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
-
-        Database.getInstance().addToAccessIdUserMap(accessId, username);
-
+    private boolean updateAvailability(Reservation reservationDetails){
+        Database.getInstance().addToVenueReservationDetails(reservationDetails.getVenueCode(), reservationDetails);
+        Database.getInstance().addToUserReservationDetails(reservationDetails.getUsername(), reservationDetails);
+        Database.getInstance().addToAccessIdUserMap(reservationDetails.getAccessId(), reservationDetails.getUsername());
         return true;
-
-//        ((Representative)currentUser).addReservationDetails(accessId, venueCode, reservedDates);
     }
 
     // to cancel the reserved venue using the venue code and the unique access id
     public boolean cancelVenue(int venueCode, int accessId, String username) {
         Database database = Database.getInstance();
-//        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = database.getReservationDetails().get(venueCode);
-//        reservationDetails.remove(accessId);
-//        database.addToReservationDetails(venueCode, reservationDetails);
-        database.removeFromReservationDetails(venueCode, accessId);
+        database.removeFromVenueReservationDetails(venueCode, accessId);
 
-        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
+        System.out.println(Database.getInstance().getVenueReservationDetails().get(venueCode));
 
         database.removeFromUserReservationDetails(accessId, username);
 
         return true;
-//        System.out.println("Success! You have successfully cancelled the venue");
-
-//        ((Representative) currentUser).removeFromReservationDetails(accessId);
     }
 
     public boolean cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to, String username) {
-        Database.getInstance().removeFromReservationDetails(venueCode, accessId, from, to);
-        System.out.println(Database.getInstance().getReservationDetails().get(venueCode));
+        Database.getInstance().removeFromVenueReservationDetails(venueCode, accessId, from, to);
+        System.out.println(Database.getInstance().getVenueReservationDetails().get(venueCode));
 
         Database.getInstance().removeFromUserReservationDetails(accessId, from, to, username);
 
         return true;
-//        System.out.println("Success! You have successfully cancelled the mentioned dates");
-
-//        ((Representative) currentUser).removeFromReservationDetails(accessId, from, to);
     }
 
-//    public void cancelVenue(int venueCode, int accessId, LocalDate dateToBeCancelled) {
-//        TreeMap<Integer, ArrayList<LocalDate>> reservationDetails = Database.Database.getInstance().getReservationDetails().get(venueCode);
-//        ArrayList<LocalDate> bookedDates = reservationDetails.get(accessId);
-//        bookedDates.remove(dateToBeCancelled);
-//        reservationDetails.put(accessId, bookedDates);
-//        Database.Database.getInstance().addToReservationDetails(venueCode, reservationDetails);
-//        System.out.println(Database.Database.getInstance().getReservationDetails().get(venueCode));
-//        System.out.println("Success! You have successfully cancelled the requested date");
-//
-//        ((Representative) currentUser).removeFromReservationDetails(accessId, dateToBeCancelled, dateToBeCancelled);
-//    }
+    public Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode, String username){
+        Database database = Database.getInstance();
 
-    public Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode, String username) {
-        Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = Database.getInstance().getReservationDetails();
-        ArrayList<LocalDate> reservedDates = (reservationDetails.get(oldVenueCode)).get(accessId);
+        Reservation currentReservation = null;
 
-        // below line should be handled for no elements in reservedDates
-        LocalDate from = reservedDates.get(0), to = reservedDates.get(reservedDates.size() - 1);
+        List<Reservation> reservations = database.getVenueReservationDetails().get(oldVenueCode);
+        for(Reservation reservation: reservations){
+            if(reservation.getAccessId() == accessId){
+                currentReservation = reservation;
+                break;
+            }
+        }
 
-        Reservation newReservation = reserveVenue(newVenueCode, from, to, username);
-        if(newReservation == null)
-            return null;
-        if(cancelVenue(oldVenueCode, accessId, username))
-            return newReservation;
-        return null;
+        currentReservation.setVenueCode(newVenueCode);
+
+//        database.addToVenueReservationDetails(newVenueCode, currentReservation);
+//        database.removeFromVenueReservationDetails(oldVenueCode, accessId);
+
+        updateAvailability(currentReservation);
+        cancelVenue(oldVenueCode, accessId, currentReservation.getUsername());
+
+
+        return currentReservation;
     }
 
     // to generate an access id which is returned to the user
@@ -348,17 +312,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
     public boolean checkUserNameExistence(String username) {
         return Database.getInstance().getUsers().containsKey(username);
-    }
-
-    public boolean isUsernameAccessidAssociated(String username, int accessId) {
-
-        List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
-        for(Reservation reservation: userReservations){
-            if(reservation.getAccessId() == accessId)
-                return true;
-        }
-        return false;
-
     }
 
     public Reservation getReservationDetails(String username, int accessId) {

@@ -122,66 +122,60 @@ public final class Database {
         }
     };
 
-    // This field stores the reservation details of the all the venues
-    // Integer - venue code
-    // LocalDate - dates reserved
-    // String - reserved by whom
-    private Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> reservationDetails = new TreeMap<Integer, TreeMap<Integer, ArrayList<LocalDate>>>(){
+    public Map<Integer, List<Reservation>> getVenueReservationDetails() {
+        return DefensiveCopyHelper.getDefensiveCopyMap(venueReservationDetails);
+    }
+
+    private Map<Integer, List<Reservation>> venueReservationDetails = new HashMap<Integer, List<Reservation>>(){
         {
-            put(1, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 1, new ArrayList(){
+            put(
+                    1,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("12-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
-            put(2, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 2, new ArrayList(){
+                    }
+            );
+            put(
+                    2,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("13-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
-            put(3, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 3, new ArrayList(){
+                    }
+            );
+            put(
+                    3,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("14-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
-            put(4, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 4, new ArrayList(){
+                    }
+            );
+            put(
+                    4,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
-            put(5, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 5, new ArrayList(){
+                    }
+            );
+            put(
+                    5,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("16-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
-            put(6, new TreeMap<Integer, ArrayList<LocalDate>>(){
-                {
-                    put(Integer.MAX_VALUE - 6, new ArrayList(){
+                    }
+            );
+            put(
+                    6,
+                    new ArrayList(){
                         {
-                            add(LocalDate.parse("17-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            add(new Reservation());
                         }
-                    });
-                }
-            });
+                    }
+            );
         }
     };
 
@@ -233,10 +227,6 @@ public final class Database {
         return DefensiveCopyHelper.getDefensiveCopyMap(venues);
     }
 
-    public Map<Integer, TreeMap<Integer, ArrayList<LocalDate>>> getReservationDetails() {
-        return DefensiveCopyHelper.getDefensiveCopyMap(reservationDetails);
-    }
-
     public void removeFromUserCredentials(String username) {
         userCredentials.remove(username);
     }
@@ -253,28 +243,8 @@ public final class Database {
         userCredentials.put(username, password);
     }
 
-    public void addToReservationDetails(int venueCode, TreeMap<Integer, ArrayList<LocalDate>> newReservationDetails) {
-        TreeMap<Integer, ArrayList<LocalDate>> givenVenueReservationDetails = reservationDetails.get(venueCode);
-        givenVenueReservationDetails.putAll(newReservationDetails);
-        reservationDetails.put(venueCode, givenVenueReservationDetails);
-    }
-
     public void addToAccessIdUserMap(int accessId, String username) {
         accessIdUserMap.put(accessId, username);
-    }
-
-    public void removeFromReservationDetails(int venueCode, int accessId) {
-        reservationDetails.get(venueCode).remove(accessId);
-    }
-
-    public void removeFromReservationDetails(int venueCode, int accessId, LocalDate from, LocalDate to) {
-        TreeMap<Integer, ArrayList<LocalDate>> tempReservationDetails = reservationDetails.get(venueCode);
-        ArrayList<LocalDate> bookedDates = tempReservationDetails.get(accessId);
-        for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-            bookedDates.remove(date);
-        }
-        tempReservationDetails.put(accessId, bookedDates);
-        reservationDetails.put(venueCode, tempReservationDetails);
     }
 
     public List<Reservation> getUserReservation(String username) {
@@ -326,6 +296,53 @@ public final class Database {
             // removing the reservation from the list
             if(desiredReservation.getReservedDates().size() == 0)
                 removeFromUserReservationDetails(accessId, userName);
+            return true;
+        }
+        return false;
+    }
+
+    public void addToVenueReservationDetails(int venueCode, Reservation reservationDetails) {
+        if(venueReservationDetails.containsKey(venueCode))
+            venueReservationDetails.get(venueCode).add(reservationDetails);
+        else{
+            ArrayList<Reservation> reservationList = new ArrayList<>();
+            reservationList.add(reservationDetails);
+            venueReservationDetails.put(venueCode, reservationList);
+        }
+    }
+
+    public boolean removeFromVenueReservationDetails(int venueCode, int accessId) {
+        List<Reservation> reservations = venueReservationDetails.get(venueCode);
+        int removeIndex = -1;
+        for(int index = 0; index < reservations.size(); index++){
+            if(reservations.get(index).getAccessId() == accessId){
+                removeIndex = index;
+                break;
+            }
+        }
+        venueReservationDetails.get(venueCode).remove(removeIndex);
+        return true;
+    }
+
+    public boolean removeFromVenueReservationDetails(int venueCode, int accessId, LocalDate fromDate, LocalDate toDate) {
+        List<Reservation> reservations = venueReservationDetails.get(venueCode);
+        Reservation desiredReservation = null;
+        for(Reservation reservation: reservations){
+            if(reservation.getAccessId() == accessId){
+                desiredReservation = reservation;
+                break;
+            }
+        }
+
+        // if the given access id does not match with that of the user reservations
+        // desiredReservation will be null
+        if(desiredReservation != null) {
+            desiredReservation.removeDates(fromDate, toDate);
+
+            // if the reservation dates becomes empty after removing the dates from the reservation
+            // removing the reservation from the list
+            if(desiredReservation.getReservedDates().size() == 0)
+                removeFromVenueReservationDetails(venueCode, accessId);
             return true;
         }
         return false;

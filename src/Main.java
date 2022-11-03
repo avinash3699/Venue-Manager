@@ -96,6 +96,7 @@ public final class Main {
                     }
                     continue;
                 case 2:
+                    System.out.println("Exiting....");
                     System.exit(1);
                     break;
                 default:
@@ -321,14 +322,6 @@ public final class Main {
 
         while(true) {
             accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
-
-            // check whether the user is authorized to cancel the entered access id
-//            boolean isUsernameAccessidAssociated = venueManager.isUsernameAccessidAssociated(currentUser.getUsername(), accessId);
-//            if(isUsernameAccessidAssociated){}
-//            else{
-//                System.out.println("OOPs! Access ID invalid. Please try again");
-//                continue;
-//            }
 
             Reservation reservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
             if (reservationDetails == null){
