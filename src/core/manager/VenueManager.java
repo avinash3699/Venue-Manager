@@ -8,6 +8,7 @@ import core.venue.Venue;
 import database.Database;
 import helper.DefensiveCopyHelper;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -261,8 +262,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return null;
     }
 
-    //functions
-
     // to generate an access id which is returned to the user
     // an access id like a key to the venue for the reserved dates
     private int generateUniqueAccessId() {
@@ -349,5 +348,54 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
     public boolean checkUserNameExistence(String username) {
         return Database.getInstance().getUsers().containsKey(username);
+    }
+
+    public boolean isUsernameAccessidAssociated(String username, int accessId) {
+
+        List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
+        for(Reservation reservation: userReservations){
+            if(reservation.getAccessId() == accessId)
+                return true;
+        }
+        return false;
+
+    }
+
+    public Reservation getReservationDetails(String username, int accessId) {
+
+        List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
+        for(Reservation reservation: userReservations){
+            if(reservation.getAccessId() == accessId)
+                return reservation;
+        }
+        return null;
+
+    }
+
+    public boolean areValidDates(int accessId, LocalDate from, LocalDate to, String username) {
+        List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
+        for(Reservation reservation: userReservations){
+            if(reservation.getAccessId() == accessId){
+                List<LocalDate> reservedDates = reservation.getReservedDates();
+                for(LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)){
+                    if(reservedDates.contains(date)){}
+                    else
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidDate(int accessId, LocalDate dateToBeCancelled, String username) {
+        List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
+        boolean isValidDate = false;
+        for(Reservation reservation: userReservations){
+            if(reservation.getAccessId() == accessId){
+                List<LocalDate> reservedDates = reservation.getReservedDates();
+                isValidDate = reservedDates.contains(dateToBeCancelled);
+            }
+        }
+        return isValidDate;
     }
 }

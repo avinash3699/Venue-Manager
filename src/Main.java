@@ -185,26 +185,36 @@ public final class Main {
                 else
                     System.out.println("Username doesn't exists. Please try again\n");
             }
-            System.out.println(Choices.viewUserDetailsChoices);
-            switch(InputHelper.getIntegerInput("Enter choice: ")){
-                case 1:
-                    Map<String, String> personalDetails = ((Admin) currentUser).getOtherUserPersonalDetails(username);
-                    for (String key : personalDetails.keySet()) {
-                        System.out.printf("%s: %s\n", key, personalDetails.get(key));
-                    }
-                    System.out.println();
-                    break;
-                case 2:
-                    List<Reservation> registrationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
-                    for(Reservation reservation: registrationDetails){
-                        for(String key: reservation.getMap().keySet()){
-                            System.out.println(key + ": " + reservation.getMap().get(key));
+
+            while (true) {
+                System.out.println("\nUser: " + username);
+                System.out.println(Choices.viewUserDetailsChoices);
+                switch (InputHelper.getIntegerInput("Enter choice: ")) {
+                    case 1:
+                        Map<String, String> personalDetails = ((Admin) currentUser).getOtherUserPersonalDetails(username);
+                        for (String key : personalDetails.keySet()) {
+                            System.out.printf("%s: %s\n", key, personalDetails.get(key));
                         }
                         System.out.println();
-                    }
-                    break;
-                default:
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                        break;
+                    case 2:
+                        List<Reservation> reservationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
+                        if(reservationDetails.size() == 0){
+                            System.out.println("The user doesn't have any current reservations.");
+                            return;
+                        }
+                        for (Reservation reservation : reservationDetails) {
+                            for (String key : reservation.getMap().keySet()) {
+                                System.out.println(key + ": " + reservation.getMap().get(key));
+                            }
+                            System.out.println();
+                        }
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                }
             }
         }
         else
@@ -241,9 +251,11 @@ public final class Main {
                 else
                     System.out.println("Username doesn't exists. Please try again\n");
             }
-            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
+//            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
+            char confirmation1 = InputHelper.getConfirmationInput("Are you sure? You want to remove " + username + "? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
-                confirmation2 = InputHelper.getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
+//                confirmation2 = InputHelper.getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
+                confirmation2 = InputHelper.getConfirmationInput("All the details of the User will be deleted. Are you sure? (Y/N): ");
                 if(confirmation2 == 'Y' || confirmation2 == 'y'){
                     System.out.println(
                             ((Admin) currentUser).removeUser(username)?
@@ -278,16 +290,28 @@ public final class Main {
     }
 
     private static void manageVenueChange() {
-        accessId = InputHelper.getAccessIdInput();
-        int oldVenueCode = InputHelper.getVenueCodeInput("Enter Venue Code: "),
-            newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
-        Reservation reservationDetails = currentUser.changeVenue(oldVenueCode, accessId, newVenueCode);
-        if(reservationDetails == null){
+        accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
+
+        Reservation currentReservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
+        if (currentReservationDetails == null){
+            System.out.println("\nOOPs! Access ID invalid. Please try again");
+            return;
+        }
+        else{
+            System.out.println("\nYour reservation details for given access id:");
+            for(String key: currentReservationDetails.getMap().keySet()){
+                System.out.println(key + ": " + currentReservationDetails.getMap().get(key));
+            }
+        }
+
+        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
+        Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
+        if(newReservationDetails == null){
             System.out.println("Sorry! The venue you requested is already reserved");
         }
         else{
-            System.out.println("Hurray!! You have changed your venue successfully.\nNew Venue: " + reservationDetails.getVenueCode());
-            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+            System.out.println("Hurray!! You have changed your venue successfully.\nNew Venue: " + newReservationDetails.getVenueCode());
+            System.out.println("Your access ID is: " + newReservationDetails.getAccessId());
         }
     }
 
@@ -296,8 +320,38 @@ public final class Main {
         boolean isCancelled;
 
         while(true) {
-            accessId = InputHelper.getAccessIdInput();
-            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+            accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
+
+            // check whether the user is authorized to cancel the entered access id
+//            boolean isUsernameAccessidAssociated = venueManager.isUsernameAccessidAssociated(currentUser.getUsername(), accessId);
+//            if(isUsernameAccessidAssociated){}
+//            else{
+//                System.out.println("OOPs! Access ID invalid. Please try again");
+//                continue;
+//            }
+
+            Reservation reservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
+            if (reservationDetails == null){
+                System.out.println("\nOOPs! Access ID invalid. Please try again");
+                continue;
+            }
+            else{
+                System.out.println("\nYour reservation details for given access id:");
+                for(String key: reservationDetails.getMap().keySet()){
+                    System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                }
+            }
+
+//            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
+            char confirmation1 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
+            if(confirmation1 == 'Y' || confirmation1 == 'y'){}
+            else{
+                System.out.println("Cancellation process stopped!");
+                return;
+            }
+
+//            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+            venueCode = reservationDetails.getVenueCode();
 
             innerLoop:
             while (true) {
@@ -307,30 +361,79 @@ public final class Main {
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case 1:
-                        isCancelled = currentUser.cancelVenue(venueCode, accessId);
-                        if(isCancelled)
-                            System.out.println("Success! You have successfully cancelled the venue");
-                        else
-                            System.out.println("Sorry! Cancellation failed. Please try again");
+
+//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
+                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        if(confirmation2 == 'Y' || confirmation2 == 'y') {
+                            isCancelled = currentUser.cancelVenue(venueCode, accessId);
+
+                            if (isCancelled)
+                                System.out.println("Success! You have successfully cancelled the venue");
+                            else
+                                System.out.println("Sorry! Cancellation failed. Please try again");
+                        }
+                        else{
+                            System.out.println("Cancellation process stopped!");
+                            return;
+                        }
                         return;
                     case 2:
                         dates = InputHelper.getFromToDates();
                         from = dates[0];
                         to = dates[1];
 
-                        isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
-                        if(isCancelled)
-                            System.out.println("Success! You have successfully cancelled the mentioned dates");
-                        else
-                            System.out.println("Sorry! Cancellation failed. Please try again");
+                        // it checks whether the entered from and to dates are in the reserved dates of the reservation object
+                        // if any of the date is not present cancellation process is stopped
+                        boolean isValidDates = venueManager.areValidDates(accessId, from, to, currentUser.getUsername());
+
+                        if(isValidDates){}
+                        else{
+                            System.out.println("All/some dates are not in your reservation. Please check your reservation details and try again");
+                            return;
+                        }
+
+//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
+                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        if(confirmation2 == 'Y' || confirmation2 == 'y') {
+                            isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
+
+                            if(isCancelled)
+                                System.out.println("Success! You have successfully cancelled the mentioned dates");
+                            else
+                                System.out.println("Sorry! Cancellation failed. Please try again");
+                        }
+                        else{
+                            System.out.println("Cancellation process stopped!");
+                            return;
+                        }
+
                         return;
                     case 3:
                         LocalDate dateToBeCancelled = InputHelper.getDateInput("Enter the date to be cancelled(DD-MM-YYYY): ");
-                        isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
-                        if(isCancelled)
-                            System.out.println("Success! You have successfully cancelled the requested date");
-                        else
-                            System.out.println("Sorry! Cancellation failed. Please try again");
+
+                        boolean isValidDate = venueManager.isValidDate(accessId, dateToBeCancelled, currentUser.getUsername());
+
+                        if(isValidDate){}
+                        else{
+                            System.out.println("The date you entered is not in your reservation. Please check your reservation details and try again");
+                            return;
+                        }
+
+//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
+                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        if(confirmation2 == 'Y' || confirmation2 == 'y') {
+                            isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
+
+                            if(isCancelled)
+                                System.out.println("Success! You have successfully cancelled the requested date");
+                            else
+                                System.out.println("Sorry! Cancellation failed. Please try again");
+                        }
+                        else{
+                            System.out.println("Cancellation process stopped!");
+                            return;
+                        }
+
                         return;
                     case 4:
                         break innerLoop;

@@ -70,7 +70,7 @@ public final class Choices {
             "View User\n" +
             "1. Personal Details\n" +
             "2. Registration Details\n" +
-            "3. GO TO VENUE MANAGER CONSOLE";
+            "3. GO TO VENUE MANAGER CONSOLE\n";
 
     public static final String modifyPersonalDetailsChoices =
             "Modify\n" +

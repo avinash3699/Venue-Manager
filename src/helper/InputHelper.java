@@ -11,26 +11,37 @@ import java.util.Scanner;
 public class InputHelper {
 
     // function to get string input with a hint text
+    // it simply displays the input text and get the input of type string and return it
     public static String getStringInput(String text){
-        System.out.print(text);
-        return new Scanner(System.in).nextLine();
-    }
-
-    public static int getAccessIdInput() {
-        int accessId;
-        System.out.println("\n---------");
-
-        while(true) {
-            accessId = getIntegerInput("Enter Access Id: ");
-            if((Database.getInstance().getAccessIds()).contains(accessId))
-                break;
-            else
-            {
+        String input;
+        while (true){
+            System.out.print(text);
+            input = new Scanner(System.in).nextLine();
+            if(input.equals("")){
                 System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Access Id. Please try again!\n");
+                System.out.println("Empty input. Please try again\n");
+            }
+            else{
+                break;
             }
         }
-        return accessId;
+        return input;
+    }
+
+    public static char getConfirmationInput(String text){
+        String input;
+        while(true) {
+            input = getStringInput(text);
+            if ( (input.length() != 1) || (!"YNyn".contains(input)) ) {
+                System.out.println("\n---------");
+                System.out.println("Please enter a valid character.(Y/N) \n");
+            }
+            else
+                break;
+        }
+
+        return input.charAt(0);
+
     }
 
     public static int getVenueCodeInput(String hintText) {

@@ -13,11 +13,6 @@ public class Reservation {
     private final int accessId;
     private final String username;
     private int venueCode;
-
-    public List<LocalDate> getReservedDates() {
-        return DefensiveCopyHelper.getDefensiveCopyList(reservedDates);
-    }
-
     private List<LocalDate> reservedDates;
 
     public Reservation(int accessId, String username, int venueCode, LocalDate fromDate, LocalDate toDate) {
@@ -35,7 +30,7 @@ public class Reservation {
             {
                 put("Venue Code", String.valueOf(venueCode));
                 put("Access Id", String.valueOf(accessId));
-                put("Reserved Dates", String.valueOf(reservedDates));
+                put("Reserved Date(s)", String.valueOf(reservedDates));
             }
         };
     }
@@ -48,8 +43,8 @@ public class Reservation {
         return venueCode;
     }
 
-    public void setVenueCode(int venueCode) {
-        this.venueCode = venueCode;
+    public List<LocalDate> getReservedDates() {
+        return DefensiveCopyHelper.getDefensiveCopyList(reservedDates);
     }
 
     public void removeDates(LocalDate fromDate, LocalDate toDate) {
