@@ -5,6 +5,7 @@ import core.user.Admin;
 import core.user.User;
 import database.Database;
 import helper.Choices;
+import helper.DateHelper;
 import helper.InputHelper;
 
 import java.time.LocalDate;
@@ -92,6 +93,9 @@ public final class Main {
                                 case 14:
                                     manageVenueUpdate();
                                     break;
+                                case 15:
+                                    manageVenueRemoval();
+                                    break;
                                 default:
                                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
                             }
@@ -109,6 +113,14 @@ public final class Main {
             break;
         }
 
+    }
+
+    private static void manageVenueRemoval() {
+        if(currentUser instanceof Admin){
+
+        }
+        else
+            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     private static void manageChangeUserPassword() {
@@ -130,6 +142,8 @@ public final class Main {
             }
 
         }
+        else
+            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     private static void managePersonalDetailsModification() {
@@ -200,7 +214,17 @@ public final class Main {
 
     private static void manageVenueAddition() {
         if(currentUser instanceof Admin){
-
+            System.out.println(Choices.addVenueChoices);
+            switch (InputHelper.getIntegerInput("Enter Choice: ")){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            }
         }
         else
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -488,7 +512,10 @@ public final class Main {
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
-                System.out.printf("From: %s\nTo: %s\n\n", from, to);
+                System.out.printf("From: %s\nTo: %s\n\n",
+                        DateHelper.getFormattedDate(from),
+                        DateHelper.getFormattedDate(to)
+                );
 
                 System.out.println(Choices.reserveVenueChoices);
 
@@ -500,8 +527,11 @@ public final class Main {
                             System.out.println("Sorry! No Venues Available based on your request");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
-                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            for(String key: reservationDetails.getMap().keySet()){
+                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                            }
+                            System.out.println();
                         }
                         break;
                     case 2:
@@ -510,8 +540,11 @@ public final class Main {
                             System.out.println("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
-                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            for(String key: reservationDetails.getMap().keySet()){
+                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                            }
+                            System.out.println();
                         }
                         break;
                     case 3:
@@ -520,8 +553,11 @@ public final class Main {
                             System.out.println("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
-                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            for(String key: reservationDetails.getMap().keySet()){
+                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                            }
+                            System.out.println();
                         }
                         break;
                     case 4:
@@ -531,8 +567,11 @@ public final class Main {
                             System.out.println("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.\nVenue: " + reservationDetails.getVenueCode());
-                            System.out.println("Your access ID is: " + reservationDetails.getAccessId());
+                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            for(String key: reservationDetails.getMap().keySet()){
+                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                            }
+                            System.out.println();
                         }
                         break;
                     case 5:
@@ -559,7 +598,10 @@ public final class Main {
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
-                System.out.printf("From: %s\nTo: %s\n\n", from, to);
+                System.out.printf("From: %s\nTo: %s\n\n",
+                        DateHelper.getFormattedDate(from),
+                        DateHelper.getFormattedDate(to)
+                );
                 System.out.println(Choices.checkAvailabilityChoices);
 
                 choice = InputHelper.getIntegerInput("Enter choice: ");

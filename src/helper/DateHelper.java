@@ -2,6 +2,7 @@ package helper;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class DateHelper {
 
@@ -17,6 +18,10 @@ public class DateHelper {
     public static boolean isCurrentDate(LocalDate inputDate) {
         LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
         return inputDate.isEqual(localDate);
+    }
+
+    public static String getFormattedDate(LocalDate date){
+        return date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
 }

@@ -29,7 +29,8 @@ public final class Choices {
             "11. Add User\n" +
             "12. Remove User\n" +
             "13. Add Venue\n" +
-            "14. Update Venues\n";
+            "14. Update Venue\n" +
+            "15. Remove Venue";
 
     public static final String displayVenueChoices =
             "Display details of\n" +
@@ -78,4 +79,10 @@ public final class Choices {
             "1. Email Id\n" +
             "2. Phone Number\n" +
             "3. Password\n";
+
+    public static final String addVenueChoices =
+            "Venue Type\n" +
+            "1. Conference Room\n" +
+            "2. Auditorium\n" +
+            "3. Hands-on training centre\n";
 }
