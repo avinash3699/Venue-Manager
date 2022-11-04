@@ -106,6 +106,6 @@ public class Admin extends User{
     }
 
     public List<Reservation> getOtherUserRegistrationDetails(String username){
-        return venueManager.getOtherUserRegistrationDetails(username);
+        return venueManager.getOtherUserReservationDetails(username);
     }
 }

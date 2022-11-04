@@ -22,7 +22,7 @@ public abstract class Venue {
         this.venueType = venueType;
     }
 
-    // method to return the details of a venue
+    // method to return the details of the venue
     public Map<String, String> getVenueDetails(){
         return new LinkedHashMap<String, String>(){
             {
@@ -38,8 +38,6 @@ public abstract class Venue {
         };
     }
 
-    protected abstract Map<String, String> getAdditionalVenueDetails();
-
     public VenueType getType() {
         return this.venueType;
     }
@@ -47,4 +45,6 @@ public abstract class Venue {
     public String getVenueName(){
         return venueName;
     }
+
+    protected abstract Map<String, String> getAdditionalVenueDetails();
 }

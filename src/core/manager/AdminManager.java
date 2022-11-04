@@ -13,6 +13,6 @@ public interface AdminManager extends RepresentativeManager {
 
     Map<String, String> getOtherUserPersonalDetails(String username);
 
-    List<Reservation> getOtherUserRegistrationDetails(String username);
+    List<Reservation> getOtherUserReservationDetails(String username);
 
 }
