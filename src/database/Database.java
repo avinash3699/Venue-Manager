@@ -347,4 +347,9 @@ public final class Database {
         }
         return false;
     }
+
+    public boolean changeUserPassword(String username, String newPassword) {
+        userCredentials.put(username, newPassword);
+        return true;
+    }
 }

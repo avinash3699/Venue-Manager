@@ -351,4 +351,8 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
         return isValidDate;
     }
+
+    public boolean changeUserPassword(String username, String newPassword) {
+        return Database.getInstance().changeUserPassword(username, newPassword);
+    }
 }

@@ -79,14 +79,17 @@ public final class Main {
                                     managerViewUserDetails();
                                     break;
                                 case 10:
-                                    manageUserAddition();
+                                    manageChangeUserPassword();
                                     break;
                                 case 11:
-                                    manageUserDeletion();
+                                    manageUserAddition();
                                     break;
                                 case 12:
-                                    manageVenueAddition();
+                                    manageUserDeletion();
+                                    break;
                                 case 13:
+                                    manageVenueAddition();
+                                case 14:
                                     manageVenueUpdate();
                                     break;
                                 default:
@@ -108,6 +111,27 @@ public final class Main {
 
     }
 
+    private static void manageChangeUserPassword() {
+        if(currentUser instanceof Admin) {
+            String username;
+            while (true) {
+                username = InputHelper.getStringInput("Enter Username: ");
+                if (venueManager.checkUserNameExistence(username))
+                    break;
+                else
+                    System.out.println("Username doesn't exists. Please try again\n");
+            }
+
+            String newPassword = InputHelper.getStringInput("Enter new password: ");
+            if (venueManager.changeUserPassword(username, newPassword))
+                System.out.println("Password changed successfully!");
+            else{
+                System.out.println("OOPs. Change Password failed. Please try again");
+            }
+
+        }
+    }
+
     private static void managePersonalDetailsModification() {
         System.out.println("\n---------");
         System.out.println(Choices.modifyPersonalDetailsChoices);
@@ -127,6 +151,20 @@ public final class Main {
                     "Phone Number modified successfully!":
                     "Cannot modify Phone Number. Please try again"
                 );
+                break;
+            case 3:
+                String password = InputHelper.getStringInput("Enter your current password: ");
+                User user = venueManager.authenticate(currentUser.getUsername(), password);
+                if(user == null){
+                    System.out.println("Sorry! Incorrect password. Please try again");
+                    managePersonalDetailsModification();
+                }
+                else{
+                    String newPassword = InputHelper.getStringInput("Enter new password: ");
+                    if(venueManager.changeUserPassword(currentUser.getUsername(), newPassword)){
+                        System.out.println("Password changed successfully!");
+                    }
+                }
                 break;
             default:
                 System.out.println("You have entered an invalid username or password. Please try again\n");

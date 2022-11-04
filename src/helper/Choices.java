@@ -25,10 +25,11 @@ public final class Choices {
     public static final String adminChoices =
             "Admin Operations\n" +
             "9.  View User Details\n" +
-            "10. Add User\n" +
-            "11. Remove User\n" +
-            "12. Add Venue\n" +
-            "13. Update Venues\n";
+            "10. Change User Password\n" +
+            "11. Add User\n" +
+            "12. Remove User\n" +
+            "13. Add Venue\n" +
+            "14. Update Venues\n";
 
     public static final String displayVenueChoices =
             "Display details of\n" +
@@ -75,5 +76,6 @@ public final class Choices {
     public static final String modifyPersonalDetailsChoices =
             "Modify\n" +
             "1. Email Id\n" +
-            "2. Phone Number\n";
+            "2. Phone Number\n" +
+            "3. Password\n";
 }
