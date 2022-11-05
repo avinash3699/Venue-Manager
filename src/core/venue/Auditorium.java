@@ -14,6 +14,7 @@ public class Auditorium extends Venue{
     private boolean isMicStandAvailable;
     private String noOfDisplayScreen;
 
+    //TODO initialize hall properties with their details
     private Speaker speaker;
     private ArrayList<Microphone> microphone;
 

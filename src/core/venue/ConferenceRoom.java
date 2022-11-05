@@ -11,6 +11,7 @@ public class ConferenceRoom extends Venue{
     // Instance variables
     private boolean isWhiteBoardAvailable;
 
+    //TODO initialize hall properties with their details
     private Projector projector;
     private Ethernet ethernet;
 

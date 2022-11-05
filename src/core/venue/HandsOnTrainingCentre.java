@@ -14,6 +14,7 @@ public class HandsOnTrainingCentre extends Venue{
     // Instance variables
     private boolean isMicStandAvailable;
 
+    //TODO initialize hall properties with their details
     private Projector projector;
     private Ethernet ethernet;
     private ArrayList<Microphone> microphone;

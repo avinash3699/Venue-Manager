@@ -157,7 +157,7 @@ public final class Main {
                     currentUser.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
-                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
                     currentUser.displayVenueDetails(venueCode);
                     break;
                 case 6:
@@ -211,7 +211,7 @@ public final class Main {
                         currentUser.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
                         boolean availability = currentUser.checkAvailability(venueCode, from, to);
                         venueManager.printVenueAvailability(venueCode, availability);
                         break;
@@ -287,7 +287,7 @@ public final class Main {
                         }
                         break;
                     case 4:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
                         reservationDetails = currentUser.reserveVenue(venueCode, from, to);
                         if(reservationDetails == null){
                             System.out.println("Sorry! The venue you requested is already reserved");
@@ -451,7 +451,7 @@ public final class Main {
             }
         }
 
-        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
+        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ", venueManager.getVenuesCount());
         Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
         if(newReservationDetails == null){
             System.out.println("Sorry! The venue you requested is already reserved");

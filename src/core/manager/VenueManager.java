@@ -7,8 +7,8 @@ import core.user.User;
 import core.venue.Venue;
 import database.Database;
 import helper.DefensiveCopyHelper;
-import sun.util.resources.cldr.ar.CalendarData_ar_QA;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -588,4 +588,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         );
     }
 
+    public int getVenuesCount() {
+        return Database.getInstance().getVenuesCount();
+    }
 }

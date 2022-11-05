@@ -8,7 +8,7 @@ public abstract class Venue {
     // instance variables
     private String venueName, venueCode, location, seatingCapacity;
     private boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
-    private VenueType venueType;
+    private final VenueType venueType;
 
     // constructor
     protected Venue(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, VenueType venueType) {
