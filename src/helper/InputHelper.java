@@ -36,7 +36,7 @@ public class InputHelper {
     // function to get a valid character input for confirmation
     // Valid characters are "Y,y,N,n"
     // it prompts the user to enter a valid character, until a one been entered
-    public static char getConfirmationInput(String text){
+    public static char getYesOrNoCharacterInput(String text){
         String input;
         while(true) {
             input = getStringInput(text);

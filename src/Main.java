@@ -1,6 +1,5 @@
 import core.manager.VenueManager;
-import core.venue.Reservation;
-import core.venue.VenueType;
+import core.venue.*;
 import core.user.Admin;
 import core.user.User;
 import helper.Choices;
@@ -89,6 +88,7 @@ public final class Main {
                                     break;
                                 case 13:
                                     manageVenueAddition();
+                                    break;
                                 case 14:
                                     manageVenueUpdate();
                                     break;
@@ -157,7 +157,12 @@ public final class Main {
                     currentUser.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
-                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
+                    venueCode = InputHelper.getIntegerInput("\nEnter Venue Code: ");
+                    if(venueManager.isValidVenueCode(venueCode)){}
+                    else{
+                        System.out.println("Invalid Venue Code. Please try again");
+                        return;
+                    }
                     currentUser.displayVenueDetails(venueCode);
                     break;
                 case 6:
@@ -332,7 +337,7 @@ public final class Main {
             }
 
 //            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
-            char confirmation1 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
+            char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){}
             else{
                 System.out.println("Cancellation process stopped!");
@@ -352,7 +357,7 @@ public final class Main {
                     case 1:
 
 //                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
-                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId);
 
@@ -382,7 +387,7 @@ public final class Main {
                         }
 
 //                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
-                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
 
@@ -409,7 +414,7 @@ public final class Main {
                         }
 
 //                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
-                        confirmation2 = InputHelper.getConfirmationInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
 
@@ -641,10 +646,10 @@ public final class Main {
                     System.out.println("Username doesn't exists. Please try again\n");
             }
 //            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
-            char confirmation1 = InputHelper.getConfirmationInput("Are you sure? You want to remove " + username + "? (Y/N): "), confirmation2;
+            char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to remove " + username + "? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
 //                confirmation2 = InputHelper.getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
-                confirmation2 = InputHelper.getConfirmationInput("All the details of the User will be deleted. Are you sure? (Y/N): ");
+                confirmation2 = InputHelper.getYesOrNoCharacterInput("All the details of the User will be deleted. Are you sure? (Y/N): ");
                 if(confirmation2 == 'Y' || confirmation2 == 'y'){
                     System.out.println(
                             ((Admin) currentUser).removeUser(username)?
@@ -664,10 +669,13 @@ public final class Main {
             System.out.println(Choices.addVenueChoices);
             switch (InputHelper.getIntegerInput("Enter Choice: ")){
                 case 1:
+                    getConferenceRoomDetails();
                     break;
                 case 2:
+                    getAuditoriumDetails();
                     break;
                 case 3:
+                    getHandsonTrainingCentreDetails();
                     break;
                 default:
                     System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -675,6 +683,103 @@ public final class Main {
         }
         else
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+    }
+
+    private static void getConferenceRoomDetails() {
+        System.out.println("Enter the following venue details");
+        String venueName = InputHelper.getStringInput("Venue Name: "),
+                location = InputHelper.getStringInput("Location: "),
+                seatingCapacity = InputHelper.getStringInput("Seating Capacity: ");
+        char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
+                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
+                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
+                isWhiteBoardAvailable = InputHelper.getYesOrNoCharacterInput("Is White Board Available? (Y/N): ");
+
+        Venue newVenue = new ConferenceRoom(
+                venueName,
+                venueManager.getNewVenueCode(),
+                location,
+                seatingCapacity,
+                getBoolFromYesOrNo(isAirConditioned),
+                getBoolFromYesOrNo(isWifiAvailable),
+                getBoolFromYesOrNo(isChargingPortsAvailable),
+                getBoolFromYesOrNo(isWhiteBoardAvailable)
+        );
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        System.out.println(
+                (isVenueAdded)?
+                        "Venue Added Successfully":
+                        "Cannot add Venue, Please try again"
+        );
+
+    }
+
+    private static void getAuditoriumDetails() {
+        System.out.println("Enter the following venue details");
+        String venueName = InputHelper.getStringInput("Venue Name: "),
+                location = InputHelper.getStringInput("Location: "),
+                seatingCapacity = InputHelper.getStringInput("Seating Capacity: "),
+                noOfDisplayScreen = InputHelper.getStringInput("No. of display screens: ");
+        char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
+                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
+                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
+                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
+
+        Venue newVenue = new Auditorium(
+                venueName,
+                venueManager.getNewVenueCode(),
+                location,
+                seatingCapacity,
+                getBoolFromYesOrNo(isAirConditioned),
+                getBoolFromYesOrNo(isWifiAvailable),
+                getBoolFromYesOrNo(isChargingPortsAvailable),
+                getBoolFromYesOrNo(isMicStandAvailable),
+                noOfDisplayScreen
+        );
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        System.out.println(
+                (isVenueAdded)?
+                        "Venue Added Successfully":
+                        "Cannot add Venue, Please try again"
+        );
+    }
+
+    private static void getHandsonTrainingCentreDetails() {
+        System.out.println("Enter the following venue details");
+        String venueName = InputHelper.getStringInput("Venue Name: "),
+                location = InputHelper.getStringInput("Location: "),
+                seatingCapacity = InputHelper.getStringInput("Seating Capacity: ");
+        char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
+                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
+                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
+                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
+
+        Venue newVenue = new HandsOnTrainingCentre(
+                venueName,
+                venueManager.getNewVenueCode(),
+                location,
+                seatingCapacity,
+                getBoolFromYesOrNo(isAirConditioned),
+                getBoolFromYesOrNo(isWifiAvailable),
+                getBoolFromYesOrNo(isChargingPortsAvailable),
+                getBoolFromYesOrNo(isMicStandAvailable)
+        );
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        System.out.println(
+                (isVenueAdded)?
+                        "Venue Added Successfully":
+                        "Cannot add Venue, Please try again"
+        );
+    }
+
+    private static boolean getBoolFromYesOrNo(char character) {
+        return ( (character == 'Y') || (character == 'y') );
     }
 
     // 14. Update Venue
@@ -689,6 +794,30 @@ public final class Main {
     // 15. Remove Venue
     private static void manageVenueRemoval() {
         if(currentUser instanceof Admin){
+            int venueCode = InputHelper.getIntegerInput("Enter the venue code of the venue you want to remove: ");
+            if(venueManager.isValidVenueCode(venueCode)){}
+            else{
+                System.out.println("Invalid Venue Code. Please try again");
+                return;
+            }
+
+            venueManager.displayVenueDetails(venueCode);
+
+            char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you Sure? You want to remove the venue? (Y/N): " );
+
+            if( (confirmation1 == 'y') || (confirmation1 == 'Y')){}
+            else {
+                System.out.println("Venue Removal Stooped!");
+                return;
+            }
+
+            boolean isVenueRemoved = ((Admin) currentUser).removeVenue(venueCode);
+
+            System.out.println(
+                (isVenueRemoved)?
+                "Removed Venue successfully":
+                "Cannot remove venue. Please try again"
+            );
 
         }
         else

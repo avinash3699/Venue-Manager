@@ -46,5 +46,9 @@ public abstract class Venue {
         return venueName;
     }
 
+    public java.lang.String getVenueCode() {
+        return venueCode;
+    }
+
     protected abstract Map<String, String> getAdditionalVenueDetails();
 }

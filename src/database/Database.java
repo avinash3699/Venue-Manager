@@ -184,7 +184,7 @@ public final class Database {
     private Map<String, List<Reservation>> userReservationDetails = new HashMap<>();
 
     public int getVenuesCount() {
-        return venues.size();
+        return venueCode-1;
     }
 
     public ArrayList<Integer> getAccessIds() {
@@ -225,6 +225,12 @@ public final class Database {
 
     public Map<Integer, Venue> getVenues() {
         return DefensiveCopyHelper.getDefensiveCopyMap(venues);
+    }
+
+    public int getVenueCode() {
+        int tempVenueCode = venueCode;
+        venueCode++;
+        return tempVenueCode;
     }
 
     public void removeFromUserCredentials(String username) {
@@ -352,4 +358,27 @@ public final class Database {
         userCredentials.put(username, newPassword);
         return true;
     }
+
+    public void addVenue(Venue newVenue) {
+        venues.put(Integer.parseInt(newVenue.getVenueCode()), newVenue);
+
+        // inserting an empty arraylist, for the new venue code
+        // else, NPE will be thrown when tried to check the availability of the newly added venues
+        venueReservationDetails.put(Integer.parseInt(newVenue.getVenueCode()), new ArrayList<>());
+    }
+
+    public void removeVenue(int venueCode) {
+        venues.remove(venueCode);
+
+        //TODO - remove the reservation details from 'venueReservationDetails' and 'userReservationDetails'
+        //     - should think whether the reservation details have to be removed when the venue is removed
+    }
+
+    public List<Integer> getVenueCodesList() {
+        List<Integer> venueCodes = new ArrayList();
+        for(int venueCode: venues.keySet())
+            venueCodes.add(venueCode);
+        return venueCodes;
+    }
+
 }

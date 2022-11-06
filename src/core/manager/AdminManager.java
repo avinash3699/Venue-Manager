@@ -1,6 +1,7 @@
 package core.manager;
 
 import core.venue.Reservation;
+import core.venue.Venue;
 
 import java.util.List;
 import java.util.Map;
@@ -14,5 +15,9 @@ public interface AdminManager extends RepresentativeManager {
     Map<String, String> getOtherUserPersonalDetails(String username);
 
     List<Reservation> getOtherUserReservationDetails(String username);
+
+    boolean addVenue(Venue newVenue);
+
+    boolean removeVenue(int venueCode);
 
 }

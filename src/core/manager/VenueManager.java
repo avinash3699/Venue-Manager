@@ -8,7 +8,6 @@ import core.venue.Venue;
 import database.Database;
 import helper.DefensiveCopyHelper;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -541,6 +540,18 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return generatedAccessId;
     }
 
+    @Override
+    public boolean addVenue(Venue newVenue) {
+        Database.getInstance().addVenue(newVenue);
+        return true;
+    }
+
+    @Override
+    public boolean removeVenue(int venueCode) {
+        Database.getInstance().removeVenue(venueCode);
+        return true;
+    }
+
     // This function gets the venue codes of all the available venues as the input.
     // It gets all the venues from the database.
     // It then checks whether the venue is in the available venues list.
@@ -590,5 +601,15 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
     public int getVenuesCount() {
         return Database.getInstance().getVenuesCount();
+    }
+
+    public boolean isValidVenueCode(int venueCode){
+        List<Integer> venueCodesList = Database.getInstance().getVenueCodesList();
+        return venueCodesList.contains(venueCode);
+    }
+
+
+    public String getNewVenueCode() {
+        return String.valueOf(Database.getInstance().getVenueCode());
     }
 }

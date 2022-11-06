@@ -30,7 +30,7 @@ public final class Choices {
             "12. Remove User\n" +
             "13. Add Venue\n" +
             "14. Update Venue\n" +
-            "15. Remove Venue";
+            "15. Remove Venue\n";
 
     public static final String displayVenueChoices =
             "Display details of\n" +

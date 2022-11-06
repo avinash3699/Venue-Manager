@@ -2,6 +2,7 @@ package core.user;
 
 import core.manager.AdminManager;
 import core.venue.Reservation;
+import core.venue.Venue;
 import core.venue.VenueType;
 
 import java.time.LocalDate;
@@ -107,5 +108,13 @@ public class Admin extends User{
 
     public List<Reservation> getOtherUserRegistrationDetails(String username){
         return venueManager.getOtherUserReservationDetails(username);
+    }
+
+    public boolean addVenue(Venue newVenue){
+        return venueManager.addVenue(newVenue);
+    }
+
+    public boolean removeVenue(int venueCode){
+        return venueManager.removeVenue(venueCode);
     }
 }
