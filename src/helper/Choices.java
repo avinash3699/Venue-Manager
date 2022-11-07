@@ -85,4 +85,9 @@ public final class Choices {
             "1. Conference Room\n" +
             "2. Auditorium\n" +
             "3. Hands-on training centre\n";
+
+    public static final String updateVenueChoices =
+            "Update\n" +
+            "1. Venue Name\n" +
+            "2. Seating Capacity\n";
 }

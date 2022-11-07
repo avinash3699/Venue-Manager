@@ -5,9 +5,11 @@ import core.venue.VenueType;
 import core.user.Representative;
 import core.user.User;
 import core.venue.Venue;
+import core.venue.VenueUpdate;
 import database.Database;
 import helper.DefensiveCopyHelper;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -530,7 +532,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return getReservationDetails(username);
     }
 
-    // This function generates an unique 'access id'
+    // This function generates a unique 'access id'
     // It is returned to the user as a token of successful registration
     // An 'access id' like a key to the venue for the reserved dates
     private int generateUniqueAccessId() {
@@ -550,6 +552,11 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     public boolean removeVenue(int venueCode) {
         Database.getInstance().removeVenue(venueCode);
         return true;
+    }
+
+    @Override
+    public boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption) {
+        return Database.getInstance().updateVenue(venueCode, newValue, updateOption);
     }
 
     // This function gets the venue codes of all the available venues as the input.
@@ -610,6 +617,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
 
     public String getNewVenueCode() {
-        return String.valueOf(Database.getInstance().getVenueCode());
+        return String.valueOf(Database.getInstance().getNewVenueCode());
     }
 }

@@ -157,12 +157,7 @@ public final class Main {
                     currentUser.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
-                    venueCode = InputHelper.getIntegerInput("\nEnter Venue Code: ");
-                    if(venueManager.isValidVenueCode(venueCode)){}
-                    else{
-                        System.out.println("Invalid Venue Code. Please try again");
-                        return;
-                    }
+                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                     currentUser.displayVenueDetails(venueCode);
                     break;
                 case 6:
@@ -216,7 +211,7 @@ public final class Main {
                         currentUser.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         boolean availability = currentUser.checkAvailability(venueCode, from, to);
                         venueManager.printVenueAvailability(venueCode, availability);
                         break;
@@ -292,7 +287,7 @@ public final class Main {
                         }
                         break;
                     case 4:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ", venueManager.getVenuesCount());
+                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         reservationDetails = currentUser.reserveVenue(venueCode, from, to);
                         if(reservationDetails == null){
                             System.out.println("Sorry! The venue you requested is already reserved");
@@ -456,7 +451,7 @@ public final class Main {
             }
         }
 
-        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ", venueManager.getVenuesCount());
+        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
         Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
         if(newReservationDetails == null){
             System.out.println("Sorry! The venue you requested is already reserved");
@@ -785,7 +780,31 @@ public final class Main {
     // 14. Update Venue
     private static void manageVenueUpdate() {
         if(currentUser instanceof Admin){
+            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
 
+            System.out.println(Choices.updateVenueChoices);
+            switch (InputHelper.getIntegerInput("Enter choice: ")){
+                case 1:
+                    String newVenueName = InputHelper.getStringInput("Enter new Venue Name: ");
+                    boolean isVenueUpdateSuccess = ((Admin) currentUser).updateVenueName(venueCode, newVenueName);
+                    System.out.println(
+                            (isVenueUpdateSuccess)?
+                            "New venue detail updated successfully":
+                            "Cannot update venue. Please try again"
+                    );
+                    break;
+                case 2:
+                    String newSeatingCapacity = InputHelper.getStringInput("Enter new Seating Capacity: ");
+                    isVenueUpdateSuccess = ((Admin)currentUser).updateVenueSeatingCapacity(venueCode, newSeatingCapacity);
+                    System.out.println(
+                            (isVenueUpdateSuccess)?
+                                    "New venue detail updated successfully":
+                                    "Cannot update venue. Please try again"
+                    );
+                    break;
+                default:
+                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            }
         }
         else
             System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
@@ -794,12 +813,7 @@ public final class Main {
     // 15. Remove Venue
     private static void manageVenueRemoval() {
         if(currentUser instanceof Admin){
-            int venueCode = InputHelper.getIntegerInput("Enter the venue code of the venue you want to remove: ");
-            if(venueManager.isValidVenueCode(venueCode)){}
-            else{
-                System.out.println("Invalid Venue Code. Please try again");
-                return;
-            }
+            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
 
             venueManager.displayVenueDetails(venueCode);
 

@@ -4,6 +4,7 @@ import core.manager.AdminManager;
 import core.venue.Reservation;
 import core.venue.Venue;
 import core.venue.VenueType;
+import core.venue.VenueUpdate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -116,5 +117,13 @@ public class Admin extends User{
 
     public boolean removeVenue(int venueCode){
         return venueManager.removeVenue(venueCode);
+    }
+
+    public boolean updateVenueName(int venueCode, String newVenueName) {
+        return venueManager.updateVenue(venueCode, newVenueName, VenueUpdate.NAME);
+    }
+
+    public boolean updateVenueSeatingCapacity(int venueCode, String newSeatingCapacity) {
+        return venueManager.updateVenue(venueCode, newSeatingCapacity, VenueUpdate.SEATING_CAPACITY);
     }
 }

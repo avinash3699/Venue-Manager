@@ -8,7 +8,6 @@ import core.venue.*;
 import helper.DefensiveCopyHelper;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 // have to generate setters and getters for properties instead of reading and writing it directly
@@ -184,7 +183,7 @@ public final class Database {
     private Map<String, List<Reservation>> userReservationDetails = new HashMap<>();
 
     public int getVenuesCount() {
-        return venueCode-1;
+        return venues.size();
     }
 
     public ArrayList<Integer> getAccessIds() {
@@ -227,7 +226,7 @@ public final class Database {
         return DefensiveCopyHelper.getDefensiveCopyMap(venues);
     }
 
-    public int getVenueCode() {
+    public int getNewVenueCode() {
         int tempVenueCode = venueCode;
         venueCode++;
         return tempVenueCode;
@@ -381,4 +380,15 @@ public final class Database {
         return venueCodes;
     }
 
+    public boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption) {
+        if(updateOption == VenueUpdate.NAME){
+            venues.get(venueCode).setVenueName(newValue);
+            return true;
+        }
+        else if (updateOption == VenueUpdate.SEATING_CAPACITY) {
+            venues.get(venueCode).setSeatingCapacity(newValue);
+            return true;
+        }
+        return false;
+    }
 }

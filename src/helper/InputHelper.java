@@ -1,5 +1,7 @@
 package helper;
 
+import core.manager.VenueManager;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -59,22 +61,22 @@ public class InputHelper {
     // function to get a valid venue code
     // the number of venues available is passed to the function
     // returns a valid venue code
-    public static int getVenueCodeInput(String hintText, int totalVenuesCount) {
+    public static int getVenueCodeInput(String hintText) {
         int venueCode;
         System.out.println("\n---------");
 
         while(true) {
             venueCode = getIntegerInput(hintText);
 
+            if(new VenueManager().isValidVenueCode(venueCode)){
+                break;
+            }
+            else{
+                System.out.println("Invalid Venue Code. Please try again\n");
+            }
             // condition checks
             // 1. is entered integer positive?
-            // 2. is entered integer less than or equal to the available number of venues
-            if( (venueCode > 0) && (venueCode <= totalVenuesCount) )
-                break;
-            else{
-                System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Venue Code. Please try again!\n");
-            }
+            // 2. is entered integer less than or equal to the available number of venue
         }
         return venueCode;
     }

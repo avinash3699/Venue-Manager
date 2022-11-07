@@ -50,5 +50,13 @@ public abstract class Venue {
         return venueCode;
     }
 
+    public void setVenueName(String venueName) {
+        this.venueName = venueName;
+    }
+
+    public void setSeatingCapacity(String seatingCapacity) {
+        this.seatingCapacity = seatingCapacity;
+    }
+
     protected abstract Map<String, String> getAdditionalVenueDetails();
 }
