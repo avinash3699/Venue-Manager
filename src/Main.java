@@ -213,7 +213,7 @@ public final class Main {
                     case 5:
                         venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         boolean availability = currentUser.checkAvailability(venueCode, from, to);
-                        venueManager.printVenueAvailability(venueCode, availability);
+                        currentUser.printVenueAvailability(venueCode, availability);
                         break;
                     case 6:
                         break innerLoop;
@@ -331,7 +331,6 @@ public final class Main {
                 }
             }
 
-//            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
             char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){}
             else{
@@ -339,7 +338,6 @@ public final class Main {
                 return;
             }
 
-//            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
             venueCode = reservationDetails.getVenueCode();
 
             innerLoop:
@@ -351,7 +349,6 @@ public final class Main {
                 switch (choice) {
                     case 1:
 
-//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
                         confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId);
@@ -381,7 +378,6 @@ public final class Main {
                             return;
                         }
 
-//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
                         confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
@@ -408,7 +404,6 @@ public final class Main {
                             return;
                         }
 
-//                        confirmation2 = InputHelper.getStringInput("Are you sure? You want to cancel the venue? (Y/N): ").charAt(0);
                         confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
@@ -640,10 +635,8 @@ public final class Main {
                 else
                     System.out.println("Username doesn't exists. Please try again\n");
             }
-//            char confirmation1 = InputHelper.getStringInput("Are you sure? You want to remove " + username + "? (Y/N): ").charAt(0), confirmation2;
             char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to remove " + username + "? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
-//                confirmation2 = InputHelper.getStringInput("All the details of the User will be deleted. Are you sure? (Y/N): ").charAt(0);
                 confirmation2 = InputHelper.getYesOrNoCharacterInput("All the details of the User will be deleted. Are you sure? (Y/N): ");
                 if(confirmation2 == 'Y' || confirmation2 == 'y'){
                     System.out.println(

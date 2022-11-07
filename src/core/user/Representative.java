@@ -9,6 +9,17 @@ import java.util.*;
 
 public class Representative extends User{
 
+    RepresentativeManager venueManager;
+
+    public Representative(String username, String phoneNumber, String emailId, RepresentativeManager venueManager) {
+        super(username, phoneNumber, emailId);
+//        this.username = username;
+//        this.phoneNumber = phoneNumber;
+//        this.emailId = emailId;
+        this.venueManager = venueManager;
+    }
+
+    // Display Venue Details
     public void displayVenueDetails() {
         venueManager.displayVenueDetails();
     }
@@ -21,6 +32,7 @@ public class Representative extends User{
         venueManager.displayVenueDetails(type);
     }
 
+    // Check Venue Availability
     public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
         return venueManager.checkAvailability(from, to);
     }
@@ -33,6 +45,7 @@ public class Representative extends User{
         return venueManager.checkAvailability(venueCode, from, to);
     }
 
+    // Reserve Venue
     public Reservation reserveVenue(VenueType type, LocalDate from, LocalDate to) {
         return venueManager.reserveVenue(type, from, to, this.getUsername());
     }
@@ -41,6 +54,7 @@ public class Representative extends User{
         return venueManager.reserveVenue(venueCode, from, to, this.getUsername());
     }
 
+    // Cancel Venue
     public boolean cancelVenue(int venueCode, int accessId) {
         return venueManager.cancelVenue(venueCode, accessId, this.getUsername());
     }
@@ -49,10 +63,12 @@ public class Representative extends User{
         return venueManager.cancelVenue(venueCode, accessId, from, to, this.getUsername());
     }
 
+    // Change Venue
     public Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode) {
         return venueManager.changeVenue(oldVenueCode, accessId, newVenueCode, this.getUsername());
     }
 
+    // Print Venue Availability
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
         venueManager.printVenuesAvailability(availableVenueCodes);
     }
@@ -61,21 +77,15 @@ public class Representative extends User{
         venueManager.printVenuesAvailability(availableVenueCodes, inputType);
     }
 
+    // Update User Database
+    @Override
     public boolean updateUserDatabase(User user) {
         return venueManager.updateUserDatabase(user);
     }
 
-    RepresentativeManager venueManager;
-
-//    private final String username;
-//    private String phoneNumber, emailId;
-
-    public Representative(String username, String phoneNumber, String emailId, RepresentativeManager venueManager) {
-        super(username, phoneNumber, emailId);
-//        this.username = username;
-//        this.phoneNumber = phoneNumber;
-//        this.emailId = emailId;
-        this.venueManager = venueManager;
+    @Override
+    public List<Reservation> getReservationDetails() {
+        return venueManager.getReservationDetails(this.getUsername());
     }
 
 //    @Override
@@ -100,11 +110,6 @@ public class Representative extends User{
         super.setEmailId(emailId);
 
         return super.getEmailId().equals(emailId);
-    }
-
-    @Override
-    public List<Reservation> getReservationDetails() {
-        return venueManager.getReservationDetails(this.getUsername());
     }
 
 }

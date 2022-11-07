@@ -32,4 +32,5 @@ public interface RepresentativeManager {
     boolean updateUserDatabase(User user);
 
     List<Reservation> getReservationDetails(String username);
+
 }

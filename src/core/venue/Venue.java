@@ -3,7 +3,7 @@ package core.venue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class Venue {
+public class Venue {
 
     // instance variables
     private String venueName, venueCode, location, seatingCapacity;
@@ -38,16 +38,16 @@ public abstract class Venue {
         };
     }
 
-    public VenueType getType() {
-        return this.venueType;
-    }
-
     public String getVenueName(){
         return venueName;
     }
 
     public java.lang.String getVenueCode() {
         return venueCode;
+    }
+
+    public VenueType getType() {
+        return this.venueType;
     }
 
     public void setVenueName(String venueName) {
@@ -58,5 +58,5 @@ public abstract class Venue {
         this.seatingCapacity = seatingCapacity;
     }
 
-    protected abstract Map<String, String> getAdditionalVenueDetails();
+//    protected abstract Map<String, String> getAdditionalVenueDetails();
 }

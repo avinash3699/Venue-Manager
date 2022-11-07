@@ -21,6 +21,6 @@ public interface AdminManager extends RepresentativeManager {
 
     boolean removeVenue(int venueCode);
 
-    boolean updateVenue(int venueCode, String newVenueName, VenueUpdate updateOption);
+    boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption);
 
 }

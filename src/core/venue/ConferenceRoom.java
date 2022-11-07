@@ -30,7 +30,6 @@ public class ConferenceRoom extends Venue{
         return venueDetails;
     }
 
-    @Override
     protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {

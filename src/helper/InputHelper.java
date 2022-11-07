@@ -74,9 +74,7 @@ public class InputHelper {
             else{
                 System.out.println("Invalid Venue Code. Please try again\n");
             }
-            // condition checks
-            // 1. is entered integer positive?
-            // 2. is entered integer less than or equal to the available number of venue
+
         }
         return venueCode;
     }

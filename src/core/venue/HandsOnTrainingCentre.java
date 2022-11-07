@@ -35,7 +35,6 @@ public class HandsOnTrainingCentre extends Venue{
         return venueDetails;
     }
 
-    @Override
     protected Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap<String, String>(){
             {
