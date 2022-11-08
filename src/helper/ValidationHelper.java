@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class ValidationHelper {
 
     public static boolean isValidName(String name) {
-        return Pattern.matches("[a-zA-Z]+", name);
+        return Pattern.matches("[a-zA-Z]+[0-9]*", name);
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {

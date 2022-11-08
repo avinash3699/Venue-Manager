@@ -316,6 +316,13 @@ public final class Main {
 
         boolean isCancelled;
 
+        char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
+        if((confirmation == 'Y') || (confirmation == 'y')){}
+        else{
+            System.out.println("Please reserve a venue to get the access id!");
+            return;
+        }
+
         while(true) {
             accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
 
@@ -432,6 +439,14 @@ public final class Main {
 
     // 4. Change Reserved Venue
     private static void manageVenueChange() {
+
+        char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
+        if((confirmation == 'Y') || (confirmation == 'y')){}
+        else{
+            System.out.println("Please reserve a venue to get the access id!");
+            return;
+        }
+
         accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
 
         Reservation currentReservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
@@ -677,8 +692,19 @@ public final class Main {
     private static void getConferenceRoomDetails() {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
-                location = InputHelper.getStringInput("Location: "),
-                seatingCapacity = InputHelper.getStringInput("Seating Capacity: ");
+                location = InputHelper.getStringInput("Location: ");
+
+        int seatingCapacity;
+        while(true){
+            seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
+            // validating the seating capacity. It cannot exceed 1000.
+            if(seatingCapacity > 1000){
+                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+            }
+            else
+                break;;
+        }
+
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
                 isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
@@ -688,7 +714,7 @@ public final class Main {
                 venueName,
                 venueManager.getNewVenueCode(),
                 location,
-                seatingCapacity,
+                String.valueOf(seatingCapacity),
                 getBoolFromYesOrNo(isAirConditioned),
                 getBoolFromYesOrNo(isWifiAvailable),
                 getBoolFromYesOrNo(isChargingPortsAvailable),
@@ -709,8 +735,19 @@ public final class Main {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: "),
-                seatingCapacity = InputHelper.getStringInput("Seating Capacity: "),
                 noOfDisplayScreen = InputHelper.getStringInput("No. of display screens: ");
+
+        int seatingCapacity;
+        while(true){
+            seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
+            // validating the seating capacity. It cannot exceed 1000.
+            if(seatingCapacity > 1000){
+                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+            }
+            else
+                break;;
+        }
+
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
                 isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
@@ -720,7 +757,7 @@ public final class Main {
                 venueName,
                 venueManager.getNewVenueCode(),
                 location,
-                seatingCapacity,
+                String.valueOf(seatingCapacity),
                 getBoolFromYesOrNo(isAirConditioned),
                 getBoolFromYesOrNo(isWifiAvailable),
                 getBoolFromYesOrNo(isChargingPortsAvailable),
@@ -740,8 +777,18 @@ public final class Main {
     private static void getHandsonTrainingCentreDetails() {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
-                location = InputHelper.getStringInput("Location: "),
-                seatingCapacity = InputHelper.getStringInput("Seating Capacity: ");
+                location = InputHelper.getStringInput("Location: ");
+
+        int seatingCapacity;
+        while(true){
+            seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
+            // validating the seating capacity. It cannot exceed 1000.
+            if(seatingCapacity > 1000){
+                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+            }
+            else
+                break;;
+        }
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
                 isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
@@ -751,7 +798,7 @@ public final class Main {
                 venueName,
                 venueManager.getNewVenueCode(),
                 location,
-                seatingCapacity,
+                String.valueOf(seatingCapacity),
                 getBoolFromYesOrNo(isAirConditioned),
                 getBoolFromYesOrNo(isWifiAvailable),
                 getBoolFromYesOrNo(isChargingPortsAvailable),

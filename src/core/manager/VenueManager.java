@@ -1,5 +1,6 @@
 package core.manager;
 
+import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 import core.venue.Reservation;
 import core.venue.VenueType;
 import core.user.Representative;
@@ -9,6 +10,7 @@ import core.venue.VenueUpdate;
 import database.Database;
 import helper.DefensiveCopyHelper;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -132,25 +134,19 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
-            //TODO handle for NPE after removal of a venue in getVenues()
-            try {
-                if (Database.getInstance().getVenues().get(venueCode).getType() == type) {
-                    List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
-                    outerLoop:
-                    for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-                        for (Reservation currentReservation : venueReservationDetails) {
-                            if (currentReservation.getReservedDates().contains(date)) {
-                                available = false;
-                                break outerLoop;
-                            }
+            if (Database.getInstance().getVenues().get(venueCode).getType() == type) {
+                List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
+                outerLoop:
+                for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
+                    for (Reservation currentReservation : venueReservationDetails) {
+                        if (currentReservation.getReservedDates().contains(date)) {
+                            available = false;
+                            break outerLoop;
                         }
                     }
-                    if (available)
-                        availableVenues.add(venueCode);
                 }
-            }
-            catch (Exception e){
-                e.printStackTrace();
+                if (available)
+                    availableVenues.add(venueCode);
             }
         }
         return availableVenues;
@@ -345,6 +341,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
             }
         }
 
+        //TODO check for availability before changing to the new venue
+
+        boolean isAvailable = checkAvailability(currentReservation.getReservedDates(), newVenueCode);
+
+        if(! isAvailable){
+            return null;
+        }
         currentReservation.setVenueCode(newVenueCode);
 
         updateAvailability(currentReservation);
@@ -352,6 +355,20 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
 
         return currentReservation;
+    }
+
+    private boolean checkAvailability(List<LocalDate> reservedDates, int newVenueCode) {
+        List<LocalDate> allReservedDates = new ArrayList<>();
+        List<Reservation> reservationDetails = Database.getInstance().getVenueReservationDetails().get(newVenueCode);
+        for(Reservation reservation: reservationDetails){
+            allReservedDates.addAll(reservation.getReservedDates());
+        }
+
+        for(LocalDate date: reservedDates){
+            if(allReservedDates.contains(date))
+                return false;
+        }
+        return true;
     }
 
     // Get reservation details
