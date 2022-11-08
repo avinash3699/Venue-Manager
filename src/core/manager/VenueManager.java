@@ -132,19 +132,25 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         ArrayList<Integer> availableVenues = new ArrayList<>();
         for(int venueCode: reservationDetails.keySet()){
             boolean available = true;
-            if(Database.getInstance().getVenues().get(venueCode).getType() == type) {
-                List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
-                outerLoop:
-                for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
-                    for (Reservation currentReservation : venueReservationDetails) {
-                        if (currentReservation.getReservedDates().contains(date)) {
-                            available = false;
-                            break outerLoop;
+            //TODO handle for NPE after removal of a venue in getVenues()
+            try {
+                if (Database.getInstance().getVenues().get(venueCode).getType() == type) {
+                    List<Reservation> venueReservationDetails = reservationDetails.get(venueCode);
+                    outerLoop:
+                    for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
+                        for (Reservation currentReservation : venueReservationDetails) {
+                            if (currentReservation.getReservedDates().contains(date)) {
+                                available = false;
+                                break outerLoop;
+                            }
                         }
                     }
+                    if (available)
+                        availableVenues.add(venueCode);
                 }
-                if (available)
-                    availableVenues.add(venueCode);
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
         }
         return availableVenues;

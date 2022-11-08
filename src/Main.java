@@ -213,7 +213,7 @@ public final class Main {
                     case 5:
                         venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         boolean availability = currentUser.checkAvailability(venueCode, from, to);
-                        currentUser.printVenueAvailability(venueCode, availability);
+                        venueManager.printVenueAvailability(venueCode, availability);
                         break;
                     case 6:
                         break innerLoop;
@@ -261,7 +261,7 @@ public final class Main {
                         }
                         break;
                     case 2:
-                        reservationDetails = currentUser.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
+                        reservationDetails = currentUser.reserveVenue(VenueType.AUDITORIUM, from, to);
                         if(reservationDetails == null){
                             System.out.println("Sorry! The venue you requested is already reserved");
                         }
@@ -274,7 +274,7 @@ public final class Main {
                         }
                         break;
                     case 3:
-                        reservationDetails = currentUser.reserveVenue(VenueType.AUDITORIUM, from, to);
+                        reservationDetails = currentUser.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
                         if(reservationDetails == null){
                             System.out.println("Sorry! The venue you requested is already reserved");
                         }
@@ -489,7 +489,8 @@ public final class Main {
         System.out.println(Choices.modifyPersonalDetailsChoices);
         switch (InputHelper.getIntegerInput("Enter choice: ")){
             case 1:
-                String newEmailId = InputHelper.getStringInput("Enter new Email Id: ");
+                String newEmailId;
+                newEmailId = InputHelper.getEmailId();
                 System.out.println(
                     (currentUser.setEmailId(newEmailId))?
                     "Email Id modified successfully!":
@@ -497,7 +498,7 @@ public final class Main {
                 );
                 break;
             case 2:
-                String newPhoneNumber = InputHelper.getStringInput("Enter new Phone Number: ");
+                String newPhoneNumber = InputHelper.getPhoneNumber();
                 System.out.println(
                     (currentUser.setPhoneNumber(newPhoneNumber))?
                     "Phone Number modified successfully!":
@@ -606,10 +607,10 @@ public final class Main {
     // 11. Add User
     private static void manageUserAddition() {
         if(currentUser instanceof Admin){
-            String username = InputHelper.getStringInput("Enter Username: "),
+            String username = InputHelper.getUsername(),
                    password = InputHelper.getStringInput("Enter password: "),
-                   emailId = InputHelper.getStringInput("Enter Email ID: "),
-                   phoneNumber = InputHelper.getStringInput("Enter phone number: ");
+                   emailId = InputHelper.getEmailId(),
+                   phoneNumber = InputHelper.getPhoneNumber();
             System.out.println(
                     ((Admin) currentUser).addUser(username, password, emailId, phoneNumber)?
                     "The user is added successfully!":

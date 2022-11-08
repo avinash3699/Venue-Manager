@@ -77,7 +77,7 @@ public abstract class User {
     public abstract Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode);
 
     public abstract void printVenuesAvailability(ArrayList<Integer> availableVenueCodes);
-    public abstract void printVenueAvailability(int venueCode, boolean availability);
+//    public abstract void printVenueAvailability(int venueCode, boolean availability);
     public abstract void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType);
 
     public abstract boolean updateUserDatabase(User user);

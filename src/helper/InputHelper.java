@@ -160,4 +160,42 @@ public class InputHelper {
         return parsedDate;
     }
 
+    public static String getPhoneNumber() {
+        String newPhoneNumber;
+        while(true) {
+            newPhoneNumber = InputHelper.getStringInput("Enter Phone Number: ");
+            // Validation of phone number
+            if(ValidationHelper.isValidPhoneNumber(newPhoneNumber))
+                break;
+            else
+                System.out.println("Invalid phone number. Please try again");
+        }
+        return newPhoneNumber;
+    }
+
+    public static String getUsername() {
+        String username;
+        while(true) {
+            username = InputHelper.getStringInput("Enter username: ");
+            // Validation of username
+            if(ValidationHelper.isValidName(username))
+                break;
+            else
+                System.out.println("Invalid username. Please try again");
+        }
+        return username;
+    }
+
+    public static String getEmailId(){
+        String emailId;
+        while(true) {
+            emailId = InputHelper.getStringInput("Enter email Id: ");
+            // Validation of email id
+            if(ValidationHelper.isValidEmailId(emailId))
+                break;
+            else
+                System.out.println("Invalid email Id. Please try again");
+        }
+        return emailId;
+    }
 }

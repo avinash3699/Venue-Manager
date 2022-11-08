@@ -198,6 +198,7 @@ public final class Database {
 
         //TODO - remove the reservation details from 'venueReservationDetails' and 'userReservationDetails'
         //     - should think whether the reservation details have to be removed when the venue is removed
+        venueReservationDetails.remove(venueCode);
     }
 
     public boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption) {
