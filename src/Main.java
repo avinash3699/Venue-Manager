@@ -5,6 +5,7 @@ import core.user.User;
 import helper.Choices;
 import helper.DateHelper;
 import helper.InputHelper;
+import helper.PrintHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -120,12 +121,12 @@ public final class Main {
                 password = InputHelper.getStringInput("Enter password: ");
         if ((currentUser = venueManager.authenticate(username, password)) != null) {
             System.out.println("\n---------");
-            System.out.println("Authentication Successful!!\n");
+            PrintHelper.printGreen("Authentication Successful!!\n");
             System.out.println("Welcome " + currentUser.getUsername());
             isLoginSuccessful = true;
         } else {
             System.out.println("\n---------");
-            System.out.println("You have entered an invalid username or password. Please try again\n");
+            PrintHelper.printRed("You have entered an invalid username or password. Please try again\n");
             isLoginSuccessful = false;
         }
         return isLoginSuccessful;
@@ -164,7 +165,7 @@ public final class Main {
                     return;
                 default:
                     System.out.println("\n---------");
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
             }
         }
     }
@@ -220,7 +221,7 @@ public final class Main {
                     case 7:
                         return;
                     default:
-                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                        PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                 }
             }
         }
@@ -250,12 +251,12 @@ public final class Main {
                     case 1:
                         reservationDetails = currentUser.reserveVenue(VenueType.CONFERENCE, from, to);
                         if(reservationDetails == null){
-                            System.out.println("Sorry! No Venues Available based on your request");
+                            PrintHelper.printRed("Sorry! No Venues Available based on your request");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            PrintHelper.printGreen("Hurray!! You have reserved your venue successfully.");
                             for(String key: reservationDetails.getMap().keySet()){
-                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                                PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
                             System.out.println();
                         }
@@ -263,12 +264,12 @@ public final class Main {
                     case 2:
                         reservationDetails = currentUser.reserveVenue(VenueType.AUDITORIUM, from, to);
                         if(reservationDetails == null){
-                            System.out.println("Sorry! The venue you requested is already reserved");
+                            PrintHelper.printRed("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            PrintHelper.printGreen("Hurray!! You have reserved your venue successfully.");
                             for(String key: reservationDetails.getMap().keySet()){
-                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                                PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
                             System.out.println();
                         }
@@ -276,12 +277,12 @@ public final class Main {
                     case 3:
                         reservationDetails = currentUser.reserveVenue(VenueType.HANDS_ON_TRAINING, from, to);
                         if(reservationDetails == null){
-                            System.out.println("Sorry! The venue you requested is already reserved");
+                            PrintHelper.printRed("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            PrintHelper.printGreen("Hurray!! You have reserved your venue successfully.");
                             for(String key: reservationDetails.getMap().keySet()){
-                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                                PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
                             System.out.println();
                         }
@@ -290,12 +291,12 @@ public final class Main {
                         venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
                         reservationDetails = currentUser.reserveVenue(venueCode, from, to);
                         if(reservationDetails == null){
-                            System.out.println("Sorry! The venue you requested is already reserved");
+                            PrintHelper.printRed("Sorry! The venue you requested is already reserved");
                         }
                         else{
-                            System.out.println("Hurray!! You have reserved your venue successfully.");
+                            PrintHelper.printGreen("Hurray!! You have reserved your venue successfully.");
                             for(String key: reservationDetails.getMap().keySet()){
-                                System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                                PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
                             System.out.println();
                         }
@@ -305,7 +306,7 @@ public final class Main {
                     case 6:
                         return;
                     default:
-                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                        PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                 }
             }
         }
@@ -328,7 +329,7 @@ public final class Main {
 
             Reservation reservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
             if (reservationDetails == null){
-                System.out.println("\nOOPs! Access ID invalid. Please try again");
+                PrintHelper.printRed("\nOOPs! Access ID invalid. Please try again");
                 continue;
             }
             else{
@@ -341,7 +342,7 @@ public final class Main {
             char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){}
             else{
-                System.out.println("Cancellation process stopped!");
+                PrintHelper.printRed("Cancellation process stopped!");
                 return;
             }
 
@@ -361,12 +362,12 @@ public final class Main {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId);
 
                             if (isCancelled)
-                                System.out.println("Success! You have successfully cancelled the venue");
+                                PrintHelper.printGreen("Success! You have successfully cancelled the venue");
                             else
-                                System.out.println("Sorry! Cancellation failed. Please try again");
+                                PrintHelper.printRed("Sorry! Cancellation failed. Please try again");
                         }
                         else{
-                            System.out.println("Cancellation process stopped!");
+                            PrintHelper.printRed("Cancellation process stopped!");
                             return;
                         }
                         return;
@@ -381,7 +382,7 @@ public final class Main {
 
                         if(isValidDates){}
                         else{
-                            System.out.println("All/some dates are not in your reservation. Please check your reservation details and try again");
+                            PrintHelper.printRed("All/some dates are not in your reservation. Please check your reservation details and try again");
                             return;
                         }
 
@@ -390,12 +391,12 @@ public final class Main {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
 
                             if(isCancelled)
-                                System.out.println("Success! You have successfully cancelled the mentioned dates");
+                                PrintHelper.printGreen("Success! You have successfully cancelled the mentioned dates");
                             else
-                                System.out.println("Sorry! Cancellation failed. Please try again");
+                                PrintHelper.printRed("Sorry! Cancellation failed. Please try again");
                         }
                         else{
-                            System.out.println("Cancellation process stopped!");
+                            PrintHelper.printRed("Cancellation process stopped!");
                             return;
                         }
 
@@ -407,7 +408,7 @@ public final class Main {
 
                         if(isValidDate){}
                         else{
-                            System.out.println("The date you entered is not in your reservation. Please check your reservation details and try again");
+                            PrintHelper.printRed("The date you entered is not in your reservation. Please check your reservation details and try again");
                             return;
                         }
 
@@ -416,12 +417,12 @@ public final class Main {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
 
                             if(isCancelled)
-                                System.out.println("Success! You have successfully cancelled the requested date");
+                                PrintHelper.printGreen("Success! You have successfully cancelled the requested date");
                             else
-                                System.out.println("Sorry! Cancellation failed. Please try again");
+                                PrintHelper.printRed("Sorry! Cancellation failed. Please try again");
                         }
                         else{
-                            System.out.println("Cancellation process stopped!");
+                            PrintHelper.printRed("Cancellation process stopped!");
                             return;
                         }
 
@@ -431,7 +432,7 @@ public final class Main {
                     case 5:
                         return;
                     default:
-                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                        PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                 }
             }
         }
@@ -451,7 +452,7 @@ public final class Main {
 
         Reservation currentReservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
         if (currentReservationDetails == null){
-            System.out.println("\nOOPs! Access ID invalid. Please try again");
+            PrintHelper.printRed("\nOOPs! Access ID invalid. Please try again");
             return;
         }
         else{
@@ -464,11 +465,14 @@ public final class Main {
         int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
         Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
         if(newReservationDetails == null){
-            System.out.println("Sorry! The venue you requested is already reserved");
+            PrintHelper.printRed("Sorry! The venue you requested is already reserved");
         }
         else{
-            System.out.println("Hurray!! You have changed your venue successfully.\nNew Venue: " + newReservationDetails.getVenueCode());
-            System.out.println("Your access ID is: " + newReservationDetails.getAccessId());
+            PrintHelper.printGreen("Hurray!! You have changed your venue successfully.\n\nNew Venue Details:");
+            for(String key: newReservationDetails.getMap().keySet()){
+                PrintHelper.printGreen(key + ": " + newReservationDetails.getMap().get(key));
+            }
+//            PrintHelper.printGreen("Your access ID is: " + newReservationDetails.getAccessId());
         }
     }
 
@@ -476,12 +480,13 @@ public final class Main {
     private static void getReservationDetails() {
         List<Reservation> reservationDetails = currentUser.getReservationDetails();
         if(reservationDetails.size() == 0){
-            System.out.println("You don't have any current reservations.");
+            PrintHelper.printRed("You don't have any current reservations.");
             return;
         }
+        PrintHelper.printYellowUnderlined("Your current reservations\n");
         for(Reservation reservation: reservationDetails){
             for(String key: reservation.getMap().keySet()){
-                System.out.println(key + ": " + reservation.getMap().get(key));
+                PrintHelper.printYellow(key + ": " + reservation.getMap().get(key));
             }
             System.out.println();
         }
@@ -490,10 +495,10 @@ public final class Main {
     // 6. View Profile
     private static void showProfile() {
         System.out.println("\n---------");
-        System.out.println("User Profile");
+        PrintHelper.printYellowUnderlined("User Profile");
         Map<String, String> personalDetails = currentUser.getPersonalDetails();
         for (String key : personalDetails.keySet()) {
-            System.out.printf("%s: %s\n", key, personalDetails.get(key));
+            PrintHelper.printYellow(String.format("%s: %s", key, personalDetails.get(key)));
         }
         System.out.println();
     }

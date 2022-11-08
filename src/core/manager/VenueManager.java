@@ -1,6 +1,5 @@
 package core.manager;
 
-import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 import core.venue.Reservation;
 import core.venue.VenueType;
 import core.user.Representative;
@@ -9,8 +8,8 @@ import core.venue.Venue;
 import core.venue.VenueUpdate;
 import database.Database;
 import helper.DefensiveCopyHelper;
+import helper.PrintHelper;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,11 +41,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         for(Venue venue: Database.getInstance().getVenues().values()){
             Map<String, String> venueDetails = venue.getVenueDetails();
             for(String key: venueDetails.keySet()){
-                System.out.printf("%s: %s\n", key, venueDetails.get(key));
+                PrintHelper.printYellow(
+                    String.format("%s: %s", key, venueDetails.get(key))
+                );
             }
             System.out.println();
         }
-        System.out.println();
+//        System.out.println();
     }
 
     // Display Venue Details
@@ -61,9 +62,11 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     public void displayVenueDetails(int venueCode){
         Map<String, String> venueDetails = Database.getInstance().getVenues().get(venueCode).getVenueDetails();
         for(String key: venueDetails.keySet()){
-            System.out.printf("%s: %s\n", key, venueDetails.get(key));
+            PrintHelper.printYellow(
+                    String.format("%s: %s", key, venueDetails.get(key))
+            );
         }
-        System.out.println();
+//        System.out.println();
     }
 
     /**
@@ -79,11 +82,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
             if(!(venue.getType() == type))
                 continue;
             for(String key: venueDetails.keySet()){
-                System.out.printf("%s: %s\n", key, venueDetails.get(key));
+                PrintHelper.printYellow(
+                        String.format("%s: %s", key, venueDetails.get(key))
+                );
             }
             System.out.println();
         }
-        System.out.println();
+//        System.out.println();
     }
 
     // Check availability
@@ -619,11 +624,11 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         Database database = Database.getInstance();
         System.out.println();
         for(int venueCode: database.getVenues().keySet()){
-            String availability = "Not Available";
             if(availableVenueCodes.contains(venueCode)){
-                availability = "Available";
+                PrintHelper.printGreen(database.getVenueNameFromCode(venueCode) + ": Available");
+                continue;
             }
-            System.out.println(database.getVenueNameFromCode(venueCode) + ": " + availability);
+            PrintHelper.printRed(database.getVenueNameFromCode(venueCode) + ": Not Available");
         }
     }
 
@@ -640,21 +645,22 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         for(int venueCode: database.getVenues().keySet()){
             VenueType venueType = database.getVenues().get(venueCode).getType();
             if(venueType == inputType){
-                String availability = "Not Available";
                 if(availableVenueCodes.contains(venueCode)){
-                    availability = "Available";
+                    PrintHelper.printGreen(database.getVenueNameFromCode(venueCode) + ": Available");
+                    continue;
                 }
-                System.out.println(database.getVenueNameFromCode(venueCode) + ": " + availability);
+                PrintHelper.printRed(database.getVenueNameFromCode(venueCode) + ": Not Available");
             }
         }
     }
 
     public void printVenueAvailability(int venueCode, boolean isAvailable){
-        System.out.println(
-            "\n" +
-            Database.getInstance().getVenueNameFromCode(venueCode) +
-            (isAvailable? ": Available": ": Not Available")
-        );
+        if(isAvailable){
+            PrintHelper.printGreen(Database.getInstance().getVenueNameFromCode(venueCode) + ": Available");
+        }
+        else{
+            PrintHelper.printRed(Database.getInstance().getVenueNameFromCode(venueCode) + ": Not Available");
+        }
     }
 
     public int getVenuesCount() {
