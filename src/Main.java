@@ -97,17 +97,17 @@ public final class Main {
                                     manageVenueRemoval();
                                     break;
                                 default:
-                                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                             }
                         }
                     }
                     continue;
                 case 2:
-                    System.out.println("Exiting....");
+                    PrintHelper.printBlue("\nExiting....");
                     System.exit(1);
                     break;
                 default:
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                     continue;
             }
             break;
@@ -122,7 +122,7 @@ public final class Main {
         if ((currentUser = venueManager.authenticate(username, password)) != null) {
             System.out.println("\n---------");
             PrintHelper.printGreen("Authentication Successful!!\n");
-            System.out.println("Welcome " + currentUser.getUsername());
+            PrintHelper.printBlue("Welcome " + currentUser.getUsername() + "!");
             isLoginSuccessful = true;
         } else {
             System.out.println("\n---------");
@@ -184,9 +184,12 @@ public final class Main {
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
-                System.out.printf("From: %s\nTo: %s\n\n",
-                        DateHelper.getFormattedDate(from),
-                        DateHelper.getFormattedDate(to)
+                PrintHelper.printBlue(
+                        String.format(
+                            "From: %s\nTo: %s\n",
+                            DateHelper.getFormattedDate(from),
+                            DateHelper.getFormattedDate(to)
+                        )
                 );
                 System.out.println(Choices.checkAvailabilityChoices);
 
@@ -239,9 +242,12 @@ public final class Main {
             innerLoop:
             while (true) {
                 System.out.println("\n---------");
-                System.out.printf("From: %s\nTo: %s\n\n",
+                PrintHelper.printBlue(
+                    String.format(
+                        "From: %s\nTo: %s\n",
                         DateHelper.getFormattedDate(from),
                         DateHelper.getFormattedDate(to)
+                    )
                 );
 
                 System.out.println(Choices.reserveVenueChoices);
@@ -320,7 +326,7 @@ public final class Main {
         char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
         if((confirmation == 'Y') || (confirmation == 'y')){}
         else{
-            System.out.println("Please reserve a venue to get the access id!");
+            PrintHelper.printRed("Please reserve a venue to get the access id!");
             return;
         }
 
@@ -333,9 +339,9 @@ public final class Main {
                 continue;
             }
             else{
-                System.out.println("\nYour reservation details for given access id:");
+                PrintHelper.printYellowUnderlined("\nYour reservation details for given access id:");
                 for(String key: reservationDetails.getMap().keySet()){
-                    System.out.println(key + ": " + reservationDetails.getMap().get(key));
+                    PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                 }
             }
 
@@ -444,7 +450,7 @@ public final class Main {
         char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
         if((confirmation == 'Y') || (confirmation == 'y')){}
         else{
-            System.out.println("Please reserve a venue to get the access id!");
+            PrintHelper.printRed("Please reserve a venue to get the access id!");
             return;
         }
 
@@ -456,9 +462,9 @@ public final class Main {
             return;
         }
         else{
-            System.out.println("\nYour reservation details for given access id:");
+            PrintHelper.printYellowUnderlined("\nYour reservation details for given access id:");
             for(String key: currentReservationDetails.getMap().keySet()){
-                System.out.println(key + ": " + currentReservationDetails.getMap().get(key));
+                PrintHelper.printYellow(key + ": " + currentReservationDetails.getMap().get(key));
             }
         }
 
@@ -511,44 +517,42 @@ public final class Main {
             case 1:
                 String newEmailId;
                 newEmailId = InputHelper.getEmailId();
-                System.out.println(
-                    (currentUser.setEmailId(newEmailId))?
-                    "Email Id modified successfully!":
-                    "Cannot modify Email id. Please try again"
-                );
+                if(currentUser.setEmailId(newEmailId))
+                    PrintHelper.printGreen("Email Id modified successfully!");
+                else
+                    PrintHelper.printRed("Cannot modify Email id. Please try again");
                 break;
             case 2:
                 String newPhoneNumber = InputHelper.getPhoneNumber();
-                System.out.println(
-                    (currentUser.setPhoneNumber(newPhoneNumber))?
-                    "Phone Number modified successfully!":
-                    "Cannot modify Phone Number. Please try again"
-                );
+                if(currentUser.setPhoneNumber(newPhoneNumber))
+                    PrintHelper.printGreen("Phone Number modified successfully!");
+                else
+                    PrintHelper.printRed("Cannot modify Phone Number. Please try again");
                 break;
             case 3:
                 String password = InputHelper.getStringInput("Enter your current password: ");
                 User user = venueManager.authenticate(currentUser.getUsername(), password);
                 if(user == null){
-                    System.out.println("Sorry! Incorrect password. Please try again");
+                    PrintHelper.printRed("Sorry! Incorrect password. Please try again");
                     managePersonalDetailsModification();
                 }
                 else{
                     String newPassword = InputHelper.getStringInput("Enter new password: ");
                     if(venueManager.changeUserPassword(currentUser.getUsername(), newPassword)){
-                        System.out.println("Password changed successfully!");
+                        PrintHelper.printGreen("Password changed successfully!");
                     }
                 }
                 break;
             default:
-                System.out.println("You have entered an invalid username or password. Please try again\n");
+                PrintHelper.printRed("You have entered an invalid username or password. Please try again\n");
         }
     }
 
     // 8. LOGOUT
     private static void logout() {
         currentUser = null;
-        System.out.println("\n---------");
-        System.out.println("Logging out!\n");
+        PrintHelper.printBlue("\nLogging out...");
+        PrintHelper.printBlue("Logged out successfully!\n");
     }
 
     // Admin Operations
@@ -562,29 +566,32 @@ public final class Main {
                 if(venueManager.checkUserNameExistence(username))
                     break;
                 else
-                    System.out.println("Username doesn't exists. Please try again\n");
+                    PrintHelper.printRed("Username doesn't exists. Please try again\n");
             }
 
             while (true) {
-                System.out.println("\nUser: " + username);
+                PrintHelper.printBlue("\nUser: " + username);
                 System.out.println(Choices.viewUserDetailsChoices);
                 switch (InputHelper.getIntegerInput("Enter choice: ")) {
                     case 1:
                         Map<String, String> personalDetails = ((Admin) currentUser).getOtherUserPersonalDetails(username);
+
+                        PrintHelper.printYellowUnderlined("Personal Details of " + username);
                         for (String key : personalDetails.keySet()) {
-                            System.out.printf("%s: %s\n", key, personalDetails.get(key));
+                            PrintHelper.printYellow(String.format("%s: %s", key, personalDetails.get(key)));
                         }
                         System.out.println();
                         break;
                     case 2:
                         List<Reservation> reservationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
                         if(reservationDetails.size() == 0){
-                            System.out.println("The user doesn't have any current reservations.");
+                            PrintHelper.printRed("The user doesn't have any current reservations.");
                             return;
                         }
+                        PrintHelper.printYellowUnderlined("Reservation details of " + username);
                         for (Reservation reservation : reservationDetails) {
                             for (String key : reservation.getMap().keySet()) {
-                                System.out.println(key + ": " + reservation.getMap().get(key));
+                                PrintHelper.printYellow(key + ": " + reservation.getMap().get(key));
                             }
                             System.out.println();
                         }
@@ -592,12 +599,12 @@ public final class Main {
                     case 3:
                         return;
                     default:
-                        System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                        PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                 }
             }
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     // 10. Change User Password
@@ -609,19 +616,19 @@ public final class Main {
                 if (venueManager.checkUserNameExistence(username))
                     break;
                 else
-                    System.out.println("Username doesn't exists. Please try again\n");
+                    PrintHelper.printRed("Username doesn't exists. Please try again\n");
             }
 
             String newPassword = InputHelper.getStringInput("Enter new password: ");
             if (venueManager.changeUserPassword(username, newPassword))
-                System.out.println("Password changed successfully!");
+                PrintHelper.printGreen("Password changed successfully!");
             else{
-                System.out.println("OOPs. Change Password failed. Please try again");
+                PrintHelper.printRed("OOPs. Change Password failed. Please try again");
             }
 
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     // 11. Add User
@@ -631,14 +638,14 @@ public final class Main {
                    password = InputHelper.getStringInput("Enter password: "),
                    emailId = InputHelper.getEmailId(),
                    phoneNumber = InputHelper.getPhoneNumber();
-            System.out.println(
-                    ((Admin) currentUser).addUser(username, password, emailId, phoneNumber)?
-                    "The user is added successfully!":
-                    "Add User failed. Please try again"
-            );
+
+            if(((Admin) currentUser).addUser(username, password, emailId, phoneNumber))
+                PrintHelper.printGreen("The user is added successfully!");
+            else
+                PrintHelper.printRed("Add User failed. Please try again");
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     // 12. Remove User
@@ -649,27 +656,27 @@ public final class Main {
                 username = InputHelper.getStringInput("Enter the username of the user to be deleted: ");
                 if(venueManager.checkUserNameExistence(username)) {
                     if (username.equals(currentUser.getUsername()))
-                        System.out.println("You cannot remove current user. Please try again\n");
+                        PrintHelper.printRed("You cannot remove yourself. Please try again with another username\n");
                     else
                         break;
                 }
                 else
-                    System.out.println("Username doesn't exists. Please try again\n");
+                    PrintHelper.printRed("Username doesn't exists. Please try again\n");
             }
             char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to remove " + username + "? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){
                 confirmation2 = InputHelper.getYesOrNoCharacterInput("All the details of the User will be deleted. Are you sure? (Y/N): ");
                 if(confirmation2 == 'Y' || confirmation2 == 'y'){
-                    System.out.println(
-                            ((Admin) currentUser).removeUser(username)?
-                            "User '" + username + "' successfully removed!":
-                            "Remove User failed. Please try again"
-                    );
+
+                    if(((Admin) currentUser).removeUser(username))
+                        PrintHelper.printGreen("User '" + username + "' successfully removed!");
+                    else
+                        PrintHelper.printRed("Remove User failed. Please try again");
                 }
             }
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     // 13. Add Venue
@@ -687,11 +694,11 @@ public final class Main {
                     getHandsonTrainingCentreDetails();
                     break;
                 default:
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
             }
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     private static void getConferenceRoomDetails() {
@@ -704,7 +711,7 @@ public final class Main {
             seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
             // validating the seating capacity. It cannot exceed 1000.
             if(seatingCapacity > 1000){
-                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+                PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
                 break;;
@@ -728,11 +735,10 @@ public final class Main {
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
-        System.out.println(
-                (isVenueAdded)?
-                        "Venue Added Successfully":
-                        "Cannot add Venue, Please try again"
-        );
+        if(isVenueAdded)
+            PrintHelper.printGreen("Venue Added Successfully");
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
 
     }
 
@@ -747,10 +753,10 @@ public final class Main {
             seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
             // validating the seating capacity. It cannot exceed 1000.
             if(seatingCapacity > 1000){
-                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+                PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
-                break;;
+                break;
         }
 
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
@@ -772,11 +778,10 @@ public final class Main {
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
-        System.out.println(
-                (isVenueAdded)?
-                        "Venue Added Successfully":
-                        "Cannot add Venue, Please try again"
-        );
+        if(isVenueAdded)
+            PrintHelper.printGreen("Venue Added Successfully");
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
     }
 
     private static void getHandsonTrainingCentreDetails() {
@@ -789,7 +794,7 @@ public final class Main {
             seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
             // validating the seating capacity. It cannot exceed 1000.
             if(seatingCapacity > 1000){
-                System.out.println("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+                PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
                 break;;
@@ -812,11 +817,10 @@ public final class Main {
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
-        System.out.println(
-                (isVenueAdded)?
-                        "Venue Added Successfully":
-                        "Cannot add Venue, Please try again"
-        );
+        if(isVenueAdded)
+            PrintHelper.printGreen("Venue Added Successfully");
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
     }
 
     private static boolean getBoolFromYesOrNo(char character) {
@@ -833,27 +837,25 @@ public final class Main {
                 case 1:
                     String newVenueName = InputHelper.getStringInput("Enter new Venue Name: ");
                     boolean isVenueUpdateSuccess = ((Admin) currentUser).updateVenueName(venueCode, newVenueName);
-                    System.out.println(
-                            (isVenueUpdateSuccess)?
-                            "New venue detail updated successfully":
-                            "Cannot update venue. Please try again"
-                    );
+                    if(isVenueUpdateSuccess)
+                        PrintHelper.printGreen("New venue detail updated successfully");
+                    else
+                        PrintHelper.printRed("Cannot update venue. Please try again");
                     break;
                 case 2:
                     String newSeatingCapacity = InputHelper.getStringInput("Enter new Seating Capacity: ");
                     isVenueUpdateSuccess = ((Admin)currentUser).updateVenueSeatingCapacity(venueCode, newSeatingCapacity);
-                    System.out.println(
-                            (isVenueUpdateSuccess)?
-                                    "New venue detail updated successfully":
-                                    "Cannot update venue. Please try again"
-                    );
+                    if(isVenueUpdateSuccess)
+                        PrintHelper.printGreen("New venue detail updated successfully");
+                    else
+                        PrintHelper.printRed("Cannot update venue. Please try again");
                     break;
                 default:
-                    System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
             }
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
     // 15. Remove Venue
@@ -867,20 +869,20 @@ public final class Main {
 
             if( (confirmation1 == 'y') || (confirmation1 == 'Y')){}
             else {
-                System.out.println("Venue Removal Stooped!");
+                PrintHelper.printRed("Venue Removal Stooped!");
                 return;
             }
 
             boolean isVenueRemoved = ((Admin) currentUser).removeVenue(venueCode);
 
-            System.out.println(
-                (isVenueRemoved)?
-                "Removed Venue successfully":
-                "Cannot remove venue. Please try again"
-            );
+            if(isVenueRemoved)
+                PrintHelper.printGreen("Removed Venue successfully");
+            else
+                PrintHelper.printRed("Cannot remove venue. Please try again");
+
 
         }
         else
-            System.out.println("OOPs! Invalid Choice, please choose a valid one\n");
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 }

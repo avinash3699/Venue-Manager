@@ -47,7 +47,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
             }
             System.out.println();
         }
-//        System.out.println();
     }
 
     // Display Venue Details
@@ -66,7 +65,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                     String.format("%s: %s", key, venueDetails.get(key))
             );
         }
-//        System.out.println();
     }
 
     /**
@@ -88,7 +86,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
             }
             System.out.println();
         }
-//        System.out.println();
     }
 
     // Check availability
@@ -283,8 +280,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         Database database = Database.getInstance();
         database.removeFromVenueReservationDetails(venueCode, accessId);
 
-        System.out.println(database.getVenueReservationDetails().get(venueCode));
-
         database.removeFromUserReservationDetails(accessId, username);
 
         return true;
@@ -309,7 +304,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     @Override
     public boolean cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to, String username) {
         Database.getInstance().removeFromVenueReservationDetails(venueCode, accessId, from, to);
-        System.out.println(Database.getInstance().getVenueReservationDetails().get(venueCode));
 
         Database.getInstance().removeFromUserReservationDetails(accessId, from, to, username);
 

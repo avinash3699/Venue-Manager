@@ -26,7 +26,7 @@ public class InputHelper {
             // 1. is empty string?
             if(input.equals("")){
                 System.out.println("\n---------");
-                System.out.println("Empty input. Please try again\n");
+                PrintHelper.printRed("Empty input. Please try again\n");
             }
             else{
                 break;
@@ -48,7 +48,7 @@ public class InputHelper {
             // 2. is input character Y/y/N/n?
             if ( (input.length() != 1) || (!"YNyn".contains(input)) ) {
                 System.out.println("\n---------");
-                System.out.println("Please enter a valid character.(Y/N) \n");
+                PrintHelper.printRed("Please enter a valid character.(Y/N) \n");
             }
             else
                 break;
@@ -72,7 +72,7 @@ public class InputHelper {
                 break;
             }
             else{
-                System.out.println("Invalid Venue Code. Please try again\n");
+                PrintHelper.printRed("Invalid Venue Code. Please try again\n");
             }
 
         }
@@ -90,7 +90,7 @@ public class InputHelper {
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("\n---------");
-                System.out.println("OOPs! Invalid Input, please enter a valid number\n");
+                PrintHelper.printRed("OOPs! Invalid Input, please enter a valid number\n");
             }
         }
 
@@ -106,13 +106,13 @@ public class InputHelper {
             // whether the 'end date(to)' is behind the 'start date(from)'?
             // reason: the 'to' date should not be behind the 'from' date
             if(to.isBefore(from))
-                System.out.println("You have entered a 'To date' less than 'From to'. Please try again");
+                PrintHelper.printRed("You have entered a 'To date' less than 'From to'. Please try again");
 
             // condition check
             // whether the 'end date(to)' is more than 10 days after the 'start date(to)'
             // reason: cannot reserve a venue for more than 10 days
             else if(to.isAfter(from.plusDays(10)))
-                System.out.println("Your from and to date cannot be not be more than 10 days");
+                PrintHelper.printRed("Your from and to date cannot be not be more than 10 days");
 
             else
                 return new LocalDate[]{
@@ -141,20 +141,20 @@ public class InputHelper {
                 // checking whether the entered date is a past date
                 boolean isPastDate = DateHelper.isPastDate(parsedDate);
                 if(isPastDate) {
-                    System.out.println("OOPs! You have entered a past date. Please enter a valid one");
+                    PrintHelper.printRed("OOPs! You have entered a past date. Please enter a valid one");
                     continue;
                 }
 
                 // checking whether the entered date is current date
                 boolean isCurrentDate = DateHelper.isCurrentDate(parsedDate);
                 if(isCurrentDate){
-                    System.out.println("OOPs! You cannot enter today's date. Please enter again");
+                    PrintHelper.printRed("OOPs! You cannot enter today's date. Please enter again");
                     continue;
                 }
                 break;
             }
             catch (DateTimeParseException e){
-                System.out.println("OOPs! Invalid Date, please enter a valid date");
+                PrintHelper.printRed("OOPs! Invalid Date, please enter a valid date");
             }
         }
         return parsedDate;
@@ -168,7 +168,7 @@ public class InputHelper {
             if(ValidationHelper.isValidPhoneNumber(newPhoneNumber))
                 break;
             else
-                System.out.println("Invalid phone number. Please try again");
+                PrintHelper.printRed("Invalid phone number. Please try again");
         }
         return newPhoneNumber;
     }
@@ -181,7 +181,7 @@ public class InputHelper {
             if(ValidationHelper.isValidName(username))
                 break;
             else
-                System.out.println("Invalid username. Please try again");
+                PrintHelper.printRed("Invalid username. Please try again");
         }
         return username;
     }
@@ -194,7 +194,7 @@ public class InputHelper {
             if(ValidationHelper.isValidEmailId(emailId))
                 break;
             else
-                System.out.println("Invalid email Id. Please try again");
+                PrintHelper.printRed("Invalid email Id. Please try again");
         }
         return emailId;
     }
