@@ -26,8 +26,7 @@ public interface RepresentativeManager {
 
     Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode, String username);
 
-    void printVenuesAvailability(ArrayList<Integer> availableVenueCodes);
-    void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType);
+    boolean changeUserPassword(String username, String newPassword);
 
     boolean updateUserDatabase(User user);
 

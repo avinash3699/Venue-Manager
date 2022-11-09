@@ -24,6 +24,8 @@ public interface AdminManager extends RepresentativeManager {
 
     boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption);
 
+    boolean changeOtherUserPassword(String username, String newPassword);
+
     LocalDate getMaxPossibleReservationDate();
 
     boolean setMaxPossibleReservationDate(LocalDate maxPossibleDate);

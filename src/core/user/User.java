@@ -12,8 +12,6 @@ public abstract class User {
     private final String username;
     private String phoneNumber, emailId;
 
-    VenueManager venueManager = new VenueManager();
-
     public User(String username, String phoneNumber, String emailId) {
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -49,15 +47,18 @@ public abstract class User {
         return emailId;
     }
 
-    public boolean setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return venueManager.updateUserDatabase(this);
-    }
+//    public boolean setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//        return venueManager.updateUserDatabase(this);
+//    }
+//
+//    public boolean setEmailId(String emailId) {
+//        this.emailId = emailId;
+//        return venueManager.updateUserDatabase(this);
+//    }
 
-    public boolean setEmailId(String emailId) {
-        this.emailId = emailId;
-        return venueManager.updateUserDatabase(this);
-    }
+    public abstract boolean setPhoneNumber(String phoneNumber);
+    public abstract boolean setEmailId(String emailId);
 
     // abstract methods
     public abstract void displayVenueDetails();
@@ -76,11 +77,17 @@ public abstract class User {
 
     public abstract Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode);
 
-    public abstract void printVenuesAvailability(ArrayList<Integer> availableVenueCodes);
-//    public abstract void printVenueAvailability(int venueCode, boolean availability);
-    public abstract void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType);
+    public abstract boolean changeUserPassword(String newPassword);
 
     public abstract boolean updateUserDatabase(User user);
 
     public abstract List<Reservation> getReservationDetails();
+
+    protected void changePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    protected void changeEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 }

@@ -1,16 +1,12 @@
 package core.manager;
 
-import core.venue.Reservation;
-import core.venue.VenueType;
+import core.venue.*;
 import core.user.Representative;
 import core.user.User;
-import core.venue.Venue;
-import core.venue.VenueUpdate;
 import database.Database;
 import helper.DefensiveCopyHelper;
 import helper.PrintHelper;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -519,10 +515,10 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         database.addToUsers(
                 username,
                 new Representative(
-                        username,
-                        phoneNumber,
-                        emailId,
-                        new VenueManager()
+                    username,
+                    phoneNumber,
+                    emailId,
+                    new VenueManager()
                 )
         );
         return true;
@@ -607,6 +603,12 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return Database.getInstance().updateVenue(venueCode, newValue, updateOption);
     }
 
+    // Change other user's password
+    @Override
+    public boolean changeOtherUserPassword(String username, String newPassword) {
+        return Database.getInstance().changeUserPassword(username, newPassword);
+    }
+
     @Override
     public LocalDate getMaxPossibleReservationDate(){
         return Database.getInstance().getMaxPossibleReservationDate();
@@ -644,7 +646,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // if present, it prints "Available" else, prints "Not Available"
     //
     // interacts with the Database class
-    @Override
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
         Database database = Database.getInstance();
         System.out.println();

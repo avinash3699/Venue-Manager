@@ -6,12 +6,8 @@ import helper.Choices;
 import helper.DateHelper;
 import helper.InputHelper;
 import helper.PrintHelper;
-import jdk.internal.util.xml.impl.Input;
-import sun.security.x509.IPAddressName;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -204,22 +200,22 @@ public final class Main {
                 switch (choice) {
                     case 1:
                         availableVenueCodes = currentUser.checkAvailability(from, to);
-                        currentUser.printVenuesAvailability(availableVenueCodes);
+                        venueManager.printVenuesAvailability(availableVenueCodes);
                         break;
                     case 2:
                         venueType = VenueType.CONFERENCE;
                         availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
-                        currentUser.printVenuesAvailability(availableVenueCodes, venueType);
+                        venueManager.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 3:
                         venueType = VenueType.HANDS_ON_TRAINING;
                         availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
-                        currentUser.printVenuesAvailability(availableVenueCodes, venueType);
+                        venueManager.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 4:
                         venueType = VenueType.AUDITORIUM;
                         availableVenueCodes = currentUser.checkAvailability(venueType, from, to);
-                        currentUser.printVenuesAvailability(availableVenueCodes, venueType);
+                        venueManager.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
                         venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
@@ -545,7 +541,7 @@ public final class Main {
                 }
                 else{
                     String newPassword = InputHelper.getStringInput("Enter new password: ");
-                    if(venueManager.changeUserPassword(currentUser.getUsername(), newPassword)){
+                    if(currentUser.changeUserPassword(newPassword)){
                         PrintHelper.printGreen("Password changed successfully!");
                     }
                 }
@@ -627,7 +623,7 @@ public final class Main {
             }
 
             String newPassword = InputHelper.getStringInput("Enter new password: ");
-            if (venueManager.changeUserPassword(username, newPassword))
+            if (((Admin) currentUser).changeOtherUserPassword(username, newPassword))
                 PrintHelper.printGreen("Password changed successfully!");
             else{
                 PrintHelper.printRed("OOPs. Change Password failed. Please try again");

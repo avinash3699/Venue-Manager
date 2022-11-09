@@ -21,6 +21,20 @@ public class Admin extends User{
         this.venueManager = venueManager;
     }
 
+    // Change Phone number
+    @Override
+    public boolean setPhoneNumber(String phoneNumber) {
+        super.changePhoneNumber(phoneNumber);
+        return venueManager.updateUserDatabase(this);
+    }
+
+    // Change Mail id
+    @Override
+    public boolean setEmailId(String emailId) {
+        super.changeEmailId(emailId);
+        return venueManager.updateUserDatabase(this);
+    }
+
     // Display Venue Details
     @Override
     public void displayVenueDetails() {
@@ -81,15 +95,10 @@ public class Admin extends User{
         return venueManager.changeVenue(oldVenueCode, accessId, newVenueCode, this.getUsername());
     }
 
-    // Print Venue Availability
+    // Change User password
     @Override
-    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
-        venueManager.printVenuesAvailability(availableVenueCodes);
-    }
-
-    @Override
-    public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
-        venueManager.printVenuesAvailability(availableVenueCodes, inputType);
+    public boolean changeUserPassword(String newPassword) {
+        return venueManager.changeUserPassword(this.getUsername(), newPassword);
     }
 
     // Update User Database
@@ -136,11 +145,15 @@ public class Admin extends User{
         return venueManager.updateVenue(venueCode, newSeatingCapacity, VenueUpdate.SEATING_CAPACITY);
     }
 
+    public LocalDate getMaxPossibleReservationDate() {
+        return venueManager.getMaxPossibleReservationDate();
+    }
+
     public boolean setMaxPossibleReservationDate(LocalDate maxPossibleDate) {
         return venueManager.setMaxPossibleReservationDate(maxPossibleDate);
     }
 
-    public LocalDate getMaxPossibleReservationDate() {
-        return venueManager.getMaxPossibleReservationDate();
+    public boolean changeOtherUserPassword(String username, String newPassword) {
+        return venueManager.changeOtherUserPassword(username, newPassword);
     }
 }
