@@ -6,8 +6,12 @@ import helper.Choices;
 import helper.DateHelper;
 import helper.InputHelper;
 import helper.PrintHelper;
+import jdk.internal.util.xml.impl.Input;
+import sun.security.x509.IPAddressName;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +99,9 @@ public final class Main {
                                     break;
                                 case 15:
                                     manageVenueRemoval();
+                                    break;
+                                case 16:
+                                    manageSetMaximumPossibleReservationDate();
                                     break;
                                 default:
                                     PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
@@ -880,6 +887,32 @@ public final class Main {
             else
                 PrintHelper.printRed("Cannot remove venue. Please try again");
 
+
+        }
+        else
+            PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
+    }
+
+    // 16. View/Set Maximum Possible Reservation Date
+    private static void manageSetMaximumPossibleReservationDate() {
+        if(currentUser instanceof Admin){
+
+            System.out.println(Choices.maxPossibleReservationDateChoices);
+            switch (InputHelper.getIntegerInput("Enter Choice: ")){
+                case 1:
+                    PrintHelper.printYellowUnderlined("Current Maximum Possible Reservation Date");
+                    PrintHelper.printYellow(DateHelper.getFormattedDate(((Admin) currentUser).getMaxPossibleReservationDate()));
+                    break;
+                case 2:
+                    LocalDate maxPossibleDate = InputHelper.getMaxPossibleReservationDateInput("Enter Maximum Possible Reservation Date(DD-MM-YYYY): ");
+                    if(((Admin) currentUser).setMaxPossibleReservationDate(maxPossibleDate))
+                        PrintHelper.printGreen("Maximum Possible Reservation Date Set successfully");
+                    else
+                        PrintHelper.printRed("Cannot set Maximum Possible Reservation Date. Please try again");
+                    break;
+                default:
+                    PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
+            }
 
         }
         else

@@ -30,7 +30,8 @@ public final class Choices {
             "12. Remove User\n" +
             "13. Add Venue\n" +
             "14. Update Venue\n" +
-            "15. Remove Venue\n";
+            "15. Remove Venue\n" +
+            "16. View/Set Maximum Possible Reservation Date\n";
 
     public static final String displayVenueChoices =
             "Display details of\n" +
@@ -90,4 +91,8 @@ public final class Choices {
             "Update\n" +
             "1. Venue Name\n" +
             "2. Seating Capacity\n";
+
+    public static final String maxPossibleReservationDateChoices =
+            "1. View Maximum Possible Reservation Date\n" +
+            "2. Set Maximum Possible Reservation Date\n";
 }

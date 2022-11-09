@@ -10,6 +10,7 @@ import database.Database;
 import helper.DefensiveCopyHelper;
 import helper.PrintHelper;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -606,6 +607,17 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return Database.getInstance().updateVenue(venueCode, newValue, updateOption);
     }
 
+    @Override
+    public LocalDate getMaxPossibleReservationDate(){
+        return Database.getInstance().getMaxPossibleReservationDate();
+    }
+
+    @Override
+    public boolean setMaxPossibleReservationDate(LocalDate maxPossibleDate) {
+        Database.getInstance().setMaxPossibleReservationDate(maxPossibleDate);
+        return true;
+    }
+
     // Print Venues Availability
 
     // This function gets the venue codes of all the available venues as the input.
@@ -669,4 +681,5 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     public String getNewVenueCode() {
         return String.valueOf(Database.getInstance().getNewVenueCode());
     }
+
 }

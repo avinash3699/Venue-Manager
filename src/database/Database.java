@@ -6,8 +6,11 @@ import core.user.Representative;
 import core.user.User;
 import core.venue.*;
 import helper.DefensiveCopyHelper;
+import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.*;
 
 // have to generate setters and getters for properties instead of reading and writing it directly
@@ -411,6 +414,19 @@ public final class Database {
             return true;
         }
         return false;
+    }
+
+    LocalDate maxPossibleReservationDate = LocalDate.parse(
+            "31-12-2022",
+            DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT)
+    );
+
+    public void setMaxPossibleReservationDate(LocalDate date){
+        this.maxPossibleReservationDate = date.plusDays(0);
+    }
+
+    public LocalDate getMaxPossibleReservationDate(){
+        return this.maxPossibleReservationDate.plusDays(0);
     }
 
 

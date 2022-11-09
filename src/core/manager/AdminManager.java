@@ -4,6 +4,7 @@ import core.venue.Reservation;
 import core.venue.Venue;
 import core.venue.VenueUpdate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -22,5 +23,9 @@ public interface AdminManager extends RepresentativeManager {
     boolean removeVenue(int venueCode);
 
     boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption);
+
+    LocalDate getMaxPossibleReservationDate();
+
+    boolean setMaxPossibleReservationDate(LocalDate maxPossibleDate);
 
 }

@@ -2,6 +2,7 @@ package helper;
 
 import core.manager.VenueManager;
 
+import javax.activation.DataHandler;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -138,6 +139,12 @@ public class InputHelper {
                 // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
                 parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
 
+
+                if(! parsedDate.isBefore(new VenueManager().getMaxPossibleReservationDate())){
+                    PrintHelper.printRed("You cannot enter a date beyond " + DateHelper.getFormattedDate(new VenueManager().getMaxPossibleReservationDate()));
+                    continue;
+                }
+
                 // checking whether the entered date is a past date
                 boolean isPastDate = DateHelper.isPastDate(parsedDate);
                 if(isPastDate) {
@@ -197,5 +204,43 @@ public class InputHelper {
                 PrintHelper.printRed("Invalid email Id. Please try again");
         }
         return emailId;
+    }
+
+    public static LocalDate getMaxPossibleReservationDateInput(String hintText){
+        String date;
+        LocalDate parsedDate;
+
+        // uuuu is used in place of yyyy (from Java 8)
+        // https://howtodoinjava.com/java/date-time/resolverstyle-strict-date-parsing/
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+
+        while(true) {
+            System.out.println("\n---------");
+            date = getStringInput(hintText);
+            try{
+                // ResolverStyle.STRICT is used to throw exception for 29th and 30th of February, considering leap year
+                // https://gist.github.com/MenoData/da0aa200b8df31a1d308ad61587a94e6
+                parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
+
+                // checking whether the entered date is a past date
+                boolean isPastDate = DateHelper.isPastDate(parsedDate);
+                if(isPastDate) {
+                    PrintHelper.printRed("OOPs! You have entered a past date. Please enter a valid one");
+                    continue;
+                }
+
+                // checking whether the entered date is current date
+                boolean isCurrentDate = DateHelper.isCurrentDate(parsedDate);
+                if(isCurrentDate){
+                    PrintHelper.printRed("OOPs! You cannot enter today's date. Please enter again");
+                    continue;
+                }
+                break;
+            }
+            catch (DateTimeParseException e){
+                PrintHelper.printRed("OOPs! Invalid Date, please enter a valid date");
+            }
+        }
+        return parsedDate;
     }
 }

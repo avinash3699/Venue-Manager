@@ -135,4 +135,12 @@ public class Admin extends User{
     public boolean updateVenueSeatingCapacity(int venueCode, String newSeatingCapacity) {
         return venueManager.updateVenue(venueCode, newSeatingCapacity, VenueUpdate.SEATING_CAPACITY);
     }
+
+    public boolean setMaxPossibleReservationDate(LocalDate maxPossibleDate) {
+        return venueManager.setMaxPossibleReservationDate(maxPossibleDate);
+    }
+
+    public LocalDate getMaxPossibleReservationDate() {
+        return venueManager.getMaxPossibleReservationDate();
+    }
 }
