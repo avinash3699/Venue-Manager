@@ -348,7 +348,7 @@ public final class Main {
                 }
             }
 
-            char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): "), confirmation2;
+            char confirmation1 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): "), confirmation2;
             if(confirmation1 == 'Y' || confirmation1 == 'y'){}
             else{
                 PrintHelper.printRed("Cancellation process stopped!");
@@ -366,7 +366,7 @@ public final class Main {
                 switch (choice) {
                     case 1:
 
-                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId);
 
@@ -395,7 +395,7 @@ public final class Main {
                             return;
                         }
 
-                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, from, to);
 
@@ -421,7 +421,7 @@ public final class Main {
                             return;
                         }
 
-                        confirmation2 = InputHelper.getYesOrNoCharacterInput("Are you sure? You want to cancel the venue? (Y/N): ");
+                        confirmation2 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId, dateToBeCancelled, dateToBeCancelled);
 
@@ -693,7 +693,7 @@ public final class Main {
                     getAuditoriumDetails();
                     break;
                 case 3:
-                    getHandsonTrainingCentreDetails();
+                    getHandsOnTrainingCentreDetails();
                     break;
                 default:
                     PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
@@ -716,7 +716,7 @@ public final class Main {
                 PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
-                break;;
+                break;
         }
 
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
@@ -786,7 +786,7 @@ public final class Main {
             PrintHelper.printRed("Cannot add Venue, Please try again");
     }
 
-    private static void getHandsonTrainingCentreDetails() {
+    private static void getHandsOnTrainingCentreDetails() {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: ");
@@ -799,7 +799,7 @@ public final class Main {
                 PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
-                break;;
+                break;
         }
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
                 isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
@@ -913,4 +913,5 @@ public final class Main {
         else
             PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
+
 }

@@ -10,7 +10,7 @@ public enum ANSIColors {
 
     RESET("\033[0m");
 
-    private String value;
+    private final String value;
 
     ANSIColors(String s) {
         this.value = s;

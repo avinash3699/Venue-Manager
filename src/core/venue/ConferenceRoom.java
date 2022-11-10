@@ -31,7 +31,7 @@ public class ConferenceRoom extends Venue{
     }
 
     private Map<String, String> getAdditionalVenueDetails() {
-        return new LinkedHashMap(){
+        return new LinkedHashMap<String, String>(){
             {
                 put("White Board", isWhiteBoardAvailable? "Available": "Not Available");
             }

@@ -201,7 +201,9 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                     to
             );
 
-            updateAvailability(currentReservation);
+            boolean isUpdateSuccessful = updateAvailability(currentReservation);
+            if(!isUpdateSuccessful)
+                return null;
         }
 
         return currentReservation;
@@ -233,7 +235,10 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                     from,
                     to
             );
-            updateAvailability(currentReservation);
+
+            boolean isUpdateSuccessful = updateAvailability(currentReservation);
+            if(!isUpdateSuccessful)
+                return null;
         }
         return currentReservation;
 
@@ -252,9 +257,19 @@ public class VenueManager implements AdminManager, RepresentativeManager {
      *         'false', otherwise
      */
     private boolean updateAvailability(Reservation reservationDetails){
-        Database.getInstance().addToVenueReservationDetails(reservationDetails.getVenueCode(), reservationDetails);
-        Database.getInstance().addToUserReservationDetails(reservationDetails.getUsername(), reservationDetails);
-        Database.getInstance().addToAccessIdUserMap(reservationDetails.getAccessId(), reservationDetails.getUsername());
+
+        boolean isAddedToVenueReservation = Database.getInstance().addToVenueReservationDetails(reservationDetails.getVenueCode(), reservationDetails);
+        if(!isAddedToVenueReservation)
+            return false;
+
+        boolean isAddedToUserReservation = Database.getInstance().addToUserReservationDetails(reservationDetails.getUsername(), reservationDetails);
+        if(!isAddedToUserReservation)
+            return false;
+
+        boolean isAddedToAccessIdUserMap = Database.getInstance().addToAccessIdUserMap(reservationDetails.getAccessId(), reservationDetails.getUsername());
+        if(!isAddedToAccessIdUserMap)
+            return false;
+
         return true;
     }
 
@@ -275,9 +290,14 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     @Override
     public boolean cancelVenue(int venueCode, int accessId, String username) {
         Database database = Database.getInstance();
-        database.removeFromVenueReservationDetails(venueCode, accessId);
 
-        database.removeFromUserReservationDetails(accessId, username);
+        boolean isRemovedFromVenueReservation = database.removeFromVenueReservationDetails(venueCode, accessId);
+        if(!isRemovedFromVenueReservation)
+            return false;
+
+        boolean isRemovedFromUserReservation = database.removeFromUserReservationDetails(accessId, username);
+        if(!isRemovedFromUserReservation)
+            return false;
 
         return true;
     }
@@ -300,9 +320,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
      */
     @Override
     public boolean cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to, String username) {
-        Database.getInstance().removeFromVenueReservationDetails(venueCode, accessId, from, to);
+        boolean isRemovedFromVenueReservation = Database.getInstance().removeFromVenueReservationDetails(venueCode, accessId, from, to);
+        if(!isRemovedFromVenueReservation)
+            return false;
 
-        Database.getInstance().removeFromUserReservationDetails(accessId, from, to, username);
+        boolean isRemovedFromUserReservation = Database.getInstance().removeFromUserReservationDetails(accessId, from, to, username);
+        if(!isRemovedFromUserReservation)
+            return false;
 
         return true;
     }
@@ -346,9 +370,11 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
         currentReservation.setVenueCode(newVenueCode);
 
-        updateAvailability(currentReservation);
-        cancelVenue(oldVenueCode, accessId, currentReservation.getUsername());
+        boolean isUpdateSuccessful = updateAvailability(currentReservation);
+        if(!isUpdateSuccessful)
+            return null;
 
+        cancelVenue(oldVenueCode, accessId, currentReservation.getUsername());
 
         return currentReservation;
     }

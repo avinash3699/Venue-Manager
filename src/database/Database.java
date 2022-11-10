@@ -6,7 +6,6 @@ import core.user.Representative;
 import core.user.User;
 import core.venue.*;
 import helper.DefensiveCopyHelper;
-import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +38,7 @@ public final class Database {
 
 
     // **********************************************************************************************
-    private HashMap<String, User> users = new HashMap<String, User>(){
+    private final HashMap<String, User> users = new HashMap<String, User>(){
         {
             put("admin1", new Admin("admin1", "9790877950", "admin1@org", new VenueManager()));
             put("cse", new Representative("cse", "9790963512", "cse@org", new VenueManager()));
@@ -64,7 +63,7 @@ public final class Database {
     // **********************************************************************************************
 
     // This field stores the usernames and passwords of all the users
-    private Map<String, String> userCredentials = new HashMap<String, String>(){
+    private final Map<String, String> userCredentials = new HashMap<String, String>(){
         {
             put("cse", "viii");
             put("it", "viii");
@@ -116,7 +115,7 @@ public final class Database {
     // **********************************************************************************************
 
     // This field consists of the venue code of the venues mapped with their object
-    private Map<Integer, Venue> venues = new LinkedHashMap<Integer, Venue>(){
+    private final Map<Integer, Venue> venues = new LinkedHashMap<Integer, Venue>(){
         {
             put(venueCode++, new Auditorium(
                     "Sigma",
@@ -217,7 +216,7 @@ public final class Database {
     }
 
     public List<Integer> getVenueCodesList() {
-        List<Integer> venueCodes = new ArrayList();
+        List<Integer> venueCodes = new ArrayList<>();
         for(int venueCode: venues.keySet())
             venueCodes.add(venueCode);
         return venueCodes;
@@ -229,11 +228,11 @@ public final class Database {
 
 
     // **********************************************************************************************
-    private Map<Integer, List<Reservation>> venueReservationDetails = new HashMap<Integer, List<Reservation>>(){
+    private final Map<Integer, List<Reservation>> venueReservationDetails = new HashMap<Integer, List<Reservation>>(){
         {
             put(
                     1,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -241,7 +240,7 @@ public final class Database {
             );
             put(
                     2,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -249,7 +248,7 @@ public final class Database {
             );
             put(
                     3,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -257,7 +256,7 @@ public final class Database {
             );
             put(
                     4,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -265,7 +264,7 @@ public final class Database {
             );
             put(
                     5,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -273,7 +272,7 @@ public final class Database {
             );
             put(
                     6,
-                    new ArrayList(){
+                    new ArrayList<Reservation>(){
                         {
                             add(new Reservation());
                         }
@@ -286,16 +285,18 @@ public final class Database {
         return DefensiveCopyHelper.getDefensiveCopyMap(venueReservationDetails);
     }
 
-    public void addToVenueReservationDetails(int venueCode, Reservation reservationDetails) {
-        if(venueReservationDetails.containsKey(venueCode))
+    public boolean addToVenueReservationDetails(int venueCode, Reservation reservationDetails) {
+        if(venueReservationDetails.containsKey(venueCode)) {
             //TODO put a defensive copy of the Reservation object(reservationDetails)
             venueReservationDetails.get(venueCode).add(reservationDetails);
+        }
         else{
             ArrayList<Reservation> reservationList = new ArrayList<>();
             //TODO put a defensive copy of the Reservation object(reservationDetails)
             reservationList.add(reservationDetails);
             venueReservationDetails.put(venueCode, reservationList);
         }
+        return true;
     }
 
     public boolean removeFromVenueReservationDetails(int venueCode, int accessId) {
@@ -338,10 +339,11 @@ public final class Database {
 
 
     // **********************************************************************************************
-    private Map<Integer, String> accessIdUserMap = new HashMap<>();
+    private final Map<Integer, String> accessIdUserMap = new HashMap<>();
 
-    public void addToAccessIdUserMap(int accessId, String username) {
+    public boolean addToAccessIdUserMap(int accessId, String username) {
         accessIdUserMap.put(accessId, username);
+        return true;
     }
 
     public ArrayList<Integer> getAccessIds() {
@@ -353,7 +355,7 @@ public final class Database {
 
 
     // **********************************************************************************************
-    private Map<String, List<Reservation>> userReservationDetails = new HashMap<>();
+    private final Map<String, List<Reservation>> userReservationDetails = new HashMap<>();
 
     public List<Reservation> getUserReservation(String username) {
         if(userReservationDetails.containsKey(username))

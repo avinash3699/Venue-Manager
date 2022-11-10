@@ -6,7 +6,9 @@ import java.util.Map;
 public class Venue {
 
     // instance variables
-    private String venueName, venueCode, location, seatingCapacity;
+    private final String venueCode, location;
+    private String venueName;
+    private String seatingCapacity;
     private boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable;
     private final VenueType venueType;
 
