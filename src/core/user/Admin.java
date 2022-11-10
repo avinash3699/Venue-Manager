@@ -1,6 +1,6 @@
 package core.user;
 
-import core.manager.AdminManager;
+import core.manager.AdminFunctions;
 import core.venue.Reservation;
 import core.venue.Venue;
 import core.venue.VenueType;
@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class Admin extends User{
 
-    AdminManager venueManager;
+    AdminFunctions venueManager;
 
-    public Admin(String username, String phoneNumber, String emailId, AdminManager venueManager) {
+    public Admin(String username, String phoneNumber, String emailId, AdminFunctions venueManager) {
         super(username, phoneNumber, emailId);
         this.venueManager = venueManager;
     }

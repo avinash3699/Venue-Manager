@@ -1,6 +1,6 @@
 package core.user;
 
-import core.manager.RepresentativeManager;
+import core.manager.RepresentativeFunctions;
 import core.venue.Reservation;
 import core.venue.VenueType;
 
@@ -9,9 +9,9 @@ import java.util.*;
 
 public class Representative extends User{
 
-    RepresentativeManager venueManager;
+    RepresentativeFunctions venueManager;
 
-    public Representative(String username, String phoneNumber, String emailId, RepresentativeManager venueManager) {
+    public Representative(String username, String phoneNumber, String emailId, RepresentativeFunctions venueManager) {
         super(username, phoneNumber, emailId);
         this.venueManager = venueManager;
     }

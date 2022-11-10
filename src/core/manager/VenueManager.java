@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 // The system that acts as an interface between the user and the database
-public class VenueManager implements AdminManager, RepresentativeManager {
+public class VenueManager implements AdminFunctions, RepresentativeFunctions {
 
     /**
      * This method authenticates the logging user
@@ -28,11 +28,8 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return Database.getInstance().authenticate(userName, enteredPassword);
     }
 
-    /**
-     * This method displays the details of all the venues
-     *
-     * interacts with the Database class
-     */
+
+    // Display Venue Details
     @Override
     public void displayVenueDetails() {
         for(Venue venue: Database.getInstance().getVenues().values()){
@@ -46,14 +43,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
     }
 
-    // Display Venue Details
-    /**
-     * This method displays the details of a single venue
-     *
-     * interacts with the Database class
-     *
-     * @param venueCode The code of the venue for which the details have to be displayed
-     */
     @Override
     public void displayVenueDetails(int venueCode){
         Map<String, String> venueDetails = Database.getInstance().getVenues().get(venueCode).getVenueDetails();
@@ -64,12 +53,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
     }
 
-    /**
-     * This method displays the details of, only the venues that is of the given type
-     * VenueType: CONFERENCE, HANDS_ON_TRAINING, AUDITORIUM
-     *
-     * @param type VenueType(enum) The type of the venues for which the details have to be displayed
-     */
     @Override
     public void displayVenueDetails(VenueType type) {
         for(Venue venue: Database.getInstance().getVenues().values()){
@@ -86,15 +69,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Check availability
-    /**
-     * This method checks the availability of all the venues for the given 'from date' to 'end date'
-     *
-     * interacts with the Database class
-     *
-     * @param from The date from which the venue has to be checked for availability (start date)
-     * @param to The date to which the venue has to be checked for availability (end date)
-     * @return Returns the list of venue codes of available venues
-     */
     @Override
     public ArrayList<Integer> checkAvailability(LocalDate from, LocalDate to) {
         Map<Integer, List<Reservation>> reservationDetails = Database.getInstance().getVenueReservationDetails();
@@ -117,16 +91,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return availableVenues;
     }
 
-    /**
-     * This method checks the availability of venues that is of the given 'type' for the given 'from date' to 'end date'
-     *
-     * interacts with the Database class
-     *
-     * @param type VenueType(enum) The type of the venues for which the availability has to be checked
-     * @param from The date from which the venue has to be checked for availability (start date)
-     * @param to The date to which the venue has to be checked for availability (end date)
-     * @return Returns the list of venue codes of available venues
-     */
     @Override
     public ArrayList<Integer> checkAvailability(VenueType type, LocalDate from, LocalDate to){
         Map<Integer, List<Reservation>> reservationDetails = Database.getInstance().getVenueReservationDetails();
@@ -151,15 +115,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return availableVenues;
     }
 
-    /**
-     * This method checks the availability of a specific venue for the given 'venue code, ''from date' to 'end date'
-     * interacts with the Database class
-     *
-     * @param venueCode The code of the venue for which the availability has to be checked
-     * @param from The date from which the venue has to be checked for availability (start date)
-     * @param to The date to which the venue has to be checked for availability (end date)
-     * @return Returns 'true' if available, 'false' otherwise
-     */
     @Override
     public boolean checkAvailability(int venueCode, LocalDate from, LocalDate to){
         List<Reservation> reservationDetails = Database.getInstance().getVenueReservationDetails().get(venueCode);
@@ -175,17 +130,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Reserve Venue
-    /**
-     * This method reserves the venue of given 'type' for the given 'from date' to 'to date'
-     *
-     * @param type VenueType(enum) The type of the venues for which the reservation can be done
-     * @param from The date from which the venue has to be reserved (start date)
-     * @param to The date to which the venue has to be reserved (end date)
-     * @param username The username of the user making the reservation
-     * @return Returns
-     *         'Reservation' object, if reservation is successful
-     *         'null', if reservation fails
-     */
     @Override
     public Reservation reserveVenue(VenueType type, LocalDate from, LocalDate to, String username){
         ArrayList<Integer> availableVenues = checkAvailability(type, from, to);
@@ -210,17 +154,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
     }
 
-    /**
-     * This method reserves the venue with the given venue code
-     *
-     * @param venueCode The code of the venue that has to be reserved
-     * @param from The date from which the venue has to be reserved (start date)
-     * @param to The date to which the venue has to be reserved (end date)
-     * @param username The username of the user making the reservation
-     * @return Returns
-     *         'Reservation' object, if reservation is successful
-     *         'null', if reservation fails
-     */
     @Override
     public Reservation reserveVenue(int venueCode, LocalDate from, LocalDate to, String username){
         Reservation currentReservation = null;
@@ -248,14 +181,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     /**
      * This method updates the database after a new reservation has been made
      *
-     * Called by the reserveVenue and cancelVenue functions
-     * interacts with the Database class
-     *
      * @param reservationDetails Reservation object which contains the reservation details
+     *
      * @return Returns
      *         'true', if updated the database successfully
      *         'false', otherwise
      */
+    // Called by the reserveVenue and cancelVenue functions
     private boolean updateAvailability(Reservation reservationDetails){
 
         boolean isAddedToVenueReservation = Database.getInstance().addToVenueReservationDetails(reservationDetails.getVenueCode(), reservationDetails);
@@ -274,19 +206,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Cancel Venue
-    /**
-     * This method cancels a reserved venue of the given 'access id'
-     * This method 'cancels the entire reservation'
-     *
-     * interacts with the Database class
-     *
-     * @param venueCode The code of the venue that is to be cancelled
-     * @param accessId The access id of the reservation. It uniquely identifies a reservation
-     * @param username The username of the user making the cancellation
-     * @return Returns
-     *         'true', if cancelled successfully
-     *         'false', otherwise
-     */
     @Override
     public boolean cancelVenue(int venueCode, int accessId, String username) {
         Database database = Database.getInstance();
@@ -301,23 +220,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
         return true;
     }
-
-    /**
-     * This method cancels a reserved venue of the given 'access id'
-     * This method 'cancels the dates between the given "from" and "to" dates'
-     * This method also 'cancels a single date' if the 'from' and 'to' dates are same
-     *
-     * interacts with the Database class
-     *
-     * @param venueCode The code of the venue that is to be cancelled
-     * @param accessId The access id of the reservation. It uniquely identifies a reservation
-     * @param from The date from which the venue has to be cancelled (start date)
-     * @param to The date to which the venue has to be cancelled (end date)
-     * @param username The username of the user making the cancellation
-     * @return Returns
-     *         'true', if cancelled successfully
-     *         'false', otherwise
-     */
+    
     @Override
     public boolean cancelVenue(int venueCode, int accessId, LocalDate from, LocalDate to, String username) {
         boolean isRemovedFromVenueReservation = Database.getInstance().removeFromVenueReservationDetails(venueCode, accessId, from, to);
@@ -332,21 +235,8 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Change Venue
-    /**
-     * This method is used to change the reservation from one venue to another venue
-     * It changes only the venue. The dates and the access id will be the same as that of the old reservation
-     *
-     * interacts with the Database class
-     * calls the 'updateAvailability' and 'cancelVenue' functions
-     *
-     * @param oldVenueCode The current venue code of the reservation
-     * @param accessId The access id of the reservation. It uniquely identifies a reservation
-     * @param newVenueCode The new venue code that will be changed to
-     * @param username The username of the user making the change
-     * @return Returns
-     *         'Reservation' object, if venue change is successful
-     *         'null', otherwise
-     */
+
+    // calls the 'checkAvailability, 'updateAvailability' and 'cancelVenue' functions
     @Override
     public Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode, String username){
         Database database = Database.getInstance();
@@ -360,8 +250,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
                 break;
             }
         }
-
-        //TODO check for availability before changing to the new venue
 
         boolean isAvailable = checkAvailability(currentReservation.getReservedDates(), newVenueCode);
 
@@ -379,6 +267,16 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return currentReservation;
     }
 
+    /**
+     * This method checks whether a list of dates given is available in the given venue code
+     *
+     * @param reservedDates the list of dates for which the availability has to be checked
+     * @param newVenueCode the venue in which the availability of dates has to be checked
+     *
+     * @return Returns
+     *         'true' only if all the dates in the input list are available,
+     *         'false' otherwise
+     */
     private boolean checkAvailability(List<LocalDate> reservedDates, int newVenueCode) {
         List<LocalDate> allReservedDates = new ArrayList<>();
         List<Reservation> reservationDetails = Database.getInstance().getVenueReservationDetails().get(newVenueCode);
@@ -394,14 +292,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Get reservation details
-    /**
-     * This method is used to get the reservation details of the user from the database
-     *
-     * interacts with the Database class
-     *
-     * @param username The username of the user whose details have to be got.
-     * @return Returns the reservation details of the user as a list of reservation objects
-     */
     @Override
     public List<Reservation> getReservationDetails(String username) {
         return Database.getInstance().getUserReservation(username);
@@ -417,6 +307,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
      *         'Reservation' object "if the user is authorized to use the provided access id" and "the details are taken from the database successfully"
      *         'null', otherwise
      */
+    
     public Reservation getReservationDetails(String username, int accessId) {
 
         List<Reservation> userReservations = Database.getInstance().getUserReservation(username);
@@ -428,33 +319,20 @@ public class VenueManager implements AdminManager, RepresentativeManager {
 
     }
 
-    /**
-     * This method is used to update the User details of the user
-     *
-     * @param user The User object that is to be updated in the database
-     * @return Returns
-     *         'true', if updated successfully
-     *         'false', otherwise
-     */
+    // Update User Database
     @Override
     public boolean updateUserDatabase(User user) {
         Database.getInstance().addToUsers(user.getUsername(), user);
         return true;
     }
 
-    /**
-     * This method is used to change the password of the user in the database
-     *
-     * @param username The username of the user for which the password has to be changed
-     * @param newPassword The password that is to be updated it the database
-     * @return Returns
-     *         'true', if changed successfully
-     *         'false', otherwise
-     */
+    // Change User password
+    @Override
     public boolean changeUserPassword(String username, String newPassword) {
         return Database.getInstance().changeUserPassword(username, newPassword);
     }
 
+    // Check valid Date(s)
     /**
      * This method checks whether the dates between 'from' and 'to' are present in the reservation details of the provided access id
      * This check is done during the cancellation process to let know the user that they have entered date(s) that is/are not in the reservation
@@ -463,6 +341,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
      * @param from The date from which the reservation has to be checked (start date)
      * @param to The date to which the reservation has to be checked (end date)
      * @param username The username of the user whose reservation details has to be got
+     *                 
      * @return Returns
      *         'true', if valid
      *         'false', otherwise
@@ -505,6 +384,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return isValidDate;
     }
 
+    // Check Username Existence
     /**
      * This method is used to check whether a username exists or not using the user details in the database
      *
@@ -520,20 +400,8 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Add User
-    /**
-     * This method is used to add a new user
-     * Only admin is authorized to call this method
-     *
-     * interacts with the Database class
-     *
-     * @param username The username of the new user
-     * @param password The password of the new user
-     * @param emailId The email of the new user
-     * @param phoneNumber The phone number of the new user
-     * @return Returns
-     *         'true', if user added successfully
-     *         'false', otherwise
-     */
+
+    // Only admin is authorized to call this method
     @Override
     public boolean addUser(String username, String password, String emailId, String phoneNumber){
         Database database = Database.getInstance();
@@ -551,17 +419,8 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     }
 
     // Remove User
-    /**
-     * This method is used to remove a user
-     * Only admin is authorized to call this method
-     *
-     * interacts with the Database class
-     *
-     * @param username The username of the user to be removed
-     * @return Returns
-     *         'true', if user removed successfully
-     *         'false', otherwise
-     */
+
+    // Only admin is authorized to call this method
     @Override
     public boolean removeUser(String username) {
         Database database = Database.getInstance();
@@ -570,30 +429,14 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return true;
     }
 
-    /**
-     * This method is used to get the personal details of the user from the database
-     * Only admin is authorized to call this method
-     *
-     * interacts with the Database class
-     *
-     * @param username The username of the user whose details have to be got.
-     * @return Returns the personal details of the user as a map object
-     */
+    // Only admin is authorized to call this method
     @Override
     public Map<String, String> getOtherUserPersonalDetails(String username) {
         Database database = Database.getInstance();
         return DefensiveCopyHelper.getDefensiveCopyMap(database.getUsers().get(username).getPersonalDetails());
     }
 
-    /**
-     * This method is used to get the reservation details of the user from the database
-     * Only admin is authorized to call this method
-     *
-     * interacts with the Database class
-     *
-     * @param username The username of the user whose details have to be got.
-     * @return Returns the reservation details of the user as a list of reservation objects
-     */
+    // Only admin is authorized to call this method
     @Override
     public List<Reservation> getOtherUserReservationDetails(String username) {
         return getReservationDetails(username);
@@ -635,6 +478,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         return Database.getInstance().changeUserPassword(username, newPassword);
     }
 
+    // Maximum Possible Reservation Date
     @Override
     public LocalDate getMaxPossibleReservationDate(){
         return Database.getInstance().getMaxPossibleReservationDate();
@@ -652,8 +496,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // It gets all the venues from the database.
     // It then checks whether the venue is in the available venues list.
     // if present, it prints "Available" else, prints "Not Available"
-    //
-    // interacts with the Database class
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes) {
         Database database = Database.getInstance();
         System.out.println();
@@ -670,8 +512,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
     // It gets all the venues of the given 'type' from the database.
     // It then checks whether the venue is in the available venues list.
     // if present, it prints "Available" else, prints "Not Available"
-    //
-    // interacts with the Database class
     public void printVenuesAvailability(ArrayList<Integer> availableVenueCodes, VenueType inputType) {
         Database database = Database.getInstance();
         System.out.println();
@@ -687,6 +527,7 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
     }
 
+    // This function is used to print the availability of a single venue
     public void printVenueAvailability(int venueCode, boolean isAvailable){
         if(isAvailable){
             PrintHelper.printGreen(Database.getInstance().getVenueNameFromCode(venueCode) + ": Available");
@@ -696,11 +537,13 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
     }
 
+    // Check valid Venue Code
     public boolean isValidVenueCode(int venueCode){
         List<Integer> venueCodesList = Database.getInstance().getVenueCodesList();
         return venueCodesList.contains(venueCode);
     }
 
+    // Get new Venue Code
     public String getNewVenueCode() {
         return String.valueOf(Database.getInstance().getNewVenueCode());
     }
