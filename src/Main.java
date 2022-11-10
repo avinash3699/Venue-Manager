@@ -334,11 +334,13 @@ public final class Main {
         }
 
         while(true) {
-            accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
+            accessId = InputHelper.getIntegerInput("\nEnter Access Id (-1 to exit): ");
+            if(accessId == -1)
+                return;
 
             Reservation reservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
             if (reservationDetails == null){
-                PrintHelper.printRed("\nOOPs! Access ID invalid. Please try again");
+                PrintHelper.printRed("OOPs! Access ID invalid. Please try again");
                 continue;
             }
             else{
@@ -364,8 +366,9 @@ public final class Main {
 
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
+                    case -1:
+                        return;
                     case 1:
-
                         confirmation2 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): ");
                         if(confirmation2 == 'Y' || confirmation2 == 'y') {
                             isCancelled = currentUser.cancelVenue(venueCode, accessId);
@@ -451,35 +454,44 @@ public final class Main {
     private static void manageVenueChange() {
 
         char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
-        if((confirmation == 'Y') || (confirmation == 'y')){}
-        else{
+        if ((confirmation == 'Y') || (confirmation == 'y')) {}
+        else {
             PrintHelper.printRed("Please reserve a venue to get the access id!");
             return;
         }
 
-        accessId = InputHelper.getIntegerInput("\nEnter Access Id: ");
+        while (true) {
 
-        Reservation currentReservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
-        if (currentReservationDetails == null){
-            PrintHelper.printRed("\nOOPs! Access ID invalid. Please try again");
-            return;
-        }
-        else{
-            PrintHelper.printYellowUnderlined("\nYour reservation details for given access id:");
-            for(String key: currentReservationDetails.getMap().keySet()){
-                PrintHelper.printYellow(key + ": " + currentReservationDetails.getMap().get(key));
+            accessId = InputHelper.getIntegerInput("\nEnter Access Id (-1 to exit): ");
+            if(accessId == -1) {
+                PrintHelper.printBlue("Exiting... to VENUE MANAGER CONSOLE");
+                return;
             }
-        }
 
-        int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
-        Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
-        if(newReservationDetails == null){
-            PrintHelper.printRed("Sorry! The venue you requested is already reserved");
-        }
-        else{
-            PrintHelper.printGreen("Hurray!! You have changed your venue successfully.\n\nNew Venue Details:");
-            for(String key: newReservationDetails.getMap().keySet()){
-                PrintHelper.printGreen(key + ": " + newReservationDetails.getMap().get(key));
+            Reservation currentReservationDetails = venueManager.getReservationDetails(currentUser.getUsername(), accessId);
+            if (currentReservationDetails == null) {
+                PrintHelper.printRed("OOPs! Access ID invalid. Please try again");
+                continue;
+            } else {
+                PrintHelper.printYellowUnderlined("\nYour reservation details for given access id:");
+                for (String key : currentReservationDetails.getMap().keySet()) {
+                    PrintHelper.printYellow(key + ": " + currentReservationDetails.getMap().get(key));
+                }
+            }
+
+            int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
+            Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
+            if (newReservationDetails == null) {
+                PrintHelper.printRed("Sorry! The venue you requested is already reserved");
+                return;
+            }
+            else {
+                PrintHelper.printGreen("Hurray!! You have changed your venue successfully.");
+                PrintHelper.printYellow("New Venue Details");
+                for (String key : newReservationDetails.getMap().keySet()) {
+                    PrintHelper.printYellow(key + ": " + newReservationDetails.getMap().get(key));
+                }
+                return;
             }
         }
     }
@@ -545,6 +557,8 @@ public final class Main {
                     }
                 }
                 break;
+            case 4:
+                return;
             default:
                 PrintHelper.printRed("You have entered an invalid username or password. Please try again\n");
         }

@@ -79,7 +79,8 @@ public final class Choices {
             "Modify\n" +
             "1. Email Id\n" +
             "2. Phone Number\n" +
-            "3. Password\n";
+            "3. Password\n" +
+            "4. GO TO VENUE MANAGER CONSOLE\n";
 
     public static final String addVenueChoices =
             "Venue Type\n" +
