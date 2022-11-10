@@ -1,6 +1,5 @@
 package core.user;
 
-import core.manager.VenueManager;
 import core.venue.Reservation;
 import core.venue.VenueType;
 
@@ -18,13 +17,6 @@ public abstract class User {
         this.emailId = emailId;
     }
 
-//    public User(String username, String phoneNumber, String emailId, VenueManager venueManager) {
-//        this.username = username;
-//        this.phoneNumber = phoneNumber;
-//        this.emailId = emailId;
-//        this.venueManager = venueManager;
-//    }
-
     public Map<String, String> getPersonalDetails(){
         return new LinkedHashMap<String, String>(){
             {
@@ -39,23 +31,6 @@ public abstract class User {
         return username;
     }
 
-    protected String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    protected String getEmailId() {
-        return emailId;
-    }
-
-//    public boolean setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//        return venueManager.updateUserDatabase(this);
-//    }
-//
-//    public boolean setEmailId(String emailId) {
-//        this.emailId = emailId;
-//        return venueManager.updateUserDatabase(this);
-//    }
 
     public abstract boolean setPhoneNumber(String phoneNumber);
     public abstract boolean setEmailId(String emailId);
@@ -78,8 +53,6 @@ public abstract class User {
     public abstract Reservation changeVenue(int oldVenueCode, int accessId, int newVenueCode);
 
     public abstract boolean changeUserPassword(String newPassword);
-
-    public abstract boolean updateUserDatabase(User user);
 
     public abstract List<Reservation> getReservationDetails();
 

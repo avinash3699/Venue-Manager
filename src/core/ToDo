@@ -1,10 +1,2 @@
-1. Call getNameFromCode() function(database.database.java) in required places
-2. Validation of date with the database date
-3. Refactor database.database.getInstance() usage in VenueManager
-4. Add functions to User class
-5. Handle Add and Remove user exception cases
-6. Put all members of database private and generate set/get
-7. Cannot book venue 3 months from current date
-
 1. Exit while taking input
 2. if some dates are not in the reservation list, ask user whether to cancel the dates that in the reservation list

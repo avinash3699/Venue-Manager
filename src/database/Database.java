@@ -223,10 +223,6 @@ public final class Database {
         return venueCodes;
     }
 
-    public int getVenuesCount() {
-        return venues.size();
-    }
-
     public String getVenueNameFromCode(int venueCode){
         return venues.get(venueCode).getVenueName();
     }
@@ -416,6 +412,8 @@ public final class Database {
         return false;
     }
 
+
+    // **********************************************************************************************
     LocalDate maxPossibleReservationDate = LocalDate.parse(
             "31-12-2022",
             DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT)

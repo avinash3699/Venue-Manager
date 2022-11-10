@@ -42,28 +42,4 @@ public class PrintHelper {
         );
     }
 
-    public static void printYellowBold(String text){
-        System.out.println(
-            ANSIColors.YELLOW_BOLD +
-            text +
-            ANSIColors.RESET
-        );
-    }
-
-    public static void printYellowBG(String text){
-        System.out.println(
-            ANSIColors.YELLOW_BACKGROUND +
-            text +
-            ANSIColors.RESET
-        );
-    }
-
-    public static void printYellowBright(String text){
-        System.out.println(
-            ANSIColors.YELLOW_BRIGHT +
-            text +
-            ANSIColors.RESET
-        );
-    }
-
 }

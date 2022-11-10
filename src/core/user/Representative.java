@@ -85,12 +85,6 @@ public class Representative extends User{
         return venueManager.changeUserPassword(this.getUsername(), newPassword);
     }
 
-    // Update User Database
-    @Override
-    public boolean updateUserDatabase(User user) {
-        return venueManager.updateUserDatabase(user);
-    }
-
     @Override
     public List<Reservation> getReservationDetails() {
         return venueManager.getReservationDetails(this.getUsername());

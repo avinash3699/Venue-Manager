@@ -42,7 +42,7 @@ public class Venue {
         return venueName;
     }
 
-    public java.lang.String getVenueCode() {
+    public String getVenueCode() {
         return venueCode;
     }
 
@@ -58,5 +58,4 @@ public class Venue {
         this.seatingCapacity = seatingCapacity;
     }
 
-//    protected abstract Map<String, String> getAdditionalVenueDetails();
 }

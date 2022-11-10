@@ -670,10 +670,6 @@ public class VenueManager implements AdminManager, RepresentativeManager {
         }
     }
 
-    public int getVenuesCount() {
-        return Database.getInstance().getVenuesCount();
-    }
-
     public boolean isValidVenueCode(int venueCode){
         List<Integer> venueCodesList = Database.getInstance().getVenueCodesList();
         return venueCodesList.contains(venueCode);

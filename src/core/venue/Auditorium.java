@@ -36,7 +36,7 @@ public class Auditorium extends Venue{
         return venueDetails;
     }
 
-    protected Map<String, String> getAdditionalVenueDetails() {
+    private Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap<String, String>(){
             {
                 put("Mic Stand", isMicStandAvailable? "Available": "Not Available");

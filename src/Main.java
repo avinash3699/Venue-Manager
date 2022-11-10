@@ -481,7 +481,6 @@ public final class Main {
             for(String key: newReservationDetails.getMap().keySet()){
                 PrintHelper.printGreen(key + ": " + newReservationDetails.getMap().get(key));
             }
-//            PrintHelper.printGreen("Your access ID is: " + newReservationDetails.getAccessId());
         }
     }
 

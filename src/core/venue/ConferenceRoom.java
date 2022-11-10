@@ -30,7 +30,7 @@ public class ConferenceRoom extends Venue{
         return venueDetails;
     }
 
-    protected Map<String, String> getAdditionalVenueDetails() {
+    private Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap(){
             {
                 put("White Board", isWhiteBoardAvailable? "Available": "Not Available");
