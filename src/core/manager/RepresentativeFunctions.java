@@ -34,7 +34,6 @@ public interface RepresentativeFunctions {
      */
     void displayVenueDetails(VenueType type);
 
-
     /**
      * This method checks the availability of all the venues for the given 'from date' to 'end date'
      *
