@@ -117,68 +117,62 @@ public final class Database {
     // This field consists of the venue code of the venues mapped with their object
     private final Map<Integer, Venue> venues = new LinkedHashMap<Integer, Venue>(){
         {
-            put(venueCode++, new Auditorium(
-                    "Sigma",
-                    "1",
-                    "SEC College",
-                    "400",
-                    true,
-                    false,
-                    false,
-                    true,
-                    "2"
-            ));
-            put(venueCode++, new ConferenceRoom(
-                    "Conferoom B",
-                    "2",
-                    "B Block Ground Floor",
-                    "30",
-                    true,
-                    true,
-                    true,
-                    true
-            ));
-            put(venueCode++, new Auditorium(
-                    "VRR",
-                    "3",
-                    "Inside LM Stadium",
-                    "286",
-                    true,
-                    true,
-                    false,
-                    true,
-                    "1"
-            ));
-            put(venueCode++, new HandsOnTrainingCentre(
-                    "Alpha",
-                    "4",
-                    "New Library Building, Third Floor",
-                    "160",
-                    true,
-                    true,
-                    true,
-                    false
-            ));
-            put(venueCode++, new HandsOnTrainingCentre(
-                    "Beta",
-                    "5",
-                    "New Library Building, Third Floor",
-                    "160",
-                    true,
-                    true,
-                    true,
-                    true
-            ));
-            put(venueCode++, new ConferenceRoom(
-                    "Conferoom A",
-                    "6",
-                    "A Block Third Floor",
-                    "20",
-                    true,
-                    true,
-                    false,
-                    false
-            ));
+            put(venueCode++, new Auditorium.Builder("1", "SEC College", VenueType.AUDITORIUM)
+                    .seatingCapacity("400")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(false)
+                    .isChargingPortsAvailable(false)
+                    .isMicStandAvailable(true)
+                    .noOfDisplayScreen("2")
+                    .venueName("Sigma")
+                    .build()
+            );
+            put(venueCode++, new ConferenceRoom.Builder("2", "B Block Ground Floor", VenueType.CONFERENCE)
+                    .venueName("Conferoom B")
+                    .seatingCapacity("30")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(true)
+                    .isChargingPortsAvailable(true)
+                    .isWhiteBoardAvailable(true)
+                    .build()
+            );
+            put(venueCode++, new Auditorium.Builder("3", "Inside LM Stadium", VenueType.AUDITORIUM)
+                    .seatingCapacity("286")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(true)
+                    .isChargingPortsAvailable(false)
+                    .isMicStandAvailable(true)
+                    .noOfDisplayScreen("1")
+                    .venueName("VRR")
+                    .build()
+            );
+            put(venueCode++, new HandsOnTrainingCentre.Builder("4", "New Library Building, Third Floor", VenueType.HANDS_ON_TRAINING)
+                    .venueName("Alpha")
+                    .seatingCapacity("160")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(true)
+                    .isChargingPortsAvailable(true)
+                    .isMicStandAvailable(false)
+                    .build()
+            );
+            put(venueCode++, new HandsOnTrainingCentre.Builder("5", "New Library Building, Third Floor", VenueType.HANDS_ON_TRAINING)
+                    .venueName("Beta")
+                    .seatingCapacity("160")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(true)
+                    .isChargingPortsAvailable(true)
+                    .isMicStandAvailable(true)
+                    .build()
+            );
+            put(venueCode++, new ConferenceRoom.Builder("6", "A Block Third Floor", VenueType.CONFERENCE)
+                    .venueName("Conferoom A")
+                    .seatingCapacity("20")
+                    .isAirConditioned(true)
+                    .isWifiAvailable(true)
+                    .isChargingPortsAvailable(false)
+                    .isWhiteBoardAvailable(false)
+                    .build()
+            );
         }
     };
 

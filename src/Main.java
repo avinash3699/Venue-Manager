@@ -726,7 +726,7 @@ public final class Main {
         while(true){
             seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
             // validating the seating capacity. It cannot exceed 1000.
-            if(seatingCapacity > 1000){
+            if(seatingCapacity >= 1000){
                 PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
             }
             else
@@ -738,16 +738,24 @@ public final class Main {
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
                 isWhiteBoardAvailable = InputHelper.getYesOrNoCharacterInput("Is White Board Available? (Y/N): ");
 
-        Venue newVenue = new ConferenceRoom(
-                venueName,
-                venueManager.getNewVenueCode(),
-                location,
-                String.valueOf(seatingCapacity),
-                getBoolFromYesOrNo(isAirConditioned),
-                getBoolFromYesOrNo(isWifiAvailable),
-                getBoolFromYesOrNo(isChargingPortsAvailable),
-                getBoolFromYesOrNo(isWhiteBoardAvailable)
-        );
+//        Venue newVenue = new ConferenceRoom(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isWhiteBoardAvailable)
+//        );
+        Venue newVenue = new ConferenceRoom.Builder(venueManager.getNewVenueCode(), location, VenueType.CONFERENCE)
+                .venueName(venueName)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isWhiteBoardAvailable(getBoolFromYesOrNo(isWhiteBoardAvailable))
+                .build();
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
@@ -762,6 +770,7 @@ public final class Main {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: "),
+                //TODO noOfDisplayScreen should be a valid integer
                 noOfDisplayScreen = InputHelper.getStringInput("No. of display screens: ");
 
         int seatingCapacity;
@@ -780,17 +789,26 @@ public final class Main {
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
                 isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
 
-        Venue newVenue = new Auditorium(
-                venueName,
-                venueManager.getNewVenueCode(),
-                location,
-                String.valueOf(seatingCapacity),
-                getBoolFromYesOrNo(isAirConditioned),
-                getBoolFromYesOrNo(isWifiAvailable),
-                getBoolFromYesOrNo(isChargingPortsAvailable),
-                getBoolFromYesOrNo(isMicStandAvailable),
-                noOfDisplayScreen
-        );
+//        Venue newVenue = new Auditorium(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isMicStandAvailable),
+//                noOfDisplayScreen
+//        );
+        Venue newVenue = new Auditorium.Builder(venueManager.getNewVenueCode(), location, VenueType.AUDITORIUM)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
+                .noOfDisplayScreen(noOfDisplayScreen)
+                .venueName(venueName)
+                .build();
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
@@ -820,16 +838,24 @@ public final class Main {
                 isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
                 isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
 
-        Venue newVenue = new HandsOnTrainingCentre(
-                venueName,
-                venueManager.getNewVenueCode(),
-                location,
-                String.valueOf(seatingCapacity),
-                getBoolFromYesOrNo(isAirConditioned),
-                getBoolFromYesOrNo(isWifiAvailable),
-                getBoolFromYesOrNo(isChargingPortsAvailable),
-                getBoolFromYesOrNo(isMicStandAvailable)
-        );
+//        Venue newVenue = new HandsOnTrainingCentre(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isMicStandAvailable)
+//        );
+        Venue newVenue = new HandsOnTrainingCentre.Builder(venueManager.getNewVenueCode(), location, VenueType.HANDS_ON_TRAINING)
+                .venueName(venueName)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
+                .build();
 
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
@@ -859,6 +885,7 @@ public final class Main {
                         PrintHelper.printRed("Cannot update venue. Please try again");
                     break;
                 case 2:
+                    //TODO seating capacity should not exceed 1000
                     String newSeatingCapacity = InputHelper.getStringInput("Enter new Seating Capacity: ");
                     isVenueUpdateSuccess = ((Admin)currentUser).updateVenueSeatingCapacity(venueCode, newSeatingCapacity);
                     if(isVenueUpdateSuccess)

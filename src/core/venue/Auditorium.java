@@ -21,10 +21,24 @@ public class Auditorium extends Venue{
     private Stage stage;
 
     // Constructor
-    public Auditorium(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable, String noOfDisplayScreen) {
-        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, VenueType.AUDITORIUM);
-        this.isMicStandAvailable = isMicStandAvailable;
-        this.noOfDisplayScreen = noOfDisplayScreen;
+//    public Auditorium(String venueName, String venueCode, String location, String seatingCapacity, boolean isAirConditioned, boolean isWifiAvailable, boolean isChargingPortsAvailable, boolean isMicStandAvailable, String noOfDisplayScreen) {
+//        super(venueName, venueCode, location, seatingCapacity, isAirConditioned, isWifiAvailable, isChargingPortsAvailable, VenueType.AUDITORIUM);
+//        this.isMicStandAvailable = isMicStandAvailable;
+//        this.noOfDisplayScreen = noOfDisplayScreen;
+//    }
+
+    private Auditorium(Builder builder) {
+//        super(builder.venueName, builder.venueCode, builder.location, builder.seatingCapacity, builder.isAirConditioned, builder.isWifiAvailable, builder.isChargingPortsAvailable, builder.venueType);
+        super(
+            new Venue.Builder(builder.venueCode, builder.location, builder.venueType)
+                .venueName(builder.venueName)
+                .seatingCapacity(builder.seatingCapacity)
+                .isAirConditioned(builder.isAirConditioned)
+                .isWifiAvailable(builder.isWifiAvailable)
+                .isChargingPortsAvailable(builder.isChargingPortsAvailable)
+        );
+        this.isMicStandAvailable = builder.isMicStandAvailable;
+        this.noOfDisplayScreen = builder.noOfDisplayScreen;
     }
 
     // Methods
@@ -43,5 +57,60 @@ public class Auditorium extends Venue{
                 put("No. of Display Screens", noOfDisplayScreen);
             }
         };
+    }
+
+    // Builder pattern to build the object, as it has may parameters to be set during object creation
+    public static class Builder {
+        private final String venueCode, location;
+        private final VenueType venueType;
+        private String venueName;
+        private String seatingCapacity;
+        private boolean isAirConditioned, isWifiAvailable, isChargingPortsAvailable, isMicStandAvailable;
+        private String noOfDisplayScreen;
+
+        public Builder(String venueCode, String location, VenueType venueType) {
+            this.venueCode = venueCode;
+            this.location = location;
+            this.venueType = venueType;
+        }
+
+        public Builder venueName(String venueName) {
+            this.venueName = venueName;
+            return this;
+        }
+
+        public Builder seatingCapacity(String seatingCapacity) {
+            this.seatingCapacity = seatingCapacity;
+            return this;
+        }
+
+        public Builder isAirConditioned(boolean isAirConditioned) {
+            this.isAirConditioned = isAirConditioned;
+            return this;
+        }
+
+        public Builder isWifiAvailable(boolean isWifiAvailable) {
+            this.isWifiAvailable = isWifiAvailable;
+            return this;
+        }
+
+        public Builder isChargingPortsAvailable(boolean isChargingPortsAvailable) {
+            this.isChargingPortsAvailable = isChargingPortsAvailable;
+            return this;
+        }
+
+        public Builder isMicStandAvailable(boolean isMicStandAvailable) {
+            this.isMicStandAvailable = isMicStandAvailable;
+            return this;
+        }
+
+        public Builder noOfDisplayScreen(String noOfDisplayScreen) {
+            this.noOfDisplayScreen = noOfDisplayScreen;
+            return this;
+        }
+
+        public Venue build() {
+            return new Auditorium(this);
+        }
     }
 }
