@@ -3,7 +3,7 @@ package core.venue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Venue {
+public abstract class Venue {
 
     // instance variables
     private final String venueCode, location;
@@ -72,10 +72,6 @@ public class Venue {
             this.isChargingPortsAvailable = isChargingPortsAvailable;
             return this;
         }
-
-        public Venue build(){
-            return new Venue(this);
-        }
     }
 
     // method to return the details of the venue
@@ -114,4 +110,5 @@ public class Venue {
         this.seatingCapacity = seatingCapacity;
     }
 
+    public abstract Venue clone();
 }

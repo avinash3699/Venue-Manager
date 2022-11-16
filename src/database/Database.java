@@ -51,8 +51,7 @@ public final class Database {
     }
 
     public void addToUsers(String username, User user) {
-        //TODO put a user object's 'defensive copy'
-        users.put(username, user);
+        users.put(username, user.clone());
     }
 
     public void removeFromUsers(String username) {
@@ -99,8 +98,7 @@ public final class Database {
             // if successful, return logged-in User object
             if(enteredPassword.equals(dbPassword)){
 
-                //TODO return a defensive copy of the object
-                return users.get(userName);
+                return users.get(userName).clone();
             }
             // if password mismatch, return null
             else return null;
@@ -181,8 +179,7 @@ public final class Database {
     }
 
     public void addVenue(Venue newVenue) {
-        //TODO put a defensive copy of the Venue object(newVenue)
-        venues.put(Integer.parseInt(newVenue.getVenueCode()), newVenue);
+        venues.put(Integer.parseInt(newVenue.getVenueCode()), newVenue.clone());
 
         // inserting an empty arraylist, for the new venue code
         // else, NPE will be thrown when tried to check the availability of the newly added venues
@@ -281,13 +278,11 @@ public final class Database {
 
     public boolean addToVenueReservationDetails(int venueCode, Reservation reservationDetails) {
         if(venueReservationDetails.containsKey(venueCode)) {
-            //TODO put a defensive copy of the Reservation object(reservationDetails)
-            venueReservationDetails.get(venueCode).add(reservationDetails);
+            venueReservationDetails.get(venueCode).add(new Reservation(reservationDetails));
         }
         else{
             ArrayList<Reservation> reservationList = new ArrayList<>();
-            //TODO put a defensive copy of the Reservation object(reservationDetails)
-            reservationList.add(reservationDetails);
+            reservationList.add(new Reservation(reservationDetails));
             venueReservationDetails.put(venueCode, reservationList);
         }
         return true;
@@ -319,7 +314,6 @@ public final class Database {
         // if the given access id does not match with that of the user reservations
         // desiredReservation will be null
         if(desiredReservation != null) {
-            //TODO pass a defensive copy of the dates 'fromDate' and 'toDate'
             desiredReservation.removeDates(fromDate, toDate);
 
             // if the reservation dates becomes empty after removing the dates from the reservation
@@ -359,12 +353,10 @@ public final class Database {
 
     public boolean addToUserReservationDetails(String username, Reservation currentReservation) {
         if(userReservationDetails.containsKey(username))
-            //TODO put a defensive copy of the Reservation object(currentReservation)
-            userReservationDetails.get(username).add(currentReservation);
+            userReservationDetails.get(username).add(new Reservation(currentReservation));
         else{
             List<Reservation> reservations = new ArrayList<>();
-            //TODO put a defensive copy of the Reservation object(currentReservation)
-            reservations.add(currentReservation);
+            reservations.add(new Reservation(currentReservation));
             userReservationDetails.put(username, reservations);
         }
         return true;
@@ -396,7 +388,6 @@ public final class Database {
         // if the given access id does not match with that of the user reservations
         // desiredReservation will be null
         if(desiredReservation != null) {
-            //TODO pass a defensive copy of the dates 'fromDate' and 'toDate'
             desiredReservation.removeDates(fromDate, toDate);
 
             // if the reservation dates becomes empty after removing the dates from the reservation

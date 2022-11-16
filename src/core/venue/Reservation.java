@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Reservation {
+public class Reservation{
 
     //TODO reservation date and time can be stored
 
@@ -35,6 +35,16 @@ public class Reservation {
         for (LocalDate date = fromDate; date.isBefore(toDate.plusDays(1)); date = date.plusDays(1)) {
             reservedDates.add(date);
         }
+    }
+
+    // Copy Constructor
+    public Reservation(Reservation reservation) {
+        this.accessId = reservation.accessId;
+        this.username = reservation.username;
+        this.venueCode = reservation.venueCode;
+        reservedDates = new ArrayList<>();
+        for(LocalDate date: reservation.reservedDates)
+            reservedDates.add(date);
     }
 
     // function to get values of the current object as a map
@@ -81,5 +91,4 @@ public class Reservation {
     public void setVenueCode(int venueCode) {
         this.venueCode = venueCode;
     }
-
 }

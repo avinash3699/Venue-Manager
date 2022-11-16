@@ -63,4 +63,6 @@ public abstract class User {
     protected void changeEmailId(String emailId) {
         this.emailId = emailId;
     }
+
+    public abstract User clone();
 }

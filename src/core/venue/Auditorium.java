@@ -59,6 +59,21 @@ public class Auditorium extends Venue{
         };
     }
 
+
+    @Override
+    public Venue clone(){
+        Map<String, String> venueDetails = this.getVenueDetails();
+        return new Builder(venueDetails.get("Venue Code"), venueDetails.get("Venue Location"), VenueType.AUDITORIUM)
+                .venueName(venueDetails.get("Venue Name"))
+                .seatingCapacity(venueDetails.get("Seating Capacity"))
+                .isAirConditioned(venueDetails.get("Air Conditioner").equals("Available"))
+                .isWifiAvailable(venueDetails.get("Wifi").equals("Available"))
+                .isChargingPortsAvailable(venueDetails.get("Individual Charging Ports").equals("Available"))
+                .isMicStandAvailable(isMicStandAvailable)
+                .noOfDisplayScreen(noOfDisplayScreen)
+                .build();
+    }
+
     // Builder pattern to build the object, as it has may parameters to be set during object creation
     public static class Builder {
         private final String venueCode, location;
@@ -109,7 +124,7 @@ public class Auditorium extends Venue{
             return this;
         }
 
-        public Venue build() {
+        public Auditorium build() {
             return new Auditorium(this);
         }
     }

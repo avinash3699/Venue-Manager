@@ -90,4 +90,15 @@ public class Representative extends User{
         return venueManager.getReservationDetails(this.getUsername());
     }
 
+    @Override
+    public User clone() {
+        Map<String, String> personalDetails = this.getPersonalDetails();
+        return new Representative(
+            personalDetails.get("Username"),
+            personalDetails.get("Phone Number"),
+            personalDetails.get("Email Id"),
+            venueManager
+        );
+    }
+
 }

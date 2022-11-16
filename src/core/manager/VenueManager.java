@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 // The system that acts as an interface between the user and the database
-public class VenueManager implements AdminFunctions, RepresentativeFunctions {
+public final class VenueManager implements AdminFunctions, RepresentativeFunctions {
 
     /**
      * This method authenticates the logging user
@@ -27,7 +27,6 @@ public class VenueManager implements AdminFunctions, RepresentativeFunctions {
     public User authenticate(String userName, String enteredPassword){
         return Database.getInstance().authenticate(userName, enteredPassword);
     }
-
 
     // Display Venue Details
     @Override

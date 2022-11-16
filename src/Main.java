@@ -602,7 +602,7 @@ public final class Main {
                         List<Reservation> reservationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
                         if(reservationDetails.size() == 0){
                             PrintHelper.printRed("The user doesn't have any current reservations.");
-                            return;
+                            continue;
                         }
                         PrintHelper.printYellowUnderlined("Reservation details of " + username);
                         for (Reservation reservation : reservationDetails) {

@@ -106,6 +106,17 @@ public class Admin extends User{
         return venueManager.getReservationDetails(this.getUsername());
     }
 
+    @Override
+    public User clone() {
+        Map<String, String> personalDetails = this.getPersonalDetails();
+        return new Admin(
+            personalDetails.get("Username"),
+            personalDetails.get("Phone Number"),
+            personalDetails.get("Email Id"),
+            venueManager
+        );
+    }
+
     // Admin only Operations
     public boolean addUser(String username, String password, String emailId, String phoneNumber){
         return venueManager.addUser(username, password, emailId, phoneNumber);

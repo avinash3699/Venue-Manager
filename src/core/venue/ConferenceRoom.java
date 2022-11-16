@@ -43,6 +43,19 @@ public class ConferenceRoom extends Venue{
         return venueDetails;
     }
 
+    @Override
+    public Venue clone(){
+        Map<String, String> venueDetails = this.getVenueDetails();
+        return new Builder(venueDetails.get("Venue Code"), venueDetails.get("Venue Location"), VenueType.CONFERENCE)
+                .venueName(venueDetails.get("Venue Name"))
+                .seatingCapacity(venueDetails.get("Seating Capacity"))
+                .isAirConditioned(venueDetails.get("Air Conditioner").equals("Available"))
+                .isWifiAvailable(venueDetails.get("Wifi").equals("Available"))
+                .isChargingPortsAvailable(venueDetails.get("Individual Charging Ports").equals("Available"))
+                .isWhiteBoardAvailable(isWhiteBoardAvailable)
+                .build();
+    }
+
     private Map<String, String> getAdditionalVenueDetails() {
         return new LinkedHashMap<String, String>(){
             {
@@ -95,7 +108,7 @@ public class ConferenceRoom extends Venue{
             return this;
         }
 
-        public Venue build() {
+        public ConferenceRoom build() {
             return new ConferenceRoom(this);
         }
     }
