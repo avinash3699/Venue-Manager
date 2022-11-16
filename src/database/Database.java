@@ -189,9 +189,17 @@ public final class Database {
     public void removeVenue(int venueCode) {
         venues.remove(venueCode);
 
-        //TODO - remove the reservation details from 'venueReservationDetails' and 'userReservationDetails'
-        //     - should think whether the reservation details have to be removed when the venue is removed
+        // removing the venue reservation details from the venue reservation list
         venueReservationDetails.remove(venueCode);
+
+        // removing the venue reservations details from the user reservation list
+        for(String username: userReservationDetails.keySet()){
+            for(Reservation reservation: userReservationDetails.get(username)){
+                if(reservation.getVenueCode() == venueCode){
+                    userReservationDetails.get(username).remove(reservation);
+                }
+            }
+        }
     }
 
     public boolean updateVenue(int venueCode, String newValue, VenueUpdate updateOption) {

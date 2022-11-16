@@ -770,8 +770,7 @@ public final class Main {
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: "),
-                //TODO noOfDisplayScreen should be a valid integer
-                noOfDisplayScreen = InputHelper.getStringInput("No. of display screens: ");
+                noOfDisplayScreen = String.valueOf(InputHelper.getIntegerInput("No. of display screens: "));
 
         int seatingCapacity;
         while(true){
@@ -885,9 +884,14 @@ public final class Main {
                         PrintHelper.printRed("Cannot update venue. Please try again");
                     break;
                 case 2:
-                    //TODO seating capacity should not exceed 1000
-                    String newSeatingCapacity = InputHelper.getStringInput("Enter new Seating Capacity: ");
-                    isVenueUpdateSuccess = ((Admin)currentUser).updateVenueSeatingCapacity(venueCode, newSeatingCapacity);
+                    int newSeatingCapacity;
+                    while (true) {
+                        newSeatingCapacity = InputHelper.getIntegerInput("Enter new Seating Capacity: ");
+                        if (newSeatingCapacity >= 1000)
+                            PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+                        else break;
+                    }
+                    isVenueUpdateSuccess = ((Admin)currentUser).updateVenueSeatingCapacity(venueCode, String.valueOf(newSeatingCapacity));
                     if(isVenueUpdateSuccess)
                         PrintHelper.printGreen("New venue detail updated successfully");
                     else
