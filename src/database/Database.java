@@ -194,11 +194,8 @@ public final class Database {
 
         // removing the venue reservations details from the user reservation list
         for(String username: userReservationDetails.keySet()){
-            for(Reservation reservation: userReservationDetails.get(username)){
-                if(reservation.getVenueCode() == venueCode){
-                    userReservationDetails.get(username).remove(reservation);
-                }
-            }
+            userReservationDetails.get(username)
+                                  .removeIf(reservation -> (reservation.getVenueCode() == venueCode));
         }
     }
 

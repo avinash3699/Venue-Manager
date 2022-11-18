@@ -367,6 +367,7 @@ public final class Main {
                 choice = InputHelper.getIntegerInput("Enter choice: ");
                 switch (choice) {
                     case -1:
+                    case 5:
                         return;
                     case 1:
                         confirmation2 = InputHelper.getYesOrNoCharacterInput("\nAre you sure? You want to cancel the venue? (Y/N): ");
@@ -437,12 +438,9 @@ public final class Main {
                             PrintHelper.printRed("Cancellation process stopped!");
                             return;
                         }
-
                         return;
                     case 4:
                         break innerLoop;
-                    case 5:
-                        return;
                     default:
                         PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
                 }

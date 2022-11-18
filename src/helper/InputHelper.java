@@ -20,7 +20,7 @@ public class InputHelper {
         String input;
         while (true){
             System.out.print(text);
-            input = new Scanner(System.in).nextLine();
+            input = new Scanner(System.in).nextLine().trim();
 
             // condition checks
             // 1. is empty string?
@@ -139,7 +139,7 @@ public class InputHelper {
                 parsedDate = LocalDate.parse(date, pattern.withResolverStyle(ResolverStyle.STRICT));
 
 
-                if(! parsedDate.isBefore(new VenueManager().getMaxPossibleReservationDate())){
+                if(! parsedDate.isBefore((new VenueManager().getMaxPossibleReservationDate()).plusDays(1))){
                     PrintHelper.printRed("You cannot enter a date beyond " + DateHelper.getFormattedDate(new VenueManager().getMaxPossibleReservationDate()));
                     continue;
                 }
