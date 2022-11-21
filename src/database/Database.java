@@ -4,7 +4,13 @@ import core.manager.VenueManager;
 import core.user.Admin;
 import core.user.Representative;
 import core.user.User;
-import core.venue.*;
+import core.venue.Auditorium;
+import core.venue.ConferenceRoom;
+import core.venue.HandsOnTrainingCentre;
+import core.venue.Reservation;
+import core.venue.Venue;
+import core.venue.VenueType;
+import core.venue.VenueUpdate;
 import helper.DefensiveCopyHelper;
 
 import java.time.LocalDate;

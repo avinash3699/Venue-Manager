@@ -1,7 +1,12 @@
 import core.manager.VenueManager;
-import core.venue.*;
 import core.user.Admin;
 import core.user.User;
+import core.venue.Auditorium;
+import core.venue.ConferenceRoom;
+import core.venue.HandsOnTrainingCentre;
+import core.venue.Reservation;
+import core.venue.Venue;
+import core.venue.VenueType;
 import helper.Choices;
 import helper.DateHelper;
 import helper.InputHelper;
@@ -699,13 +704,13 @@ public final class Main {
             System.out.println(Choices.addVenueChoices);
             switch (InputHelper.getIntegerInput("Enter Choice: ")){
                 case 1:
-                    getConferenceRoomDetails();
+                    addConferenceRoom();
                     break;
                 case 2:
-                    getAuditoriumDetails();
+                    addAuditorium();
                     break;
                 case 3:
-                    getHandsOnTrainingCentreDetails();
+                    addHandsOnTrainingCentre();
                     break;
                 default:
                     PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
@@ -715,7 +720,140 @@ public final class Main {
             PrintHelper.printRed("OOPs! Invalid Choice, please choose a valid one\n");
     }
 
-    private static void getConferenceRoomDetails() {
+    private static void addConferenceRoom() {
+        List<Object> commonDetails = getCommonVenueDetails();
+
+        String venueName = (String)commonDetails.get(0),
+                location = (String)commonDetails.get(1);
+
+        int seatingCapacity = (int)commonDetails.get(2);
+
+        char isAirConditioned = (char)commonDetails.get(3),
+                isWifiAvailable = (char)commonDetails.get(4),
+                isChargingPortsAvailable = (char)commonDetails.get(5),
+                isWhiteBoardAvailable = InputHelper.getYesOrNoCharacterInput("Is White Board Available? (Y/N): ");
+
+//        Venue newVenue = new ConferenceRoom(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isWhiteBoardAvailable)
+//        );
+        String newVenueCode = venueManager.getNewVenueCode();
+        Venue newVenue = new ConferenceRoom.Builder(newVenueCode, location, VenueType.CONFERENCE)
+                .venueName(venueName)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isWhiteBoardAvailable(getBoolFromYesOrNo(isWhiteBoardAvailable))
+                .build();
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        if(isVenueAdded) {
+            PrintHelper.printGreen("Venue Added Successfully");
+            venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
+        }
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
+
+    }
+
+    private static void addAuditorium() {
+        List<Object> commonDetails = getCommonVenueDetails();
+
+        String venueName = (String)commonDetails.get(0),
+                location = (String)commonDetails.get(1),
+                noOfDisplayScreen = String.valueOf(InputHelper.getIntegerInput("No. of display screens: "));
+
+        int seatingCapacity = (int)commonDetails.get(2);
+
+        char isAirConditioned = (char)commonDetails.get(3),
+                isWifiAvailable = (char)commonDetails.get(4),
+                isChargingPortsAvailable = (char)commonDetails.get(5),
+                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
+
+//        Venue newVenue = new Auditorium(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isMicStandAvailable),
+//                noOfDisplayScreen
+//        );
+        String newVenueCode = venueManager.getNewVenueCode();
+        Venue newVenue = new Auditorium.Builder(newVenueCode, location, VenueType.AUDITORIUM)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
+                .noOfDisplayScreen(noOfDisplayScreen)
+                .venueName(venueName)
+                .build();
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        if(isVenueAdded) {
+            PrintHelper.printGreen("Venue Added Successfully");
+            venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
+        }
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
+    }
+
+    private static void addHandsOnTrainingCentre() {
+        List<Object> commonDetails = getCommonVenueDetails();
+
+        String venueName = (String)commonDetails.get(0),
+                location = (String)commonDetails.get(1);
+
+        int seatingCapacity = (int)commonDetails.get(2);
+
+        char isAirConditioned = (char)commonDetails.get(3),
+                isWifiAvailable = (char)commonDetails.get(4),
+                isChargingPortsAvailable = (char)commonDetails.get(5),
+                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
+
+//        Venue newVenue = new HandsOnTrainingCentre(
+//                venueName,
+//                venueManager.getNewVenueCode(),
+//                location,
+//                String.valueOf(seatingCapacity),
+//                getBoolFromYesOrNo(isAirConditioned),
+//                getBoolFromYesOrNo(isWifiAvailable),
+//                getBoolFromYesOrNo(isChargingPortsAvailable),
+//                getBoolFromYesOrNo(isMicStandAvailable)
+//        );
+        String newVenueCode = venueManager.getNewVenueCode();
+        Venue newVenue = new HandsOnTrainingCentre.Builder(newVenueCode, location, VenueType.HANDS_ON_TRAINING)
+                .venueName(venueName)
+                .seatingCapacity(String.valueOf(seatingCapacity))
+                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
+                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
+                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
+                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
+                .build();
+
+        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
+
+        if (isVenueAdded){
+            PrintHelper.printGreen("Venue Added Successfully");
+            venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
+        }
+        else
+            PrintHelper.printRed("Cannot add Venue, Please try again");
+    }
+
+    private static List<Object> getCommonVenueDetails(){
         System.out.println("Enter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: ");
@@ -732,134 +870,20 @@ public final class Main {
         }
 
         char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
-                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
-                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
-                isWhiteBoardAvailable = InputHelper.getYesOrNoCharacterInput("Is White Board Available? (Y/N): ");
+             isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
+             isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): ");
 
-//        Venue newVenue = new ConferenceRoom(
-//                venueName,
-//                venueManager.getNewVenueCode(),
-//                location,
-//                String.valueOf(seatingCapacity),
-//                getBoolFromYesOrNo(isAirConditioned),
-//                getBoolFromYesOrNo(isWifiAvailable),
-//                getBoolFromYesOrNo(isChargingPortsAvailable),
-//                getBoolFromYesOrNo(isWhiteBoardAvailable)
-//        );
-        Venue newVenue = new ConferenceRoom.Builder(venueManager.getNewVenueCode(), location, VenueType.CONFERENCE)
-                .venueName(venueName)
-                .seatingCapacity(String.valueOf(seatingCapacity))
-                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
-                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
-                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
-                .isWhiteBoardAvailable(getBoolFromYesOrNo(isWhiteBoardAvailable))
-                .build();
-
-        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
-
-        if(isVenueAdded)
-            PrintHelper.printGreen("Venue Added Successfully");
-        else
-            PrintHelper.printRed("Cannot add Venue, Please try again");
-
-    }
-
-    private static void getAuditoriumDetails() {
-        System.out.println("Enter the following venue details");
-        String venueName = InputHelper.getStringInput("Venue Name: "),
-                location = InputHelper.getStringInput("Location: "),
-                noOfDisplayScreen = String.valueOf(InputHelper.getIntegerInput("No. of display screens: "));
-
-        int seatingCapacity;
-        while(true){
-            seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
-            // validating the seating capacity. It cannot exceed 1000.
-            if(seatingCapacity > 1000){
-                PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
+        int finalSeatingCapacity = seatingCapacity;
+        return new ArrayList<Object>(){
+            {
+                add(venueName);
+                add(location);
+                add(finalSeatingCapacity);
+                add(isAirConditioned);
+                add(isWifiAvailable);
+                add(isChargingPortsAvailable);
             }
-            else
-                break;
-        }
-
-        char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
-                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
-                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
-                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
-
-//        Venue newVenue = new Auditorium(
-//                venueName,
-//                venueManager.getNewVenueCode(),
-//                location,
-//                String.valueOf(seatingCapacity),
-//                getBoolFromYesOrNo(isAirConditioned),
-//                getBoolFromYesOrNo(isWifiAvailable),
-//                getBoolFromYesOrNo(isChargingPortsAvailable),
-//                getBoolFromYesOrNo(isMicStandAvailable),
-//                noOfDisplayScreen
-//        );
-        Venue newVenue = new Auditorium.Builder(venueManager.getNewVenueCode(), location, VenueType.AUDITORIUM)
-                .seatingCapacity(String.valueOf(seatingCapacity))
-                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
-                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
-                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
-                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
-                .noOfDisplayScreen(noOfDisplayScreen)
-                .venueName(venueName)
-                .build();
-
-        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
-
-        if(isVenueAdded)
-            PrintHelper.printGreen("Venue Added Successfully");
-        else
-            PrintHelper.printRed("Cannot add Venue, Please try again");
-    }
-
-    private static void getHandsOnTrainingCentreDetails() {
-        System.out.println("Enter the following venue details");
-        String venueName = InputHelper.getStringInput("Venue Name: "),
-                location = InputHelper.getStringInput("Location: ");
-
-        int seatingCapacity;
-        while(true){
-            seatingCapacity = InputHelper.getIntegerInput("Seating Capacity: ");
-            // validating the seating capacity. It cannot exceed 1000.
-            if(seatingCapacity > 1000){
-                PrintHelper.printRed("Seating capacity cannot be more than 1000. Please Contact developer ;)\n");
-            }
-            else
-                break;
-        }
-        char isAirConditioned = InputHelper.getYesOrNoCharacterInput("Is Air Conditioner Available? (Y/N): "),
-                isWifiAvailable = InputHelper.getYesOrNoCharacterInput("Is Wifi Available? (Y/N): "),
-                isChargingPortsAvailable = InputHelper.getYesOrNoCharacterInput("Is Charging Ports Available? (Y/N): "),
-                isMicStandAvailable = InputHelper.getYesOrNoCharacterInput("Is Mic Stand Available? (Y/N): ");
-
-//        Venue newVenue = new HandsOnTrainingCentre(
-//                venueName,
-//                venueManager.getNewVenueCode(),
-//                location,
-//                String.valueOf(seatingCapacity),
-//                getBoolFromYesOrNo(isAirConditioned),
-//                getBoolFromYesOrNo(isWifiAvailable),
-//                getBoolFromYesOrNo(isChargingPortsAvailable),
-//                getBoolFromYesOrNo(isMicStandAvailable)
-//        );
-        Venue newVenue = new HandsOnTrainingCentre.Builder(venueManager.getNewVenueCode(), location, VenueType.HANDS_ON_TRAINING)
-                .venueName(venueName)
-                .seatingCapacity(String.valueOf(seatingCapacity))
-                .isAirConditioned(getBoolFromYesOrNo(isAirConditioned))
-                .isWifiAvailable(getBoolFromYesOrNo(isWifiAvailable))
-                .isChargingPortsAvailable(getBoolFromYesOrNo(isChargingPortsAvailable))
-                .isMicStandAvailable(getBoolFromYesOrNo(isMicStandAvailable))
-                .build();
-
-        boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
-
-        if(isVenueAdded)
-            PrintHelper.printGreen("Venue Added Successfully");
-        else
-            PrintHelper.printRed("Cannot add Venue, Please try again");
+        };
     }
 
     private static boolean getBoolFromYesOrNo(char character) {

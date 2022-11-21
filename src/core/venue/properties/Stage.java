@@ -14,7 +14,7 @@ public class Stage {
     }
 
     public Map<String, Float> getStageDimensions(){
-        return new LinkedHashMap(){
+        return new LinkedHashMap<String, Float>(){
             {
                 put("Height", height);
                 put("Length", length);

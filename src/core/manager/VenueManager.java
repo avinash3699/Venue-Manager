@@ -1,14 +1,20 @@
 package core.manager;
 
-import core.venue.*;
 import core.user.Representative;
 import core.user.User;
+import core.venue.Reservation;
+import core.venue.Venue;
+import core.venue.VenueType;
+import core.venue.VenueUpdate;
 import database.Database;
 import helper.DefensiveCopyHelper;
 import helper.PrintHelper;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 // The system that acts as an interface between the user and the database
 public final class VenueManager implements AdminFunctions, RepresentativeFunctions {
