@@ -910,6 +910,7 @@ public final class Main {
 
             venueManager.displayVenueDetails(venueCode);
 
+            System.out.println();
             char confirmation1 = InputHelper.getYesOrNoCharacterInput("Are you Sure? You want to remove the venue? (Y/N): " );
 
             if( (confirmation1 == 'y') || (confirmation1 == 'Y')){}

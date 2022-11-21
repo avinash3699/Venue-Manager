@@ -10,15 +10,15 @@ public enum ANSIColors {
 
     RESET("\033[0m");
 
-    private final String value;
+    private final String code;
 
-    ANSIColors(String s) {
-        this.value = s;
+    ANSIColors(String code) {
+        this.code = code;
     }
 
     @Override
     public String toString(){
-        return value;
+        return code;
     }
 }
 
