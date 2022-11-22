@@ -12,6 +12,7 @@ import helper.PrintHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -534,6 +535,7 @@ public final class VenueManager implements AdminFunctions, RepresentativeFunctio
 
     // This function is used to print the availability of a single venue
     public void printVenueAvailability(int venueCode, boolean isAvailable){
+        System.out.println();
         if(isAvailable){
             PrintHelper.printGreen(Database.getInstance().getVenueNameFromCode(venueCode) + ": Available");
         }
@@ -553,4 +555,13 @@ public final class VenueManager implements AdminFunctions, RepresentativeFunctio
         return String.valueOf(Database.getInstance().getNewVenueCode());
     }
 
+
+    public Map<Integer, String> getAllVenueCodesWithName() {
+        List<Integer> venueCodesList = Database.getInstance().getVenueCodesList();
+        Map<Integer, String> map = new LinkedHashMap<>();
+        for(int venueCode: venueCodesList){
+            map.put(venueCode, Database.getInstance().getVenueNameFromCode(venueCode));
+        }
+        return map;
+    }
 }

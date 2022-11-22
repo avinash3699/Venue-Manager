@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Map;
 import java.util.Scanner;
 
 // This class is used to get the inputs from the user
@@ -61,12 +62,24 @@ public class InputHelper {
     // function to get a valid venue code
     // the number of venues available is passed to the function
     // returns a valid venue code
-    public static int getVenueCodeInput(String hintText) {
+    //TODO Doubt: for prompting for "new venue code", should another function be written or
+    //     should this function be written with argument which accepts a hint text
+    public static int getVenueCodeInput() {
         int venueCode;
-        System.out.println("\n---------");
 
+        System.out.println();
         while(true) {
-            venueCode = getIntegerInput(hintText);
+            venueCode = getIntegerInput("Enter Venue Code (-1 to display Venue Codes): ");
+
+            if(venueCode == -1) {
+                PrintHelper.printBlue("\nVenue Code | Venue Name");
+                Map<Integer, String> allVenueCodesWithName = new VenueManager().getAllVenueCodesWithName();
+                for(Map.Entry entry: allVenueCodesWithName.entrySet()){
+                    System.out.printf("%s          - %s\n", entry.getKey(), entry.getValue());
+                }
+                System.out.println();
+                continue;
+            }
 
             if(new VenueManager().isValidVenueCode(venueCode)){
                 break;
@@ -174,7 +187,7 @@ public class InputHelper {
             if(ValidationHelper.isValidPhoneNumber(newPhoneNumber))
                 break;
             else
-                PrintHelper.printRed("Invalid phone number. Please try again");
+                PrintHelper.printRed("Invalid phone number. Please try again\n");
         }
         return newPhoneNumber;
     }
@@ -187,7 +200,7 @@ public class InputHelper {
             if(ValidationHelper.isValidName(username))
                 break;
             else
-                PrintHelper.printRed("Invalid username. Please try again");
+                PrintHelper.printRed("Invalid username. Please try again\n");
         }
         return username;
     }
@@ -200,7 +213,7 @@ public class InputHelper {
             if(ValidationHelper.isValidEmailId(emailId))
                 break;
             else
-                PrintHelper.printRed("Invalid email Id. Please try again");
+                PrintHelper.printRed("Invalid email Id. Please try again\n");
         }
         return emailId;
     }

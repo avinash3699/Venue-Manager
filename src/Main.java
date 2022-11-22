@@ -111,7 +111,7 @@ public final class Main {
                     }
                     continue;
                 case 2:
-                    PrintHelper.printBlue("\nExiting....");
+                    PrintHelper.printBlue("Exiting....");
                     System.exit(1);
                     break;
                 default:
@@ -166,7 +166,7 @@ public final class Main {
                     currentUser.displayVenueDetails(VenueType.AUDITORIUM);
                     break;
                 case 5:
-                    venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                    venueCode = InputHelper.getVenueCodeInput();
                     currentUser.displayVenueDetails(venueCode);
                     break;
                 case 6:
@@ -223,7 +223,7 @@ public final class Main {
                         venueManager.printVenuesAvailability(availableVenueCodes, venueType);
                         break;
                     case 5:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput();
                         boolean availability = currentUser.checkAvailability(venueCode, from, to);
                         venueManager.printVenueAvailability(venueCode, availability);
                         break;
@@ -272,7 +272,6 @@ public final class Main {
                             for(String key: reservationDetails.getMap().keySet()){
                                 PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
-                            System.out.println();
                         }
                         break;
                     case 2:
@@ -285,7 +284,6 @@ public final class Main {
                             for(String key: reservationDetails.getMap().keySet()){
                                 PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
-                            System.out.println();
                         }
                         break;
                     case 3:
@@ -298,11 +296,10 @@ public final class Main {
                             for(String key: reservationDetails.getMap().keySet()){
                                 PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
-                            System.out.println();
                         }
                         break;
                     case 4:
-                        venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+                        venueCode = InputHelper.getVenueCodeInput();
                         reservationDetails = currentUser.reserveVenue(venueCode, from, to);
                         if(reservationDetails == null){
                             PrintHelper.printRed("Sorry! The venue you requested is already reserved");
@@ -312,7 +309,6 @@ public final class Main {
                             for(String key: reservationDetails.getMap().keySet()){
                                 PrintHelper.printYellow(key + ": " + reservationDetails.getMap().get(key));
                             }
-                            System.out.println();
                         }
                         break;
                     case 5:
@@ -331,7 +327,7 @@ public final class Main {
 
         boolean isCancelled;
 
-        char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
+        char confirmation = InputHelper.getYesOrNoCharacterInput("\nDo you have a access Id? If not, please reserve the venue first (Y/N): ");
         if((confirmation == 'Y') || (confirmation == 'y')){}
         else{
             PrintHelper.printRed("Please reserve a venue to get the access id!");
@@ -456,7 +452,7 @@ public final class Main {
     // 4. Change Reserved Venue
     private static void manageVenueChange() {
 
-        char confirmation = InputHelper.getYesOrNoCharacterInput("Do you have a access Id? If not, please reserve the venue first (Y/N): ");
+        char confirmation = InputHelper.getYesOrNoCharacterInput("\nDo you have a access Id? If not, please reserve the venue first (Y/N): ");
         if ((confirmation == 'Y') || (confirmation == 'y')) {}
         else {
             PrintHelper.printRed("Please reserve a venue to get the access id!");
@@ -464,9 +460,8 @@ public final class Main {
         }
 
         while (true) {
-
             accessId = InputHelper.getIntegerInput("\nEnter Access Id (-1 to exit): ");
-            if(accessId == -1) {
+            if (accessId == -1) {
                 PrintHelper.printBlue("Exiting... to VENUE MANAGER CONSOLE");
                 return;
             }
@@ -482,11 +477,10 @@ public final class Main {
                 }
             }
 
-            int newVenueCode = InputHelper.getVenueCodeInput("Enter New Venue Code: ");
+            int newVenueCode = InputHelper.getVenueCodeInput();
             Reservation newReservationDetails = currentUser.changeVenue(currentReservationDetails.getVenueCode(), accessId, newVenueCode);
             if (newReservationDetails == null) {
                 PrintHelper.printRed("Sorry! The venue you requested is already reserved");
-                return;
             }
             else {
                 PrintHelper.printGreen("Hurray!! You have changed your venue successfully.");
@@ -517,13 +511,12 @@ public final class Main {
 
     // 6. View Profile
     private static void showProfile() {
-        System.out.println("\n---------");
+        System.out.println();
         PrintHelper.printYellowUnderlined("User Profile");
         Map<String, String> personalDetails = currentUser.getPersonalDetails();
         for (String key : personalDetails.keySet()) {
             PrintHelper.printYellow(String.format("%s: %s", key, personalDetails.get(key)));
         }
-        System.out.println();
     }
 
     // 7. Modify Personal Details
@@ -570,7 +563,7 @@ public final class Main {
     // 8. LOGOUT
     private static void logout() {
         currentUser = null;
-        PrintHelper.printBlue("\nLogging out...");
+        PrintHelper.printBlue("Logging out...");
         PrintHelper.printBlue("Logged out successfully!\n");
     }
 
@@ -599,7 +592,6 @@ public final class Main {
                         for (String key : personalDetails.keySet()) {
                             PrintHelper.printYellow(String.format("%s: %s", key, personalDetails.get(key)));
                         }
-                        System.out.println();
                         break;
                     case 2:
                         List<Reservation> reservationDetails = ((Admin) currentUser).getOtherUserRegistrationDetails(username);
@@ -612,7 +604,6 @@ public final class Main {
                             for (String key : reservation.getMap().keySet()) {
                                 PrintHelper.printYellow(key + ": " + reservation.getMap().get(key));
                             }
-                            System.out.println();
                         }
                         break;
                     case 3:
@@ -701,6 +692,7 @@ public final class Main {
     // 13. Add Venue
     private static void manageVenueAddition() {
         if(currentUser instanceof Admin){
+            System.out.println();
             System.out.println(Choices.addVenueChoices);
             switch (InputHelper.getIntegerInput("Enter Choice: ")){
                 case 1:
@@ -756,7 +748,7 @@ public final class Main {
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
         if(isVenueAdded) {
-            PrintHelper.printGreen("Venue Added Successfully");
+            PrintHelper.printGreen("\nVenue Added Successfully");
             venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
         }
         else
@@ -803,7 +795,7 @@ public final class Main {
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
         if(isVenueAdded) {
-            PrintHelper.printGreen("Venue Added Successfully");
+            PrintHelper.printGreen("\nVenue Added Successfully");
             venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
         }
         else
@@ -846,7 +838,7 @@ public final class Main {
         boolean isVenueAdded = ((Admin) currentUser).addVenue(newVenue);
 
         if (isVenueAdded){
-            PrintHelper.printGreen("Venue Added Successfully");
+            PrintHelper.printGreen("\nVenue Added Successfully");
             venueManager.displayVenueDetails(Integer.parseInt(newVenueCode));
         }
         else
@@ -854,7 +846,7 @@ public final class Main {
     }
 
     private static List<Object> getCommonVenueDetails(){
-        System.out.println("Enter the following venue details");
+        System.out.println("\nEnter the following venue details");
         String venueName = InputHelper.getStringInput("Venue Name: "),
                 location = InputHelper.getStringInput("Location: ");
 
@@ -893,8 +885,9 @@ public final class Main {
     // 14. Update Venue
     private static void manageVenueUpdate() {
         if(currentUser instanceof Admin){
-            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+            venueCode = InputHelper.getVenueCodeInput();
 
+            System.out.println();
             System.out.println(Choices.updateVenueChoices);
             switch (InputHelper.getIntegerInput("Enter choice: ")){
                 case 1:
@@ -930,7 +923,7 @@ public final class Main {
     // 15. Remove Venue
     private static void manageVenueRemoval() {
         if(currentUser instanceof Admin){
-            venueCode = InputHelper.getVenueCodeInput("Enter Venue Code: ");
+            venueCode = InputHelper.getVenueCodeInput();
 
             venueManager.displayVenueDetails(venueCode);
 
